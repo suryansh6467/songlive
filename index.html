@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -88,24 +88,6 @@
       transform: scale(0.95);
       background: rgba(255, 255, 255, 0.3);
     }
-
-    /* Touch Ripple Effect Style */
-    .touch-ripple {
-      position: absolute;
-      border-radius: 50%;
-      transform: scale(0);
-      background: rgba(255, 255, 255, 0.5);
-      pointer-events: none;
-      animation: ripple-anim 0.5s linear forwards;
-      z-index: 99;
-    }
-
-    @keyframes ripple-anim {
-      to {
-        transform: scale(3.5);
-        opacity: 0;
-      }
-    }
   </style>
 </head>
 <body class="relative flex flex-col justify-between items-center text-white p-4 sm:p-8 bg-black">
@@ -190,11 +172,11 @@
 
     </div>
 
-    <!-- Name Badge Positioned Just Below the Music Player Capsule -->
+    <!-- Name Badge Linked to Instagram -->
     <div class="mt-4 flex justify-center">
-      <span class="border border-white/60 px-4 py-1 rounded-full bg-black/40 backdrop-blur-md text-xs sm:text-sm font-semibold tracking-widest text-white shadow-lg">
+      <a href="https://www.instagram.com/n0tsuryansh" target="_blank" rel="noopener noreferrer" class="border border-white/60 px-4 py-1 rounded-full bg-black/40 backdrop-blur-md text-xs sm:text-sm font-semibold tracking-widest text-white shadow-lg transition hover:bg-white/25 cursor-pointer">
         N0tSuryansh
-      </span>
+      </a>
     </div>
   </main>
 
@@ -342,21 +324,6 @@
     audioElement.addEventListener('ended', nextSong);
 
     loadSong(playlist[currentSongIndex]);
-
-    // Touch Ripple Effect Script
-    document.addEventListener('pointerdown', (e) => {
-      const ripple = document.createElement('div');
-      ripple.className = 'touch-ripple';
-      const size = 50;
-      ripple.style.width = `${size}px`;
-      ripple.style.height = `${size}px`;
-      ripple.style.left = `${e.clientX - size / 2}px`;
-      ripple.style.top = `${e.clientY - size / 2}px`;
-      document.body.appendChild(ripple);
-      setTimeout(() => {
-        ripple.remove();
-      }, 500);
-    });
   </script>
 </body>
 </html>
