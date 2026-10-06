@@ -10,14 +10,15 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
     
-    body {
+    html, body {
       font-family: 'Plus Jakarta Sans', sans-serif;
       margin: 0;
       padding: 0;
-      overflow: hidden;
-      height: 100vh;
       width: 100vw;
+      height: 100dvh;
+      overflow: hidden;
       user-select: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
     /* Glassmorphism Capsule Container */
@@ -42,26 +43,22 @@
 
     input[type=range]::-webkit-slider-runnable-track {
       width: 100%;
-      height: 4px;
+      height: 6px;
       cursor: pointer;
       background: rgba(255, 255, 255, 0.3);
-      border-radius: 2px;
+      border-radius: 3px;
     }
 
     input[type=range]::-webkit-slider-thumb {
-      height: 12px;
-      width: 12px;
+      height: 16px;
+      width: 16px;
       border-radius: 50%;
       background: #ffffff;
       cursor: pointer;
       -webkit-appearance: none;
-      margin-top: -4px;
+      margin-top: -5px;
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
       transition: transform 0.1s ease;
-    }
-
-    input[type=range]::-webkit-slider-thumb:hover {
-      transform: scale(1.3);
     }
 
     /* Vinyl Rotating Animation */
@@ -87,22 +84,34 @@
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .btn-glass:hover {
-      background: rgba(255, 255, 255, 0.32);
-      transform: translateY(-1px) scale(1.05);
-      box-shadow: inset 0 1px 4px rgba(255, 255, 255, 0.5), 0 6px 14px rgba(0, 0, 0, 0.3);
+    .btn-glass:active {
+      transform: scale(0.95);
+      background: rgba(255, 255, 255, 0.3);
     }
 
-    .btn-glass:active {
-      transform: translateY(1px) scale(0.98);
-      background: rgba(255, 255, 255, 0.15);
+    /* Touch Ripple Effect Style */
+    .touch-ripple {
+      position: absolute;
+      border-radius: 50%;
+      transform: scale(0);
+      background: rgba(255, 255, 255, 0.5);
+      pointer-events: none;
+      animation: ripple-anim 0.5s linear forwards;
+      z-index: 99;
+    }
+
+    @keyframes ripple-anim {
+      to {
+        transform: scale(3.5);
+        opacity: 0;
+      }
     }
   </style>
 </head>
-<body class="relative flex flex-col justify-between items-center text-white p-4 sm:p-8 overflow-hidden bg-black">
+<body class="relative flex flex-col justify-between items-center text-white p-4 sm:p-8 bg-black">
 
   <!-- Responsive Background Image Layer -->
-  <div class="absolute inset-0 w-full h-full overflow-hidden z-0">
+  <div class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
     <img src="https://raw.githubusercontent.com/suryansh6467/songs/main/172404-your_name-mitsuha_miyamizu-taki_tachibana-anime-atmosphere-7680x4320.jpg" 
          class="w-full h-full object-cover filter brightness-[0.55]" 
          alt="Background">
@@ -118,7 +127,7 @@
   <main class="flex flex-col items-center justify-center flex-grow z-10 my-auto text-center w-full max-w-4xl px-2">
     <div class="w-full glass-capsule rounded-full p-3 sm:p-5 flex flex-col md:flex-row items-center gap-4 sm:gap-6 relative">
       
-      <!-- Album Art (Left Side Circular Container without Center Dot) -->
+      <!-- Album Art (Left Side Circular Container) -->
       <div class="relative flex-shrink-0">
         <div class="w-20 h-20 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-white/40 shadow-2xl relative flex items-center justify-center">
           <img id="album-cover" 
@@ -131,21 +140,26 @@
 
       <!-- Center Song Info & Seek Bar Controls -->
       <div class="flex-grow w-full flex flex-col justify-center gap-1 sm:gap-2 px-2">
-        <!-- Title & Subtitle -->
-        <div class="text-left">
-          <h2 id="song-title" class="text-lg sm:text-2xl font-bold text-white tracking-wide truncate">
+        <!-- Title, Subtitle & Name Badge -->
+        <div class="text-left flex flex-col items-start gap-1">
+          <h2 id="song-title" class="text-lg sm:text-2xl font-bold text-white tracking-wide truncate w-full">
             Song Title
           </h2>
-          <p id="artist-name" class="text-xs sm:text-sm text-white/70 font-medium">
-            Artist Name
-          </p>
+          <div class="flex flex-wrap items-center gap-2">
+            <p id="artist-name" class="text-xs sm:text-sm text-white/70 font-medium">
+              Artist Name
+            </p>
+            <span class="border border-white/60 px-2 py-0.5 rounded-full bg-black/30 text-[10px] sm:text-xs font-semibold tracking-wider text-white shadow">
+              N0tSuryansh
+            </span>
+          </div>
         </div>
 
         <!-- Progress Bar & Time Stamps -->
-        <div class="flex items-center gap-3 mt-1 sm:mt-2">
+        <div class="flex items-center gap-3 mt-1">
           <span id="current-time" class="text-xs text-white/80 font-mono w-8 text-right">0:00</span>
           
-          <div class="relative flex-grow flex items-center">
+          <div class="relative flex-grow flex items-center py-2">
             <input type="range" id="seek-bar" value="0" min="0" max="100" class="z-10">
           </div>
           
@@ -173,15 +187,6 @@
 
     </div>
   </main>
-
-  <!-- Fixed Footer Name Banner -->
-  <footer class="z-10 w-full flex justify-center pb-3">
-    <div class="flex items-center text-xs sm:text-sm font-medium">
-      <span class="border border-white/80 px-3 py-1 rounded-full bg-black/40 backdrop-blur-md font-semibold tracking-wider text-white shadow-lg">
-        N0tSuryansh
-      </span>
-    </div>
-  </footer> 
 
   <!-- Hidden Audio Player -->
   <audio id="audio-element"></audio>
@@ -321,6 +326,21 @@
     audioElement.addEventListener('ended', nextSong);
 
     loadSong(playlist[currentSongIndex]);
+
+    // Touch Ripple Effect Script
+    document.addEventListener('pointerdown', (e) => {
+      const ripple = document.createElement('div');
+      ripple.className = 'touch-ripple';
+      const size = 50;
+      ripple.style.width = `${size}px`;
+      ripple.style.height = `${size}px`;
+      ripple.style.left = `${e.clientX - size / 2}px`;
+      ripple.style.top = `${e.clientY - size / 2}px`;
+      document.body.appendChild(ripple);
+      setTimeout(() => {
+        ripple.remove();
+      }, 500);
+    });
   </script>
 </body>
 </html>
