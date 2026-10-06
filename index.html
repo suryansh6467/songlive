@@ -125,6 +125,7 @@
   </header>
 
   <main class="flex flex-col items-center justify-center flex-grow z-10 my-auto text-center w-full max-w-4xl px-2">
+    <!-- Main Player Capsule Container -->
     <div class="w-full glass-capsule rounded-full p-3 sm:p-5 flex flex-col md:flex-row items-center gap-4 sm:gap-6 relative">
       
       <!-- Album Art (Left Side Circular Container) -->
@@ -140,23 +141,18 @@
 
       <!-- Center Song Info & Seek Bar Controls -->
       <div class="flex-grow w-full flex flex-col justify-center gap-1 sm:gap-2 px-2">
-        <!-- Title, Subtitle & Name Badge -->
-        <div class="text-left flex flex-col items-start gap-1">
-          <h2 id="song-title" class="text-lg sm:text-2xl font-bold text-white tracking-wide truncate w-full">
+        <!-- Title & Subtitle -->
+        <div class="text-left">
+          <h2 id="song-title" class="text-lg sm:text-2xl font-bold text-white tracking-wide truncate">
             Song Title
           </h2>
-          <div class="flex flex-wrap items-center gap-2">
-            <p id="artist-name" class="text-xs sm:text-sm text-white/70 font-medium">
-              Artist Name
-            </p>
-            <span class="border border-white/60 px-2 py-0.5 rounded-full bg-black/30 text-[10px] sm:text-xs font-semibold tracking-wider text-white shadow">
-              N0tSuryansh
-            </span>
-          </div>
+          <p id="artist-name" class="text-xs sm:text-sm text-white/70 font-medium">
+            Artist Name
+          </p>
         </div>
 
         <!-- Progress Bar & Time Stamps -->
-        <div class="flex items-center gap-3 mt-1">
+        <div class="flex items-center gap-3 mt-1 sm:mt-2">
           <span id="current-time" class="text-xs text-white/80 font-mono w-8 text-right">0:00</span>
           
           <div class="relative flex-grow flex items-center py-2">
@@ -185,6 +181,13 @@
         </button>
       </div>
 
+    </div>
+
+    <!-- Name Badge Positioned Just Below the Music Player Capsule -->
+    <div class="mt-4 flex justify-center">
+      <span class="border border-white/60 px-4 py-1 rounded-full bg-black/40 backdrop-blur-md text-xs sm:text-sm font-semibold tracking-widest text-white shadow-lg">
+        N0tSuryansh
+      </span>
     </div>
   </main>
 
