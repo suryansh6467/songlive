@@ -1,17 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Suryansh's Music Player</title>
-
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
-
+    
     html, body {
       font-family: 'Plus Jakarta Sans', sans-serif;
       margin: 0;
@@ -23,18 +21,19 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    /* Glassmorphism Capsule Container */
     .glass-capsule {
       background: rgba(255, 255, 255, 0.12);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.28);
-      box-shadow:
-        0 20px 40px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
 
+    /* Custom Range Sliders */
     input[type=range] {
       -webkit-appearance: none;
+      appearance: none;
       width: 100%;
       background: transparent;
     }
@@ -63,6 +62,7 @@
       transition: transform 0.1s ease;
     }
 
+    /* Vinyl Rotating Animation */
     .spinning {
       animation: spin 12s linear infinite;
     }
@@ -72,22 +72,17 @@
     }
 
     @keyframes spin {
-      0% {
-        transform: rotate(0deg);
-      }
-
-      100% {
-        transform: rotate(360deg);
-      }
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
+    /* Metallic Rounded Buttons */
     .btn-glass {
       background: rgba(255, 255, 255, 0.2);
       border: 1px solid rgba(255, 255, 255, 0.35);
       backdrop-filter: blur(10px);
-      box-shadow:
-        inset 0 1px 2px rgba(255, 255, 255, 0.3),
-        0 4px 10px rgba(0, 0, 0, 0.25);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3), 0 4px 10px rgba(0, 0, 0, 0.25);
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
@@ -97,559 +92,235 @@
     }
   </style>
 </head>
-
 <body class="relative flex flex-col justify-between items-center text-white p-4 sm:p-8 bg-black">
 
-  <!-- Background -->
+  <!-- Responsive Background Image Layer -->
   <div class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
-    <img
-      src="https://raw.githubusercontent.com/suryansh6467/songs/main/172404-your_name-mitsuha_miyamizu-taki_tachibana-anime-atmosphere-7680x4320.jpg"
-      class="w-full h-full object-cover filter brightness-[0.55]"
-      alt="Background">
+    <img src="https://raw.githubusercontent.com/suryansh6467/songs/main/172404-your_name-mitsuha_miyamizu-taki_tachibana-anime-atmosphere-7680x4320.jpg" 
+         class="w-full h-full object-cover filter brightness-[0.55]" 
+         alt="Background">
   </div>
 
-  <!-- Header -->
   <header class="w-full flex justify-between items-center z-10">
-
-    <!-- Digital Clock HH:MM:SS -->
-    <div
-      id="digital-clock"
-      class="text-2xl sm:text-4xl font-bold tracking-wider drop-shadow-md text-white/95">
+    <!-- Top-Left: Digital Clock (HH:MM:SS) -->
+    <div id="digital-clock" class="text-2xl sm:text-4xl font-bold tracking-wider drop-shadow-md text-white/95">
       00:00:00
     </div>
-
   </header>
 
-  <!-- Main -->
-  <main
-    class="flex flex-col items-center justify-center flex-grow z-10 my-auto text-center w-full max-w-4xl px-2">
-
-    <!-- Player -->
-    <div
-      class="w-full glass-capsule rounded-full p-3 sm:p-5 flex flex-col md:flex-row items-center gap-4 sm:gap-6 relative">
-
-      <!-- Album -->
+  <main class="flex flex-col items-center justify-center flex-grow z-10 my-auto text-center w-full max-w-4xl px-2">
+    <!-- Main Player Capsule Container -->
+    <div class="w-full glass-capsule rounded-full p-3 sm:p-5 flex flex-col md:flex-row items-center gap-4 sm:gap-6 relative">
+      
+      <!-- Album Art (Left Side Circular Container) -->
       <div class="relative flex-shrink-0">
-        <div
-          class="w-20 h-20 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-white/40 shadow-2xl relative flex items-center justify-center">
-
-          <img
-            id="album-cover"
-            src="https://raw.githubusercontent.com/suryansh6467/songs/main/1313eb05e394d398870fc6a320eec62e.jpg"
-            alt="CD Cover"
-            class="w-full h-full object-cover spinning paused-spin"
-            onerror="this.src='https://placehold.co/120x120/333/fff?text=Music'">
-
+        <div class="w-20 h-20 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-white/40 shadow-2xl relative flex items-center justify-center">
+          <img id="album-cover" 
+               src="https://raw.githubusercontent.com/suryansh6467/songs/main/1313eb05e394d398870fc6a320eec62e.jpg" 
+               alt="CD Cover" 
+               class="w-full h-full object-cover spinning paused-spin"
+               onerror="this.src='https://placehold.co/120x120/333/fff?text=Music'">
         </div>
       </div>
 
-      <!-- Song Info -->
-      <div class="flex-grow w-full flex flex-col justify-center gap-1.5 px-2">
-
+      <!-- Center Song Info & Controls -->
+      <div class="flex-grow w-full flex flex-col justify-center gap-2 px-2">
+        <!-- Title & Subtitle -->
         <div class="text-left">
-          <h2
-            id="song-title"
-            class="text-lg sm:text-2xl font-bold text-white tracking-wide truncate">
+          <h2 id="song-title" class="text-lg sm:text-2xl font-bold text-white tracking-wide truncate">
             Song Title
           </h2>
-
-          <p
-            id="artist-name"
-            class="text-xs sm:text-sm text-white/70 font-medium">
+          <p id="artist-name" class="text-xs sm:text-sm text-white/70 font-medium">
             Artist Name
           </p>
         </div>
 
-        <!-- Progress -->
+        <!-- Progress Bar & Time Stamps -->
         <div class="flex items-center gap-3">
-
-          <span
-            id="current-time"
-            class="text-xs text-white/80 font-mono w-8 text-right">
-            0:00
-          </span>
-
+          <span id="current-time" class="text-xs text-white/80 font-mono w-8 text-right">0:00</span>
+          
           <div class="relative flex-grow flex items-center py-1">
-            <input
-              type="range"
-              id="seek-bar"
-              value="0"
-              min="0"
-              max="100"
-              class="z-10">
+            <input type="range" id="seek-bar" value="0" min="0" max="100" class="z-10">
           </div>
-
-          <span
-            id="total-duration"
-            class="text-xs text-white/80 font-mono w-8 text-left">
-            0:00
-          </span>
-
+          
+          <span id="total-duration" class="text-xs text-white/80 font-mono w-8 text-left">0:00</span>
         </div>
-
-        <!-- Volume -->
-        <div class="flex items-center gap-2 px-1">
-
-          <i class="fa-solid fa-volume-low text-xs text-white/70"></i>
-
-          <input
-            type="range"
-            id="volume-bar"
-            value="1"
-            min="0"
-            max="1"
-            step="0.05"
-            class="z-10">
-
-          <i class="fa-solid fa-volume-high text-xs text-white/70"></i>
-
-        </div>
-
       </div>
 
-      <!-- Controls -->
+      <!-- Right Media Control Buttons -->
       <div class="flex items-center gap-2 sm:gap-3 px-2">
-
-        <!-- Previous -->
-        <button
-          id="prev-btn"
-          title="Previous Song"
-          class="btn-glass w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white/90">
-
+        <!-- Previous Button -->
+        <button id="prev-btn" title="Previous Song" class="btn-glass w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white/90">
           <i class="fa-solid fa-chevron-left text-sm sm:text-base"></i>
-
         </button>
 
-        <!-- Play -->
-        <button
-          id="play-btn"
-          title="Play / Pause"
-          class="btn-glass w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center text-white shadow-xl">
-
-          <i
-            id="play-icon"
-            class="fa-solid fa-play text-base sm:text-xl ml-0.5">
-          </i>
-
+        <!-- Play / Pause Main Button -->
+        <button id="play-btn" title="Play / Pause" class="btn-glass w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center text-white shadow-xl">
+          <i id="play-icon" class="fa-solid fa-play text-base sm:text-xl ml-0.5"></i>
         </button>
 
-        <!-- Next -->
-        <button
-          id="next-btn"
-          title="Next Song"
-          class="btn-glass w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white/90">
-
+        <!-- Next Button -->
+        <button id="next-btn" title="Next Song" class="btn-glass w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white/90">
           <i class="fa-solid fa-chevron-right text-sm sm:text-base"></i>
-
         </button>
-
       </div>
 
     </div>
 
-    <!-- Instagram -->
+    <!-- Name Badge Positioned Just Below the Music Player Capsule -->
     <div class="mt-4 flex justify-center">
-
-      <a
-        href="https://www.instagram.com/n0tsuryansh"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="border border-white/60 px-4 py-1 rounded-full bg-black/40 backdrop-blur-md text-xs sm:text-sm font-semibold tracking-widest text-white shadow-lg transition hover:bg-white/25 cursor-pointer">
-
+      <span class="border border-white/60 px-4 py-1 rounded-full bg-black/40 backdrop-blur-md text-xs sm:text-sm font-semibold tracking-widest text-white shadow-lg">
         N0tSuryansh
-
-      </a>
-
+      </span>
     </div>
-
   </main>
 
-  <!-- Audio -->
+  <!-- Hidden Audio Player -->
   <audio id="audio-element"></audio>
 
   <script>
+    const defaultCover = "https://raw.githubusercontent.com/suryansh6467/songs/main/1313eb05e394d398870fc6a320eec62e.jpg";
 
-    /* =========================
-       DEFAULT COVER
-    ========================= */
+    const playlist = [
+      {
+        title: "Chal Wahan Jaate Hain",
+        artist: "Arijit Singh",
+        duration: "5:25",
+        src: "https://raw.githubusercontent.com/suryansh6467/songs/21af342f0afc8d5385497db07c2d854e18807747/Chal%20Wahan%20Jaate%20Hain%20(From%20Chal%20Wahan%20Jaate%20Hain).mp3"
+      },
+      {
+        title: "Bol Kaffara Kya Hoga",
+        artist: "Neha Kakkar",
+        duration: "3:17",
+        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Bol%20Kaffara%20Kya%20Hoga%20-%20Neha%20Kakkar.mp3"
+      },
+      {
+        title: "Khat",
+        artist: "Navjot Ahuja",
+        duration: "3:45",
+        src: "https://github.com/suryansh6467/songs/raw/refs/heads/main/Khat%20Navjot%20Ahuja%20320%20Kbps%20(1).mp3"
+      },
+      {
+        title: "Alfaaz",
+        artist: "Hamza Malik x Zain Zohaib",
+        duration: "3:50",
+        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Alfaaz%20_%20Hamza%20Malik%20x%20Zain%20Zohaib%20_%20Official%20Visualiser%20128KBPS.mp3"
+      },
+      {
+        title: "Na Jaiyo",
+        artist: "Preet Sirohi",
+        duration: "2:49",
+        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Na%20Jaiyo%20Preet%20Sirohi%20New%20Haryanvi%20Romantic%20Song%20(Official%20Animated%20Video).mp3"
+      },
+      {
+        title: "Ik Mulaqaat",
+        artist: "Altamash Faridi, Palak Muchhal",
+        duration: "3:15",
+        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Ik%20Mulaqaat%20-%20Full%20Video%20_%20Dream%20Girl%20_%20Ayushmann%20Khurrana%2C%20Nushrratt%20Bharuccha_%20Altamash%20F%2C%20Palak%20M%20128kbps.mp4"
+      }
+    ];
 
-    const defaultCover =
-      "https://raw.githubusercontent.com/suryansh6467/songs/main/1313eb05e394d398870fc6a320eec62e.jpg";
-
-
-    /* =========================
-       PLAYLIST
-    ========================= */
-
-   const playlist = [
-
-  {
-    title: "Chal Wahan Jaate Hain",
-    artist: "Arijit Singh",
-    duration: "5:25",
-    src: "https://raw.githubusercontent.com/suryansh6467/songs/21af342f0afc8d5385497db07c2d854e18807747/Chal%20Wahan%20Jaate%20Hain%20(From%20Chal%20Wahan%20Jaate%20Hain).mp3"
-  },
-
-  {
-    title: "Bol Kaffara Kya Hoga",
-    artist: "Neha Kakkar",
-    duration: "4:30",
-    src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Bol%20Kaffara%20Kya%20Hoga%20-%20Neha%20Kakkar.mp3"
-  },
-
-  {
-    title: "Khat",
-    artist: "Navjot Ahuja",
-    duration: "3:45",
-    src: "https://github.com/suryansh6467/songs/raw/refs/heads/main/Khat%20Navjot%20Ahuja%20320%20Kbps%20(1).mp3"
-  },
-
-  {
-    title: "Alfaaz",
-    artist: "Hamza Malik x Zain Zohaib",
-    duration: "3:50",
-    src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Alfaaz%20_%20Hamza%20Malik%20x%20Zain%20Zohaib%20_%20Official%20Visualiser%20128KBPS.mp3"
-  },
-     
-  {
-    title: "Na Jaiyo",
-    artist: "Preet Sirohi",
-    duration: "2:49",
-    src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Na%20Jaiyo%20Preet%20Sirohi%20New%20Haryanvi%20Romantic%20Song%20(Official%20Animated%20Video).mp3"
-  },
-
-  {
-    title: "Ik Mulaqaat",
-    artist: "Altamash Faridi, Palak Muchhal",
-    duration: "4:00",
-    src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Ik%20Mulaqaat%20-%20Full%20Video%20_%20Dream%20Girl%20_%20Ayushmann%20Khurrana%2C%20Nushrratt%20Bharuccha_%20Altamash%20F%2C%20Palak%20M%20128kbps.mp4"
-  }
-
-];
-
-
-    /* =========================
-       VARIABLES
-    ========================= */
-
-    let currentSongIndex =
-      Math.floor(Math.random() * playlist.length);
-
+    let currentSongIndex = Math.floor(Math.random() * playlist.length);
     let isPlaying = false;
 
-
-    /* =========================
-       ELEMENTS
-    ========================= */
-
-    const audioElement =
-      document.getElementById('audio-element');
-
-    const playBtn =
-      document.getElementById('play-btn');
-
-    const playIcon =
-      document.getElementById('play-icon');
-
-    const prevBtn =
-      document.getElementById('prev-btn');
-
-    const nextBtn =
-      document.getElementById('next-btn');
-
-    const songTitle =
-      document.getElementById('song-title');
-
-    const artistName =
-      document.getElementById('artist-name');
-
-    const albumCover =
-      document.getElementById('album-cover');
-
-    const seekBar =
-      document.getElementById('seek-bar');
-
-    const volumeBar =
-      document.getElementById('volume-bar');
-
-    const currentTimeEl =
-      document.getElementById('current-time');
-
-    const totalDurationEl =
-      document.getElementById('total-duration');
-
-    const digitalClock =
-      document.getElementById('digital-clock');
-
-
-    /* =========================
-       DIGITAL CLOCK
-       HH:MM:SS
-    ========================= */
+    const audioElement = document.getElementById('audio-element');
+    const playBtn = document.getElementById('play-btn');
+    const playIcon = document.getElementById('play-icon');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const songTitle = document.getElementById('song-title');
+    const artistName = document.getElementById('artist-name');
+    const albumCover = document.getElementById('album-cover');
+    const seekBar = document.getElementById('seek-bar');
+    const currentTimeEl = document.getElementById('current-time');
+    const totalDurationEl = document.getElementById('total-duration');
+    const digitalClock = document.getElementById('digital-clock');
 
     function updateClock() {
-
       const now = new Date();
-
-      const hours =
-        String(now.getHours()).padStart(2, '0');
-
-      const minutes =
-        String(now.getMinutes()).padStart(2, '0');
-
-      const seconds =
-        String(now.getSeconds()).padStart(2, '0');
-
-      digitalClock.textContent =
-        `${hours}:${minutes}:${seconds}`;
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      digitalClock.textContent = `${hours}:${minutes}:${seconds}`;
     }
-
+    setInterval(updateClock, 1000);
     updateClock();
 
-    setInterval(updateClock, 1000);
-
-
-    /* =========================
-       LOAD SONG
-    ========================= */
-
     function loadSong(song) {
-
       songTitle.textContent = song.title;
-
       artistName.textContent = song.artist;
-
       albumCover.src = defaultCover;
-
       audioElement.src = song.src;
-
-      audioElement.volume = volumeBar.value;
-
       totalDurationEl.textContent = song.duration;
-
       seekBar.value = 0;
-
       currentTimeEl.textContent = "0:00";
     }
 
-
-    /* =========================
-       TOGGLE PLAY
-    ========================= */
-
     function togglePlay() {
-
       if (isPlaying) {
-
         pauseSong();
-
       } else {
-
         playSong();
-
       }
     }
 
-
-    /* =========================
-       PLAY
-    ========================= */
-
     function playSong() {
-
-      audioElement.play()
-        .then(() => {
-
-          isPlaying = true;
-
-          playIcon.classList.remove('fa-play');
-
-          playIcon.classList.add('fa-pause');
-
-          albumCover.classList.remove('paused-spin');
-
-        })
-        .catch(error => {
-
-          console.log("Audio play error:", error);
-
-        });
+      isPlaying = true;
+      audioElement.play().catch(e => console.log("Audio play allowed after user click"));
+      playIcon.classList.remove('fa-play');
+      playIcon.classList.add('fa-pause');
+      albumCover.classList.remove('paused-spin');
     }
 
-
-    /* =========================
-       PAUSE
-    ========================= */
-
     function pauseSong() {
-
       isPlaying = false;
-
       audioElement.pause();
-
       playIcon.classList.remove('fa-pause');
-
       playIcon.classList.add('fa-play');
-
       albumCover.classList.add('paused-spin');
     }
 
-
-    /* =========================
-       PREVIOUS
-    ========================= */
-
     function prevSong() {
-
-      currentSongIndex =
-        (currentSongIndex - 1 + playlist.length)
-        % playlist.length;
-
+      currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
       loadSong(playlist[currentSongIndex]);
-
-      if (isPlaying) {
-
-        playSong();
-
-      }
+      if (isPlaying) playSong();
     }
-
-
-    /* =========================
-       NEXT
-    ========================= */
 
     function nextSong() {
-
-      currentSongIndex =
-        (currentSongIndex + 1)
-        % playlist.length;
-
+      currentSongIndex = (currentSongIndex + 1) % playlist.length;
       loadSong(playlist[currentSongIndex]);
-
-      if (isPlaying) {
-
-        playSong();
-
-      }
+      if (isPlaying) playSong();
     }
 
-
-    /* =========================
-       FORMAT TIME
-    ========================= */
-
     function formatTime(seconds) {
-
-      const mins =
-        Math.floor(seconds / 60);
-
-      const secs =
-        Math.floor(seconds % 60);
-
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
       return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
     }
 
+    playBtn.addEventListener('click', togglePlay);
+    prevBtn.addEventListener('click', prevSong);
+    nextBtn.addEventListener('click', nextSong);
 
-    /* =========================
-       BUTTON EVENTS
-    ========================= */
-
-    playBtn.addEventListener(
-      'click',
-      togglePlay
-    );
-
-    prevBtn.addEventListener(
-      'click',
-      prevSong
-    );
-
-    nextBtn.addEventListener(
-      'click',
-      nextSong
-    );
-
-
-    /* =========================
-       AUDIO PROGRESS
-    ========================= */
-
-    audioElement.addEventListener(
-      'timeupdate',
-      () => {
-
-        if (audioElement.duration) {
-
-          const progressPercent =
-            (audioElement.currentTime /
-             audioElement.duration) * 100;
-
-          seekBar.value =
-            progressPercent;
-
-          currentTimeEl.textContent =
-            formatTime(audioElement.currentTime);
-        }
+    audioElement.addEventListener('timeupdate', () => {
+      if (audioElement.duration) {
+        const progressPercent = (audioElement.currentTime / audioElement.duration) * 100;
+        seekBar.value = progressPercent;
+        currentTimeEl.textContent = formatTime(audioElement.currentTime);
       }
-    );
+    });
 
-
-    /* =========================
-       SEEK
-    ========================= */
-
-    seekBar.addEventListener(
-      'input',
-      () => {
-
-        if (audioElement.duration) {
-
-          const seekTime =
-            (seekBar.value / 100) *
-            audioElement.duration;
-
-          audioElement.currentTime =
-            seekTime;
-        }
+    seekBar.addEventListener('input', () => {
+      if (audioElement.duration) {
+        const seekTime = (seekBar.value / 100) * audioElement.duration;
+        audioElement.currentTime = seekTime;
       }
-    );
+    });
 
+    audioElement.addEventListener('ended', nextSong);
+    audioElement.addEventListener('error', nextSong);
 
-    /* =========================
-       VOLUME
-    ========================= */
-
-    volumeBar.addEventListener(
-      'input',
-      () => {
-
-        audioElement.volume =
-          volumeBar.value;
-
-      }
-    );
-
-
-    /* =========================
-       AUTO NEXT
-    ========================= */
-
-    audioElement.addEventListener(
-      'ended',
-      nextSong
-    );
-
-
-    /* =========================
-       INITIAL SONG
-    ========================= */
-
-    loadSong(
-      playlist[currentSongIndex]
-    );
-
+    loadSong(playlist[currentSongIndex]);
   </script>
-
 </body>
 </html>
