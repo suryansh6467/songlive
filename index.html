@@ -180,59 +180,57 @@
 
   <script>
     const defaultCover = "https://raw.githubusercontent.com/suryansh6467/songs/main/1313eb05e394d398870fc6a320eec62e.jpg";
+const playlist = [
+  {
+    title: "Chal Wahan Jaate Hain",
+    artist: "Arijit Singh",
+    duration: "5:25",
+    src: "https://raw.githubusercontent.com/suryansh6467/songs/21af342f0afc8d5385497db07c2d854e18807747/Chal%20Wahan%20Jaate%20Hain%20(From%20Chal%20Wahan%20Jaate%20Hain).mp3"
+  },
+  {
+    title: "Bol Kaffara Kya Hoga",
+    artist: "Neha Kakkar",
+    duration: "3:17",
+    src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Bol%20Kaffara%20Kya%20Hoga%20-%20Neha%20Kakkar.mp3"
+  },
+  {
+    title: "Khat",
+    artist: "Navjot Ahuja",
+    duration: "3:45",
+    src: "https://github.com/suryansh6467/songs/raw/refs/heads/main/Khat%20Navjot%20Ahuja%20320%20Kbps%20(1).mp3"
+  },
+  {
+    title: "Alfaaz",
+    artist: "Hamza Malik x Zain Zohaib",
+    duration: "3:50",
+    src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Alfaaz%20_%20Hamza%20Malik%20x%20Zain%20Zohaib%20_%20Official%20Visualiser%20128KBPS.mp3"
+  },
+  {
+    title: "Na Jaiyo",
+    artist: "Preet Sirohi",
+    duration: "2:49",
+    src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Na%20Jaiyo%20Preet%20Sirohi%20New%20Haryanvi%20Romantic%20Song%20(Official%20Animated%20Video).mp3"
+  },
+  {
+    title: "Phir Bhi (Cover)",
+    artist: "Talwiinder",
+    duration: "1:48",
+    src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_YzrUThw6dHE_Talwiinder-Phir-Bhi-Cover-Hindi-Lofi_008_128k.mp3"
+  },
+  {
+    title: "Ik Mulaqaat",
+    artist: "Altamash Faridi, Palak Muchhal",
+    duration: "3:15",
+    src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Ik%20Mulaqaat%20-%20Full%20Video%20_%20Dream%20Girl%20_%20Ayushmann%20Khurrana%2C%20Nushrratt%20Bharuccha_%20Altamash%20F%2C%20Palak%20M%20128kbps.mp4"
+  },
+  {
+    title: "Faasle",
+    artist: "Aditya Rikhari",
+    duration: "3:36",
+    src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_EiiOYwqk3A0_Aditya-Rikhari-FAASLE_009_128k.mp3"
+  }
+];
 
-    const playlist = [
-      {
-        title: "Chal Wahan Jaate Hain",
-        artist: "Arijit Singh",
-        duration: "5:25",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/21af342f0afc8d5385497db07c2d854e18807747/Chal%20Wahan%20Jaate%20Hain%20(From%20Chal%20Wahan%20Jaate%20Hain).mp3"
-      },
-      {
-        title: "Bol Kaffara Kya Hoga",
-        artist: "Neha Kakkar",
-        duration: "3:17",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Bol%20Kaffara%20Kya%20Hoga%20-%20Neha%20Kakkar.mp3"
-      },
-      {
-        title: "Khat",
-        artist: "Navjot Ahuja",
-        duration: "3:45",
-        src: "https://github.com/suryansh6467/songs/raw/refs/heads/main/Khat%20Navjot%20Ahuja%20320%20Kbps%20(1).mp3"
-      },
-      {
-        title: "Alfaaz",
-        artist: "Hamza Malik x Zain Zohaib",
-        duration: "3:50",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Alfaaz%20_%20Hamza%20Malik%20x%20Zain%20Zohaib%20_%20Official%20Visualiser%20128KBPS.mp3"
-      },
-      {
-        title: "Na Jaiyo",
-        artist: "Preet Sirohi",
-        duration: "2:49",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Na%20Jaiyo%20Preet%20Sirohi%20New%20Haryanvi%20Romantic%20Song%20(Official%20Animated%20Video).mp3"
-      },
-      {
-  title: "Phir Bhi (Cover)",
-  artist: "Talwiinder",
-  duration: "1:48",
-  src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_YzrUThw6dHE_Talwiinder-Phir-Bhi-Cover-Hindi-Lofi_008_128k.mp3"
-      },
-      
-      {
-        title: "Ik Mulaqaat",
-        artist: "Altamash Faridi, Palak Muchhal",
-        duration: "3:15",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Ik%20Mulaqaat%20-%20Full%20Video%20_%20Dream%20Girl%20_%20Ayushmann%20Khurrana%2C%20Nushrratt%20Bharuccha_%20Altamash%20F%2C%20Palak%20M%20128kbps.mp4"
-      },
-      {
-  title: "Faasle",
-  artist: "Aditya Rikhari",
-  duration: 3:36",
-  src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_EiiOYwqk3A0_Aditya-Rikhari-FAASLE_009_128k.mp3"
-      }
-      
-    ];
 
     let currentSongIndex = Math.floor(Math.random() * playlist.length);
     let isPlaying = false;
