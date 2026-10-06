@@ -115,8 +115,8 @@
     </div>
   </header>
 
-  <main class="flex flex-col items-center justify-center flex-grow z-10 my-auto text-center">
-    <div class="w-full max-w-4xl glass-capsule rounded-full p-3 sm:p-5 flex flex-col md:flex-row items-center gap-4 sm:gap-6 relative">
+  <main class="flex flex-col items-center justify-center flex-grow z-10 my-auto text-center w-full max-w-4xl px-2">
+    <div class="w-full glass-capsule rounded-full p-3 sm:p-5 flex flex-col md:flex-row items-center gap-4 sm:gap-6 relative">
       
       <!-- Album Art (Left Side Circular Container without Center Dot) -->
       <div class="relative flex-shrink-0">
@@ -174,9 +174,9 @@
     </div>
   </main>
 
-  <footer class="z-10 pb-2">
+  <footer class="z-10 py-2 mb-1 sm:mb-0">
     <div class="flex items-center text-xs sm:text-sm font-medium">
-      <span class="border border-white/80 px-2.5 py-1 rounded bg-black/20 font-semibold tracking-wider text-white">
+      <span class="border border-white/80 px-2.5 py-1 rounded bg-black/20 font-semibold tracking-wider text-white shadow-md">
         N0tSuryansh
       </span>
     </div>
@@ -198,31 +198,29 @@
       {
         title: "Bol Kaffara Kya Hoga",
         artist: "Neha Kakkar",
-        duration: "3:18",
+        duration: "4:30",
         src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Bol%20Kaffara%20Kya%20Hoga%20-%20Neha%20Kakkar.mp3"
       },
       {
         title: "Khat",
         artist: "Navjot Ahuja",
-        duration: "4:56",
+        duration: "3:45",
         src: "https://github.com/suryansh6467/songs/raw/refs/heads/main/Khat%20Navjot%20Ahuja%20320%20Kbps%20(1).mp3"
       },
       {
         title: "Alfaaz",
         artist: "Hamza Malik x Zain Zohaib",
-        duration: "3:05",
+        duration: "3:50",
         src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Alfaaz%20_%20Hamza%20Malik%20x%20Zain%20Zohaib%20_%20Official%20Visualiser%20128KBPS.mp3"
       },
       {
         title: "Ik Mulaqaat",
         artist: "Altamash Faridi, Palak Muchhal",
-        duration: "3:16",
+        duration: "4:00",
         src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Ik%20Mulaqaat%20-%20Full%20Video%20_%20Dream%20Girl%20_%20Ayushmann%20Khurrana%2C%20Nushrratt%20Bharuccha_%20Altamash%20F%2C%20Palak%20M%20128kbps.mp4"
       }
-      
     ];
 
-    // Website khulte hi koi bhi random song select ho jayega
     let currentSongIndex = Math.floor(Math.random() * playlist.length);
     let isPlaying = false;
 
