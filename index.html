@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Suryansh's Music Player</title>
+  <title>Music Player</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
@@ -107,24 +107,32 @@
 </head>
 <body class="relative flex flex-col justify-between items-center text-white p-4 sm:p-8 bg-black">
 
-  <!-- Responsive Background Image Layer -->
+  <!-- Smooth Background Crossfade Layers -->
   <div class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
-    <img id="bg-image" src="https://raw.githubusercontent.com/suryansh6467/songs/main/172404-your_name-mitsuha_miyamizu-taki_tachibana-anime-atmosphere-7680x4320.jpg" 
-         class="w-full h-full object-cover filter brightness-[0.55] transition-all duration-500" 
+    <img id="bg-image-1"
+         src="https://raw.githubusercontent.com/suryansh6467/songs/main/172404-your_name-mitsuha_miyamizu-taki_tachibana-anime-atmosphere-7680x4320.jpg"
+         class="absolute inset-0 w-full h-full object-cover filter brightness-[0.55]"
+         style="opacity:1; transition:opacity 1.5s ease-in-out;"
+         alt="Background">
+
+    <img id="bg-image-2"
+         src="https://raw.githubusercontent.com/suryansh6467/songs/main/anime-girl-meteor-streak-10k-0t.jpg"
+         class="absolute inset-0 w-full h-full object-cover filter brightness-[0.55]"
+         style="opacity:0; transition:opacity 1.5s ease-in-out;"
          alt="Background">
   </div>
 
   <header class="w-full flex justify-between items-center z-10">
-  <!-- Left Side: Digital Clock -->
-  <div id="digital-clock" class="text-2xl sm:text-4xl font-bold tracking-wider drop-shadow-md text-white/95">
-    00:00:00
-  </div>
-  
-  <!-- Right Side: Menu Button -->
-  <button id="menu-btn" title="Music Menu" class="btn-glass w-11 h-11 rounded-full flex items-center justify-center text-white shadow-lg">
-    <i class="fa-solid fa-bars text-base"></i>
-  </button>
-</header>
+    <!-- Left Side: Digital Clock -->
+    <div id="digital-clock" class="text-2xl sm:text-4xl font-bold tracking-wider drop-shadow-md text-white/95">
+      00:00:00
+    </div>
+    
+    <!-- Right Side: Menu Button -->
+    <button id="menu-btn" title="Music Menu" class="btn-glass w-11 h-11 rounded-full flex items-center justify-center text-white shadow-lg">
+      <i class="fa-solid fa-bars text-base"></i>
+    </button>
+  </header>
 
   <main class="flex flex-col items-center justify-center flex-grow z-10 my-auto text-center w-full max-w-4xl px-2">
     <!-- Main Player Capsule Container -->
@@ -193,7 +201,7 @@
     </div>
   </main>
 
-  <!-- Music Menu Modal (Screenshot Style) -->
+  <!-- Music Menu Modal -->
   <div id="playlist-modal" class="fixed inset-0 bg-black/75 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4 hidden">
     <div class="glass-capsule w-full max-w-md max-h-[90dvh] rounded-3xl p-4 sm:p-6 flex flex-col shadow-2xl border border-white/30 overflow-hidden">
       
@@ -201,7 +209,7 @@
       <div class="flex justify-between items-center mb-4 pb-2 border-b border-white/20">
         <div>
           <h3 class="text-xl font-bold text-white">Music Menu</h3>
-          <p class="text-xs text-white/60">Suryansh's Music Player</p>
+          <p class="text-xs text-white/60"> Music Player</p>
         </div>
         <button id="close-menu" class="btn-glass w-9 h-9 rounded-full flex items-center justify-center text-white/90">
           <i class="fa-solid fa-xmark text-base"></i>
@@ -243,14 +251,14 @@
         <div class="mt-2 text-left">
           <h4 class="text-xs font-bold uppercase tracking-wider text-white/60 mb-2">Background</h4>
           <div class="grid grid-cols-3 gap-2">
-            <div class="bg-thumb rounded-xl overflow-hidden border-2 border-transparent cursor-pointer h-16 relative" data-bg="https://raw.githubusercontent.com/suryansh6467/songs/main/172404-your_name-mitsuha_miyamizu-taki_tachibana-anime-atmosphere-7680x4320.jpg">
+            <div class="bg-thumb rounded-xl overflow-hidden border-2 border-transparent cursor-pointer h-16 relative" onclick="changeBackground(0)">
               <img src="https://raw.githubusercontent.com/suryansh6467/songs/main/172404-your_name-mitsuha_miyamizu-taki_tachibana-anime-atmosphere-7680x4320.jpg" class="w-full h-full object-cover">
             </div>
-            <div class="bg-thumb rounded-xl overflow-hidden border-2 border-transparent cursor-pointer h-16 relative" data-bg="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1000&auto=format&fit=crop">
-              <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover">
+            <div class="bg-thumb rounded-xl overflow-hidden border-2 border-transparent cursor-pointer h-16 relative" onclick="changeBackground(1)">
+              <img src="https://raw.githubusercontent.com/suryansh6467/songs/main/anime-girl-meteor-streak-10k-0t.jpg" class="w-full h-full object-cover">
             </div>
-            <div class="bg-thumb rounded-xl overflow-hidden border-2 border-transparent cursor-pointer h-16 relative" data-bg="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1000&auto=format&fit=crop">
-              <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover">
+            <div class="bg-thumb rounded-xl overflow-hidden border-2 border-transparent cursor-pointer h-16 relative" onclick="changeBackground(2)">
+              <img src="https://raw.githubusercontent.com/suryansh6467/songs/main/horizon-clouds-sea-sunset-calm-8k-3q.jpg" class="w-full h-full object-cover">
             </div>
           </div>
         </div>
@@ -321,7 +329,6 @@
     const currentTimeEl = document.getElementById('current-time');
     const totalDurationEl = document.getElementById('total-duration');
     const digitalClock = document.getElementById('digital-clock');
-    const bgImage = document.getElementById('bg-image');
 
     const menuBtn = document.getElementById('menu-btn');
     const playlistModal = document.getElementById('playlist-modal');
@@ -408,13 +415,55 @@
       repeatStatus.textContent = repeatMode === 0 ? "All songs" : "Single loop";
     });
 
-    // Background Changer Logic
-    document.querySelectorAll('.bg-thumb').forEach(thumb => {
-      thumb.addEventListener('click', () => {
-        const newBg = thumb.getAttribute('data-bg');
-        bgImage.src = newBg;
-      });
-    });
+    /* =========================
+       SMOOTH AUTO WALLPAPER
+    ========================= */
+    const backgrounds = [
+      "https://raw.githubusercontent.com/suryansh6467/songs/main/172404-your_name-mitsuha_miyamizu-taki_tachibana-anime-atmosphere-7680x4320.jpg",
+      "https://raw.githubusercontent.com/suryansh6467/songs/main/anime-girl-meteor-streak-10k-0t.jpg",
+      "https://raw.githubusercontent.com/suryansh6467/songs/main/horizon-clouds-sea-sunset-calm-8k-3q.jpg"
+    ];
+
+    let currentBgIndex = 0;
+    let activeLayer = 1;
+
+    const bg1 = document.getElementById("bg-image-1");
+    const bg2 = document.getElementById("bg-image-2");
+    const wallpaperChangeTime = 30000; // 30 seconds
+
+    function changeBackground(index) {
+      currentBgIndex = index;
+      const nextImage = backgrounds[currentBgIndex];
+
+      if (activeLayer === 1) {
+        const img = new Image();
+        img.onload = () => {
+          bg2.src = nextImage;
+          bg2.style.opacity = "1";
+          bg1.style.opacity = "0";
+          activeLayer = 2;
+        };
+        img.src = nextImage;
+      } else {
+        const img = new Image();
+        img.onload = () => {
+          bg1.src = nextImage;
+          bg1.style.opacity = "1";
+          bg2.style.opacity = "0";
+          activeLayer = 1;
+        };
+        img.src = nextImage;
+      }
+    }
+
+    // Automatic wallpaper change
+    setInterval(() => {
+      let nextIndex = currentBgIndex + 1;
+      if (nextIndex >= backgrounds.length) {
+        nextIndex = 0;
+      }
+      changeBackground(nextIndex);
+    }, wallpaperChangeTime);
 
     function loadSong(song) {
       songTitle.textContent = song.title;
