@@ -1,19 +1,15 @@
 <!DOCTYPE html>
-
 <html lang="hi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Suryansh's Music Player</title>
-
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
-
+    
     html, body {
       font-family: 'Plus Jakarta Sans', sans-serif;
       margin: 0;
@@ -25,24 +21,16 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* =========================
-       GLASS PLAYER
-    ========================== */
-
+    /* Glassmorphism Capsule Container */
     .glass-capsule {
       background: rgba(255, 255, 255, 0.12);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.28);
-      box-shadow:
-        0 20px 40px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
 
-    /* =========================
-       RANGE SLIDER
-    ========================== */
-
+    /* Custom Range Sliders */
     input[type=range] {
       -webkit-appearance: none;
       appearance: none;
@@ -58,7 +46,7 @@
       width: 100%;
       height: 5px;
       cursor: pointer;
-      background: rgba(255,255,255,0.3);
+      background: rgba(255, 255, 255, 0.3);
       border-radius: 3px;
     }
 
@@ -66,17 +54,15 @@
       height: 14px;
       width: 14px;
       border-radius: 50%;
-      background: #fff;
+      background: #ffffff;
       cursor: pointer;
       -webkit-appearance: none;
       margin-top: -4.5px;
-      box-shadow: 0 0 10px rgba(255,255,255,0.8);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+      transition: transform 0.1s ease;
     }
 
-    /* =========================
-       VINYL
-    ========================== */
-
+    /* Vinyl Rotating Animation */
     .spinning {
       animation: spin 12s linear infinite;
     }
@@ -86,1468 +72,436 @@
     }
 
     @keyframes spin {
-      0% {
-        transform: rotate(0deg);
-      }
-
-      100% {
-        transform: rotate(360deg);
-      }
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
-    /* =========================
-       BUTTONS
-    ========================== */
-
+    /* Metallic Rounded Buttons */
     .btn-glass {
-      background: rgba(255,255,255,0.2);
-      border: 1px solid rgba(255,255,255,0.35);
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.35);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      box-shadow:
-        inset 0 1px 2px rgba(255,255,255,0.3),
-        0 4px 10px rgba(0,0,0,0.25);
-      transition: all 0.2s ease;
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3), 0 4px 10px rgba(0, 0, 0, 0.25);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .btn-glass:active {
       transform: scale(0.95);
-      background: rgba(255,255,255,0.3);
+      background: rgba(255, 255, 255, 0.3);
     }
 
-    /* =========================
-       MENU
-    ========================== */
-
-    .menu-panel {
-      position: fixed;
-      top: 75px;
-      right: 20px;
-      width: 330px;
-      max-width: calc(100vw - 30px);
-      max-height: calc(100vh - 100px);
-
-      background: rgba(20,20,25,0.65);
-      backdrop-filter: blur(30px);
-      -webkit-backdrop-filter: blur(30px);
-
-      border: 1px solid rgba(255,255,255,0.22);
-      border-radius: 24px;
-
-      box-shadow:
-        0 25px 60px rgba(0,0,0,0.55),
-        inset 0 1px 0 rgba(255,255,255,0.15);
-
-      overflow: hidden;
-
-      opacity: 0;
-      transform: translateY(-15px) scale(0.96);
-      pointer-events: none;
-
-      transition:
-        opacity 0.25s ease,
-        transform 0.25s ease;
+    /* Custom Scrollbar for Playlist Modal */
+    #playlist-container::-webkit-scrollbar {
+      width: 6px;
     }
-
-    .menu-panel.open {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-      pointer-events: auto;
-    }
-
-    .menu-header {
-      padding: 18px;
-      border-bottom: 1px solid rgba(255,255,255,0.12);
-    }
-
-    .menu-item {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 13px 16px;
-      color: rgba(255,255,255,0.9);
-      border-radius: 14px;
-      transition: all 0.2s ease;
-      text-align: left;
-    }
-
-    .menu-item:hover {
-      background: rgba(255,255,255,0.12);
-      transform: translateX(3px);
-    }
-
-    .menu-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 12px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.15);
-    }
-
-    .playlist-container {
-      max-height: 300px;
-      overflow-y: auto;
-      padding: 10px;
-    }
-
-    .playlist-container::-webkit-scrollbar {
-      width: 5px;
-    }
-
-    .playlist-container::-webkit-scrollbar-thumb {
-      background: rgba(255,255,255,0.25);
+    #playlist-container::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
       border-radius: 10px;
     }
-
-    .song-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 11px;
-      border-radius: 14px;
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
-
-    .song-item:hover {
-      background: rgba(255,255,255,0.12);
-    }
-
-    .song-item.active {
-      background: rgba(255,255,255,0.18);
-    }
-
-    .song-number {
-      width: 25px;
-      text-align: center;
-      color: rgba(255,255,255,0.55);
-      font-size: 12px;
-    }
-
-    .song-info {
-      min-width: 0;
-      flex: 1;
-    }
-
-    .song-name {
-      font-size: 13px;
-      font-weight: 600;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .song-artist {
-      font-size: 10px;
-      color: rgba(255,255,255,0.5);
-      margin-top: 2px;
-    }
-
-    /* =========================
-       BACKGROUND SELECTOR
-    ========================== */
-
-    .background-options {
-      display: flex;
-      gap: 8px;
-      padding: 0 16px 15px;
-    }
-
-    .bg-option {
-      flex: 1;
-      height: 45px;
-      border-radius: 12px;
-      overflow: hidden;
-      cursor: pointer;
-      border: 2px solid transparent;
-      transition: 0.2s;
-    }
-
-    .bg-option.active {
-      border-color: white;
-    }
-
-    .bg-option img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    /* =========================
-       OVERLAY
-    ========================== */
-
-    .menu-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 15;
-      display: none;
-    }
-
-    .menu-overlay.show {
-      display: block;
-    }
-
-    /* =========================
-       MOBILE
-    ========================== */
-
-    @media (max-width: 600px) {
-      .menu-panel {
-        top: 68px;
-        right: 12px;
-        width: calc(100vw - 24px);
-      }
-
-      .playlist-container {
-        max-height: 250px;
-      }
+    #playlist-container::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
     }
   </style>
-
 </head>
-
 <body class="relative flex flex-col justify-between items-center text-white p-4 sm:p-8 bg-black">
 
-  <!-- =========================
-       BACKGROUND
-  ========================== -->
-
+  <!-- Responsive Background Image Layer -->
   <div class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
-
-```
-<img id="background-image"
-  src="https://raw.githubusercontent.com/suryansh6467/songs/main/172404-your_name-mitsuha_miyamizu-taki_tachibana-anime-atmosphere-7680x4320.jpg"
-  class="w-full h-full object-cover filter brightness-[0.55]"
-  alt="Background">
-```
-
+    <img id="bg-image" src="https://raw.githubusercontent.com/suryansh6467/songs/main/172404-your_name-mitsuha_miyamizu-taki_tachibana-anime-atmosphere-7680x4320.jpg" 
+         class="w-full h-full object-cover filter brightness-[0.55] transition-all duration-500" 
+         alt="Background">
   </div>
 
-  <!-- DARK OVERLAY WHEN MENU OPEN -->
-
-  <div id="menu-overlay" class="menu-overlay"></div>
-
-  <!-- =========================
-       HEADER
-  ========================== -->
-
-  <header class="w-full flex justify-between items-center z-20">
-
-```
-<!-- CLOCK -->
-
-<div id="digital-clock"
-     class="text-2xl sm:text-4xl font-bold tracking-wider drop-shadow-md text-white/95">
-  00:00:00
-</div>
-
-<!-- MENU BUTTON -->
-
-<button
-  id="menu-btn"
-  class="btn-glass w-12 h-12 rounded-full flex items-center justify-center text-white text-lg">
-
-  <i id="menu-icon" class="fa-solid fa-bars"></i>
-
-</button>
-```
-
-  </header>
-
-  <!-- =========================
-       GLASS MENU
-  ========================== -->
-
-  <div id="menu-panel" class="menu-panel z-30">
-
-```
-<!-- MENU HEADER -->
-
-<div class="menu-header flex items-center justify-between">
-
-  <div>
-    <div class="font-bold text-lg">
-      Music Menu
-    </div>
-
-    <div class="text-xs text-white/50">
-      Suryansh's Music Player
-    </div>
+  <header class="w-full flex justify-between items-center z-10">
+  <!-- Left Side: Digital Clock -->
+  <div id="digital-clock" class="text-2xl sm:text-4xl font-bold tracking-wider drop-shadow-md text-white/95">
+    00:00:00
   </div>
-
-  <button
-    id="close-menu"
-    class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20">
-
-    <i class="fa-solid fa-xmark"></i>
-
+  
+  <!-- Right Side: Menu Button -->
+  <button id="menu-btn" title="Music Menu" class="btn-glass w-11 h-11 rounded-full flex items-center justify-center text-white shadow-lg">
+    <i class="fa-solid fa-bars text-base"></i>
   </button>
-
-</div>
-
-<!-- MENU ACTIONS -->
-
-<div class="p-3 space-y-1">
-
-  <button id="shuffle-btn" class="menu-item">
-
-    <span class="menu-icon">
-      <i class="fa-solid fa-shuffle"></i>
-    </span>
-
-    <span class="flex-1">
-      <span class="block text-sm font-semibold">
-        Shuffle
-      </span>
-
-      <span id="shuffle-status"
-            class="block text-[10px] text-white/45">
-        Off
-      </span>
-    </span>
-
-    <i class="fa-solid fa-chevron-right text-xs text-white/30"></i>
-
-  </button>
-
-  <button id="repeat-btn" class="menu-item">
-
-    <span class="menu-icon">
-      <i class="fa-solid fa-repeat"></i>
-    </span>
-
-    <span class="flex-1">
-      <span class="block text-sm font-semibold">
-        Repeat
-      </span>
-
-      <span id="repeat-status"
-            class="block text-[10px] text-white/45">
-        All songs
-      </span>
-    </span>
-
-    <i class="fa-solid fa-chevron-right text-xs text-white/30"></i>
-
-  </button>
-
-</div>
-
-<!-- BACKGROUND -->
-
-<div class="px-4 pt-1">
-
-  <div class="text-xs font-semibold text-white/50 mb-2">
-    BACKGROUND
-  </div>
-
-</div>
-
-<div class="background-options">
-
-  <div class="bg-option active"
-       data-bg="https://raw.githubusercontent.com/suryansh6467/songs/main/172404-your_name-mitsuha_miyamizu-taki_tachibana-anime-atmosphere-7680x4320.jpg">
-
-    <img src="https://raw.githubusercontent.com/suryansh6467/songs/main/172404-your_name-mitsuha_miyamizu-taki_tachibana-anime-atmosphere-7680x4320.jpg">
-
-  </div>
-
-  <div class="bg-option"
-       data-bg="https://images.unsplash.com/photo-1519608487953-e999c86e7455?q=80&w=2000">
-
-    <img src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?q=80&w=300">
-
-  </div>
-
-  <div class="bg-option"
-       data-bg="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=2000">
-
-    <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=300">
-
-  </div>
-
-</div>
-
-<!-- PLAYLIST -->
-
-<div class="px-4 pt-2">
-
-  <div class="flex items-center justify-between">
-
-    <span class="text-xs font-semibold text-white/50">
-      PLAYLIST
-    </span>
-
-    <span id="song-count"
-          class="text-[10px] text-white/40">
-      0 Songs
-    </span>
-
-  </div>
-
-</div>
-
-<div id="playlist-container"
-     class="playlist-container">
-
-</div>
-
-<!-- ABOUT -->
-
-<div class="p-3 border-t border-white/10">
-
-  <div class="flex items-center gap-3 px-3 py-2">
-
-    <div class="menu-icon">
-      <i class="fa-solid fa-music"></i>
-    </div>
-
-    <div>
-      <div class="text-sm font-semibold">
-        N0tSuryansh
-      </div>
-
-      <div class="text-[10px] text-white/40">
-        Personal Music Player
-      </div>
-    </div>
-
-  </div>
-
-</div>
-```
-
-  </div>
-
-  <!-- =========================
-       MAIN PLAYER
-  ========================== -->
+</header>
 
   <main class="flex flex-col items-center justify-center flex-grow z-10 my-auto text-center w-full max-w-4xl px-2">
-
-```
-<div class="w-full glass-capsule rounded-full p-3 sm:p-5 flex flex-col md:flex-row items-center gap-4 sm:gap-6 relative">
-
-  <!-- ALBUM -->
-
-  <div class="relative flex-shrink-0">
-
-    <div class="w-20 h-20 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-white/40 shadow-2xl relative flex items-center justify-center">
-
-      <img id="album-cover"
-           src="https://raw.githubusercontent.com/suryansh6467/songs/main/1313eb05e394d398870fc6a320eec62e.jpg"
-           alt="CD Cover"
-           class="w-full h-full object-cover spinning paused-spin"
-           onerror="this.src='https://placehold.co/120x120/333/fff?text=Music'">
-
-    </div>
-
-  </div>
-
-  <!-- SONG INFO -->
-
-  <div class="flex-grow w-full flex flex-col justify-center gap-2 px-2">
-
-    <div class="text-left">
-
-      <h2 id="song-title"
-          class="text-lg sm:text-2xl font-bold text-white tracking-wide truncate">
-
-        Song Title
-
-      </h2>
-
-      <p id="artist-name"
-         class="text-xs sm:text-sm text-white/70 font-medium">
-
-        Artist Name
-
-      </p>
-
-    </div>
-
-    <!-- PROGRESS -->
-
-    <div class="flex items-center gap-3">
-
-      <span id="current-time"
-            class="text-xs text-white/80 font-mono w-8 text-right">
-        0:00
-      </span>
-
-      <div class="relative flex-grow flex items-center py-1">
-
-        <input type="range"
-               id="seek-bar"
-               value="0"
-               min="0"
-               max="100"
-               class="z-10">
-
+    <!-- Main Player Capsule Container -->
+    <div class="w-full glass-capsule rounded-full p-3 sm:p-5 flex flex-col md:flex-row items-center gap-4 sm:gap-6 relative">
+      
+      <!-- Album Art (Left Side Circular Container) -->
+      <div class="relative flex-shrink-0">
+        <div class="w-20 h-20 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-white/40 shadow-2xl relative flex items-center justify-center">
+          <img id="album-cover" 
+               src="https://raw.githubusercontent.com/suryansh6467/songs/main/1313eb05e394d398870fc6a320eec62e.jpg" 
+               alt="CD Cover" 
+               class="w-full h-full object-cover spinning paused-spin"
+               onerror="this.src='https://placehold.co/120x120/333/fff?text=Music'">
+        </div>
       </div>
 
-      <span id="total-duration"
-            class="text-xs text-white/80 font-mono w-8 text-left">
-        0:00
-      </span>
+      <!-- Center Song Info & Controls -->
+      <div class="flex-grow w-full flex flex-col justify-center gap-2 px-2">
+        <!-- Title & Subtitle -->
+        <div class="text-left">
+          <h2 id="song-title" class="text-lg sm:text-2xl font-bold text-white tracking-wide truncate">
+            Song Title
+          </h2>
+          <p id="artist-name" class="text-xs sm:text-sm text-white/70 font-medium">
+            Artist Name
+          </p>
+        </div>
+
+        <!-- Progress Bar & Time Stamps -->
+        <div class="flex items-center gap-3">
+          <span id="current-time" class="text-xs text-white/80 font-mono w-8 text-right">0:00</span>
+          
+          <div class="relative flex-grow flex items-center py-1">
+            <input type="range" id="seek-bar" value="0" min="0" max="100" class="z-10">
+          </div>
+          
+          <span id="total-duration" class="text-xs text-white/80 font-mono w-8 text-left">0:00</span>
+        </div>
+      </div>
+
+      <!-- Right Media Control Buttons -->
+      <div class="flex items-center gap-2 sm:gap-3 px-2">
+        <!-- Previous Button -->
+        <button id="prev-btn" title="Previous Song" class="btn-glass w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white/90">
+          <i class="fa-solid fa-chevron-left text-sm sm:text-base"></i>
+        </button>
+
+        <!-- Play / Pause Main Button -->
+        <button id="play-btn" title="Play / Pause" class="btn-glass w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center text-white shadow-xl">
+          <i id="play-icon" class="fa-solid fa-play text-base sm:text-xl ml-0.5"></i>
+        </button>
+
+        <!-- Next Button -->
+        <button id="next-btn" title="Next Song" class="btn-glass w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white/90">
+          <i class="fa-solid fa-chevron-right text-sm sm:text-base"></i>
+        </button>
+      </div>
 
     </div>
 
-  </div>
-
-  <!-- CONTROLS -->
-
-  <div class="flex items-center gap-2 sm:gap-3 px-2">
-
-    <button id="prev-btn"
-            title="Previous Song"
-            class="btn-glass w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white/90">
-
-      <i class="fa-solid fa-chevron-left text-sm sm:text-base"></i>
-
-    </button>
-
-    <button id="play-btn"
-            title="Play / Pause"
-            class="btn-glass w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center text-white shadow-xl">
-
-      <i id="play-icon"
-         class="fa-solid fa-play text-base sm:text-xl ml-0.5"></i>
-
-    </button>
-
-    <button id="next-btn"
-            title="Next Song"
-            class="btn-glass w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white/90">
-
-      <i class="fa-solid fa-chevron-right text-sm sm:text-base"></i>
-
-    </button>
-
-  </div>
-
-</div>
-
-<!-- NAME -->
-
-<div class="mt-4 flex justify-center">
-
-  <span class="border border-white/60 px-4 py-1 rounded-full bg-black/40 backdrop-blur-md text-xs sm:text-sm font-semibold tracking-widest text-white shadow-lg">
-
-    N0tSuryansh
-
-  </span>
-
-</div>
-```
-
+    <!-- Name Badge Positioned Just Below the Music Player Capsule -->
+    <div class="mt-4 flex justify-center">
+      <span class="border border-white/60 px-4 py-1 rounded-full bg-black/40 backdrop-blur-md text-xs sm:text-sm font-semibold tracking-widest text-white shadow-lg">
+        N0tSuryansh
+      </span>
+    </div>
   </main>
 
-  <!-- AUDIO -->
+  <!-- Music Menu Modal (Screenshot Style) -->
+  <div id="playlist-modal" class="fixed inset-0 bg-black/75 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4 hidden">
+    <div class="glass-capsule w-full max-w-md max-h-[90dvh] rounded-3xl p-4 sm:p-6 flex flex-col shadow-2xl border border-white/30 overflow-hidden">
+      
+      <!-- Modal Header -->
+      <div class="flex justify-between items-center mb-4 pb-2 border-b border-white/20">
+        <div>
+          <h3 class="text-xl font-bold text-white">Music Menu</h3>
+          <p class="text-xs text-white/60">Suryansh's Music Player</p>
+        </div>
+        <button id="close-menu" class="btn-glass w-9 h-9 rounded-full flex items-center justify-center text-white/90">
+          <i class="fa-solid fa-xmark text-base"></i>
+        </button>
+      </div>
 
-<audio id="audio-element"></audio>
+      <!-- Scrollable Options & Playlist Area -->
+      <div id="playlist-container" class="overflow-y-auto flex-grow flex flex-col gap-3 pr-1">
+        
+        <!-- Shuffle Option -->
+        <div id="shuffle-toggle" class="bg-white/10 border border-white/15 rounded-2xl p-3.5 flex items-center justify-between cursor-pointer hover:bg-white/15 transition-all">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+              <i class="fa-solid fa-shuffle text-white/90"></i>
+            </div>
+            <div class="text-left">
+              <h4 class="text-sm font-bold text-white">Shuffle</h4>
+              <p id="shuffle-status" class="text-xs text-white/60">Off</p>
+            </div>
+          </div>
+          <i class="fa-solid fa-chevron-right text-white/50 text-sm"></i>
+        </div>
+
+        <!-- Repeat Option -->
+        <div id="repeat-toggle" class="bg-white/10 border border-white/15 rounded-2xl p-3.5 flex items-center justify-between cursor-pointer hover:bg-white/15 transition-all">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+              <i class="fa-solid fa-repeat text-white/90"></i>
+            </div>
+            <div class="text-left">
+              <h4 class="text-sm font-bold text-white">Repeat</h4>
+              <p id="repeat-status" class="text-xs text-white/60">All songs</p>
+            </div>
+          </div>
+          <i class="fa-solid fa-chevron-right text-white/50 text-sm"></i>
+        </div>
+
+        <!-- Background Section -->
+        <div class="mt-2 text-left">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-white/60 mb-2">Background</h4>
+          <div class="grid grid-cols-3 gap-2">
+            <div class="bg-thumb rounded-xl overflow-hidden border-2 border-transparent cursor-pointer h-16 relative" data-bg="https://raw.githubusercontent.com/suryansh6467/songs/main/172404-your_name-mitsuha_miyamizu-taki_tachibana-anime-atmosphere-7680x4320.jpg">
+              <img src="https://raw.githubusercontent.com/suryansh6467/songs/main/172404-your_name-mitsuha_miyamizu-taki_tachibana-anime-atmosphere-7680x4320.jpg" class="w-full h-full object-cover">
+            </div>
+            <div class="bg-thumb rounded-xl overflow-hidden border-2 border-transparent cursor-pointer h-16 relative" data-bg="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1000&auto=format&fit=crop">
+              <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover">
+            </div>
+            <div class="bg-thumb rounded-xl overflow-hidden border-2 border-transparent cursor-pointer h-16 relative" data-bg="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1000&auto=format&fit=crop">
+              <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover">
+            </div>
+          </div>
+        </div>
+
+        <!-- Playlist Header & Count -->
+        <div class="mt-3 flex justify-between items-center text-left">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-white/60">Playlist</h4>
+          <span id="playlist-count" class="text-xs text-white/60 font-semibold">0 Songs</span>
+        </div>
+
+        <!-- Songs List Container -->
+        <div id="songs-list" class="flex flex-col gap-2">
+          <!-- Dynamically populated songs -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden Audio Player -->
+  <audio id="audio-element"></audio>
 
   <script>
-
-    /* ==========================================
-       PLAYLIST
-    ========================================== */
-
-    const defaultCover =
-      "https://raw.githubusercontent.com/suryansh6467/songs/main/1313eb05e394d398870fc6a320eec62e.jpg";
-
+    const defaultCover = "https://raw.githubusercontent.com/suryansh6467/songs/main/1313eb05e394d398870fc6a320eec62e.jpg";
     const playlist = [
-
-      {
-        title: "Chal Wahan Jaate Hain",
-        artist: "Arijit Singh",
-        duration: "5:25",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/21af342f0afc8d5385497db07c2d854e18807747/Chal%20Wahan%20Jaate%20Hain%20(From%20Chal%20Wahan%20Jaate%20Hain).mp3"
-      },
-
-      {
-        title: "Tere Bin",
-        artist: "Aviverse",
-        duration: "3:15",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Tere-Bin-SnapYT.App.mp3"
-      },
-
-      {
-        title: "Maula Mere Maula",
-        artist: "Roop Kumar Rathod",
-        duration: "6:04",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Maula-Mere-Maula-SnapYT.App.mp3"
-      },
-
-      {
-        title: "Zara Zara Behekta",
-        artist: "Omkar & Aditya Bhardwaj",
-        duration: "3:56",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Zara-Zara-Behekta-SnapYT.App.mp3"
-      },
-
-      {
-        title: "Kaun Tujhe",
-        artist: "Palak Muchhal",
-        duration: "4:01",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Palak-Muchhal-SnapYT.App.mp3"
-      },
-
-      {
-        title: "Main Dhoondne Ko",
-        artist: "Arijit Singh",
-        duration: "4:29",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Main-Dhoondne-Ko-SnapYT.App.mp3"
-      },
-
-      {
-        title: "Tu Chahiye",
-        artist: "Atif Aslam",
-        duration: "4:27",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Tu-Chahiye-SnapYT.App.mp3"
-      },
-
-      {
-        title: "Bol Kaffara Kya Hoga",
-        artist: "Neha Kakkar",
-        duration: "3:17",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Bol%20Kaffara%20Kya%20Hoga%20-%20Neha%20Kakkar.mp3"
-      },
-
-      {
-        title: "Khat",
-        artist: "Navjot Ahuja",
-        duration: "3:45",
-        src: "https://github.com/suryansh6467/songs/raw/refs/heads/main/Khat%20Navjot%20Ahuja%20320%20Kbps%20(1).mp3"
-      },
-
-      {
-        title: "Thodi Jagah",
-        artist: "Arijit Singh",
-        duration: "3:32",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Thodi-Jagah-lyrics-SnapYT.App.mp3"
-      },
-
-      {
-        title: "Bekhayali",
-        artist: "Arijit Singh",
-        duration: "4:06",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Bekhayali-Lyrical-SnapYT.App.mp3"
-      },
-
-      {
-        title: "Alfaaz",
-        artist: "Hamza Malik x Zain Zohaib",
-        duration: "3:50",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Alfaaz%20_%20Hamza%20Malik%20x%20Zain%20Zohaib%20_%20Official%20Visualiser%20128KBPS.mp3"
-      },
-
-      {
-        title: "Phir Bhi (Cover)",
-        artist: "Talwiinder",
-        duration: "1:48",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_YzrUThw6dHE_Talwiinder-Phir-Bhi-Cover-Hindi-Lofi_008_128k.mp3"
-      },
-
-      {
-        title: "Ik Mulaqaat",
-        artist: "Altamash Faridi, Palak Muchhal",
-        duration: "3:15",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Ik%20Mulaqaat%20-%20Full%20Video%20_%20Dream%20Girl%20_%20Ayushmann%20Khurrana%2C%20Nushrratt%20Bharuccha_%20Altamash%20F%2C%20Palak%20M%20128kbps.mp4"
-      },
-
-      {
-        title: "Ye Fitoor Mera",
-        artist: "Arijit Singh",
-        duration: "4:44",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Ye-Fitoor-Mera-SnapYT.App.mp3"
-      },
-
-      {
-        title: "Samjhawan",
-        artist: "Arijit Singh & Shreya Ghoshal",
-        duration: "4:28",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Samjhawan-Lyrics-SnapYT.App.mp3"
-      },
-
-      {
-        title: "Tune Jo Na Kaha",
-        artist: "Mohit Chauhan",
-        duration: "2:23",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Tune%20Jo%20Na%20Kaha%20Song%20_%20New%20York%20_%20John%20Abraham%2C%20Katrina%20Kaif%2C%20Neil%20Nitin%20M%20_%20Mohit%20Chauhan%20_%20Pritam%20128kbps.mp4"
-      },
-
-      {
-        title: "Tere Bin",
-        artist: "Ranveer Singh & Sara Ali Khan",
-        duration: "3:34",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/videoplayback.m4a"
-      },
-
-      {
-        title: "Humsafar",
-        artist: "Varun & Alia Bhatt",
-        duration: "3:34",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Humsafar-Full-Video-SnapYT.App.mp3"
-      },
-
-      {
-        title: "Tu Jaane Na",
-        artist: "Atif Aslam",
-        duration: "5:37",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Tu%20Jaane%20Na%20-%20Atif%20Aslam%20(Lyrics)%20_%20Lyrical%20Bam%20Hindi%20128kbps.mp4"
-      },
-
-      {
-        title: "Ishqa Ve",
-        artist: "Zeeshan Ali",
-        duration: "3:37",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20ishqa%20ve%20chhaddeya%20tu%20kakh%20da%20nai%20saanu%20(Lyrics)%20Ishqa%20Ve%20%20-%20Zeeshan%20Ali%20128KBPS.mp4"
-      },
-
-      {
-        title: "Tum Se Hi",
-        artist: "Mohit Chauhan",
-        duration: "5:23",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Mohit-Chauhan-SnapYT.App.mp3"
-      },
-
-      {
-        title: "Virhaa",
-        artist: "Mizajii, Sammohitt",
-        duration: "—",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/mizajii-sammohit--prod-by-dikshyant.mp3"
-      },
-
-      {
-        title: "Ae Dil Hai Mushkil",
-        artist: "Arijit Singh",
-        duration: "5:00",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Ae%20Dil%20Hai%20Mushkil%20Title%20Track%20Full%20Video%20-%20Ranbir%2C%20Anushka%2C%20Aishwarya%20_%20Arijit%20Singh_%20Pritam%2048KBPS.mp4"
-      },
-
-      {
-        title: "Faasle",
-        artist: "Aditya Rikhari",
-        duration: "3:36",
-        src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_EiiOYwqk3A0_Aditya-Rikhari-FAASLE_009_128k.mp3"
-      }
-
+      { title: "Chal Wahan Jaate Hain", artist: "Arijit Singh", duration: "5:25", src: "https://raw.githubusercontent.com/suryansh6467/songs/21af342f0afc8d5385497db07c2d854e18807747/Chal%20Wahan%20Jaate%20Hain%20(From%20Chal%20Wahan%20Jaate%20Hain).mp3" },
+      { title: "Tere Bin", artist: "Aviverse", duration: "3:15", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Tere-Bin-SnapYT.App.mp3" },
+      { title: "Maula Mere Maula", artist: "Roop Kumar Rathod", duration: "6:04", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Maula-Mere-Maula-SnapYT.App.mp3" },
+      { title: "Zara Zara Behekta", artist: "Omkar & Aditya Bhardwaj", duration: "3:56", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Zara-Zara-Behekta-SnapYT.App.mp3" },
+      { title: "Kaun Tujhe", artist: "Palak Muchhal", duration: "4:01", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Palak-Muchhal-SnapYT.App.mp3" },
+      { title: "Main Dhoondne Ko", artist: "Arijit Singh", duration: "4:29", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Main-Dhoondne-Ko-SnapYT.App.mp3" },
+      { title: "Tu Chahiye", artist: "Atif Aslam", duration: "4:27", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Tu-Chahiye-SnapYT.App.mp3" },
+      { title: "Bol Kaffara Kya Hoga", artist: "Neha Kakkar", duration: "3:17", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Bol%20Kaffara%20Kya%20Hoga%20-%20Neha%20Kakkar.mp3" },
+      { title: "Khat", artist: "Navjot Ahuja", duration: "3:45", src: "https://github.com/suryansh6467/songs/raw/refs/heads/main/Khat%20Navjot%20Ahuja%20320%20Kbps%20(1).mp3" },
+      { title: "Thodi Jagah", artist: "Arijit Singh", duration: "3:32", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Thodi-Jagah-lyrics-SnapYT.App.mp3" },
+      { title: "Bekhayali", artist: "Arijit Singh", duration: "4:06", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Bekhayali-Lyrical-SnapYT.App.mp3" },
+      { title: "Alfaaz", artist: "Hamza Malik x Zain Zohaib", duration: "3:50", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Alfaaz%20_%20Hamza%20Malik%20x%20Zain%20Zohaib%20_%20Official%20Visualiser%20128KBPS.mp3" },
+      { title: "Phir Bhi (Cover)", artist: "Talwiinder", duration: "1:48", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_YzrUThw6dHE_Talwiinder-Phir-Bhi-Cover-Hindi-Lofi_008_128k.mp3" },
+      { title: "Ik Mulaqaat", artist: "Altamash Faridi, Palak Muchhal", duration: "3:15", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Ik%20Mulaqaat%20-%20Full%20Video%20_%20Dream%20Girl%20_%20Ayushmann%20Khurrana%2C%20Nushrratt%20Bharuccha_%20Altamash%20F%2C%20Palak%20M%20128kbps.mp4" },
+      { title: "Ye Fitoor Mera", artist: "Arijit Singh", duration: "4:44", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Ye-Fitoor-Mera-SnapYT.App.mp3" },
+      { title: "Samjhawan", artist: "Arijit Singh & Shreya Ghoshal", duration: "4:28", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Samjhawan-Lyrics-SnapYT.App.mp3" },
+      { title: "Tune Jo Na Kaha", artist: "Mohit Chauhan", duration: "2:23", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Tune%20Jo%20Na%20Kaha%20Song%20_%20New%20York%20_%20John%20Abraham%2C%20Katrina%20Kaif%2C%20Neil%20Nitin%20M%20_%20Mohit%20Chauhan%20_%20Pritam%20128kbps.mp4" },
+      { title: "Tere Bin", artist: "Ranveer Singh & Sara Ali Khan", duration: "3:34", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/videoplayback.m4a" },
+      { title: "Humsafar", artist: "Varun & Alia Bhatt", duration: "3:34", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Humsafar-Full-Video-SnapYT.App.mp3" },
+      { title: "Tu Jaane Na", artist: "Atif Aslam", duration: "5:37", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Tu%20Jaane%20Na%20-%20Atif%20Aslam%20(Lyrics)%20_%20Lyrical%20Bam%20Hindi%20128kbps.mp4" },
+      { title: "Ishqa Ve", artist: "Zeeshan Ali", duration: "3:37", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20ishqa%20ve%20chhaddeya%20tu%20kakh%20da%20nai%20saanu%20(Lyrics)%20Ishqa%20Ve%20%20-%20Zeeshan%20Ali%20128KBPS.mp4" },
+      { title: "Tum Se Hi", artist: "Mohit Chauhan", duration: "5:23", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Mohit-Chauhan-SnapYT.App.mp3" },
+      { title: "Virhaa", artist: "Mizajii, Sammohitt", duration: "3:00", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/mizajii-sammohit--prod-by-dikshyant.mp3" },
+      { title: "Ae Dil Hai Mushkil", artist: "Arijit Singh", duration: "5:00", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Ae%20Dil%20Hai%20Mushkil%20Title%20Track%20Full%20Video%20-%20Ranbir%2C%20Anushka%2C%20Aishwarya%20_%20Arijit%20Singh_%20Pritam%2048KBPS.mp4" },
+      { title: "Faasle", artist: "Aditya Rikhari", duration: "3:36", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_EiiOYwqk3A0_Aditya-Rikhari-FAASLE_009_128k.mp3" }
     ];
 
-
-    /* ==========================================
-       VARIABLES
-    ========================================== */
-
-    let currentSongIndex =
-      Math.floor(Math.random() * playlist.length);
-
+    let currentSongIndex = Math.floor(Math.random() * playlist.length);
     let isPlaying = false;
-    let shuffleEnabled = false;
+    let isShuffle = false;
+    let repeatMode = 0; // 0: All songs, 1: Single loop
+    let errorCount = 0;
 
-    let repeatMode = "all";
-    // all = playlist repeat
-    // one = repeat current song
+    const audioElement = document.getElementById('audio-element');
+    const playBtn = document.getElementById('play-btn');
+    const playIcon = document.getElementById('play-icon');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const songTitle = document.getElementById('song-title');
+    const artistName = document.getElementById('artist-name');
+    const albumCover = document.getElementById('album-cover');
+    const seekBar = document.getElementById('seek-bar');
+    const currentTimeEl = document.getElementById('current-time');
+    const totalDurationEl = document.getElementById('total-duration');
+    const digitalClock = document.getElementById('digital-clock');
+    const bgImage = document.getElementById('bg-image');
 
-
-    /* ==========================================
-       ELEMENTS
-    ========================================== */
-
-    const audioElement =
-      document.getElementById("audio-element");
-
-    const playBtn =
-      document.getElementById("play-btn");
-
-    const playIcon =
-      document.getElementById("play-icon");
-
-    const prevBtn =
-      document.getElementById("prev-btn");
-
-    const nextBtn =
-      document.getElementById("next-btn");
-
-    const songTitle =
-      document.getElementById("song-title");
-
-    const artistName =
-      document.getElementById("artist-name");
-
-    const albumCover =
-      document.getElementById("album-cover");
-
-    const seekBar =
-      document.getElementById("seek-bar");
-
-    const currentTimeEl =
-      document.getElementById("current-time");
-
-    const totalDurationEl =
-      document.getElementById("total-duration");
-
-    const digitalClock =
-      document.getElementById("digital-clock");
-
-
-    /* ==========================================
-       MENU ELEMENTS
-    ========================================== */
-
-    const menuBtn =
-      document.getElementById("menu-btn");
-
-    const menuPanel =
-      document.getElementById("menu-panel");
-
-    const menuOverlay =
-      document.getElementById("menu-overlay");
-
-    const menuIcon =
-      document.getElementById("menu-icon");
-
-    const closeMenu =
-      document.getElementById("close-menu");
-
-    const playlistContainer =
-      document.getElementById("playlist-container");
-
-    const songCount =
-      document.getElementById("song-count");
-
-    const shuffleBtn =
-      document.getElementById("shuffle-btn");
-
-    const shuffleStatus =
-      document.getElementById("shuffle-status");
-
-    const repeatBtn =
-      document.getElementById("repeat-btn");
-
-    const repeatStatus =
-      document.getElementById("repeat-status");
-
-    const backgroundImage =
-      document.getElementById("background-image");
-
-
-    /* ==========================================
-       CLOCK
-    ========================================== */
+    const menuBtn = document.getElementById('menu-btn');
+    const playlistModal = document.getElementById('playlist-modal');
+    const closeModal = document.getElementById('close-menu');
+    const songsList = document.getElementById('songs-list');
+    const playlistCount = document.getElementById('playlist-count');
+    const shuffleToggle = document.getElementById('shuffle-toggle');
+    const shuffleStatus = document.getElementById('shuffle-status');
+    const repeatToggle = document.getElementById('repeat-toggle');
+    const repeatStatus = document.getElementById('repeat-status');
 
     function updateClock() {
-
       const now = new Date();
-
-      const hours =
-        String(now.getHours()).padStart(2, "0");
-
-      const minutes =
-        String(now.getMinutes()).padStart(2, "0");
-
-      const seconds =
-        String(now.getSeconds()).padStart(2, "0");
-
-      digitalClock.textContent =
-        `${hours}:${minutes}:${seconds}`;
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      digitalClock.textContent = `${hours}:${minutes}:${seconds}`;
     }
-
     setInterval(updateClock, 1000);
-
     updateClock();
 
-
-    /* ==========================================
-       MENU OPEN / CLOSE
-    ========================================== */
-
-    function openMenu() {
-
-      menuPanel.classList.add("open");
-
-      menuOverlay.classList.add("show");
-
-      menuIcon.classList.remove("fa-bars");
-
-      menuIcon.classList.add("fa-xmark");
-
-    }
-
-
-    function closeMenuPanel() {
-
-      menuPanel.classList.remove("open");
-
-      menuOverlay.classList.remove("show");
-
-      menuIcon.classList.remove("fa-xmark");
-
-      menuIcon.classList.add("fa-bars");
-
-    }
-
-
-    menuBtn.addEventListener("click", () => {
-
-      if (menuPanel.classList.contains("open")) {
-
-        closeMenuPanel();
-
-      } else {
-
-        openMenu();
-
-      }
-
-    });
-
-
-    closeMenu.addEventListener(
-      "click",
-      closeMenuPanel
-    );
-
-
-    menuOverlay.addEventListener(
-      "click",
-      closeMenuPanel
-    );
-
-
-    /* ==========================================
-       LOAD SONG
-    ========================================== */
-
-    function loadSong(song) {
-
-      songTitle.textContent =
-        song.title;
-
-      artistName.textContent =
-        song.artist || "Unknown Artist";
-
-      albumCover.src =
-        defaultCover;
-
-      audioElement.src =
-        song.src;
-
-      totalDurationEl.textContent =
-        song.duration;
-
-      seekBar.value = 0;
-
-      currentTimeEl.textContent =
-        "0:00";
-
-      renderPlaylist();
-
-    }
-
-
-    /* ==========================================
-       PLAY
-    ========================================== */
-
-    function togglePlay() {
-
-      if (isPlaying) {
-
-        pauseSong();
-
-      } else {
-
-        playSong();
-
-      }
-
-    }
-
-
-    function playSong() {
-
-      audioElement.play()
-        .then(() => {
-
-          isPlaying = true;
-
-          playIcon.classList.remove(
-            "fa-play"
-          );
-
-          playIcon.classList.add(
-            "fa-pause"
-          );
-
-          albumCover.classList.remove(
-            "paused-spin"
-          );
-
-        })
-        .catch(error => {
-
-          console.log(
-            "Audio could not play:",
-            error
-          );
-
-          isPlaying = false;
-
-        });
-
-    }
-
-
-    function pauseSong() {
-
-      isPlaying = false;
-
-      audioElement.pause();
-
-      playIcon.classList.remove(
-        "fa-pause"
-      );
-
-      playIcon.classList.add(
-        "fa-play"
-      );
-
-      albumCover.classList.add(
-        "paused-spin"
-      );
-
-    }
-
-
-    /* ==========================================
-       PREVIOUS
-    ========================================== */
-
-    function prevSong() {
-
-      currentSongIndex =
-        (currentSongIndex - 1 + playlist.length)
-        % playlist.length;
-
-      loadSong(
-        playlist[currentSongIndex]
-      );
-
-      if (isPlaying) {
-
-        playSong();
-
-      }
-
-    }
-
-
-    /* ==========================================
-       NEXT
-    ========================================== */
-
-    function nextSong() {
-
-      if (repeatMode === "one") {
-
-        audioElement.currentTime = 0;
-
-        playSong();
-
-        return;
-
-      }
-
-
-      if (shuffleEnabled) {
-
-        let randomIndex;
-
-        do {
-
-          randomIndex =
-            Math.floor(
-              Math.random() * playlist.length
-            );
-
-        } while (
-          randomIndex === currentSongIndex &&
-          playlist.length > 1
-        );
-
-        currentSongIndex =
-          randomIndex;
-
-      } else {
-
-        currentSongIndex =
-          (currentSongIndex + 1)
-          % playlist.length;
-
-      }
-
-
-      loadSong(
-        playlist[currentSongIndex]
-      );
-
-
-      if (isPlaying) {
-
-        playSong();
-
-      }
-
-    }
-
-
-    /* ==========================================
-       TIME FORMAT
-    ========================================== */
-
     function formatTime(seconds) {
-
-      const mins =
-        Math.floor(seconds / 60);
-
-      const secs =
-        Math.floor(seconds % 60);
-
-      return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
-
+      if (isNaN(seconds)) return "0:00";
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
     }
 
-
-    /* ==========================================
-       PLAYLIST UI
-    ========================================== */
-
-    function renderPlaylist() {
-
-      playlistContainer.innerHTML = "";
-
-      songCount.textContent =
-        `${playlist.length} Songs`;
-
-
+    function renderMenu() {
+      playlistCount.textContent = `${playlist.length} Songs`;
+      songsList.innerHTML = '';
+      
       playlist.forEach((song, index) => {
-
-        const item =
-          document.createElement("div");
-
-        item.className =
-          "song-item " +
-          (index === currentSongIndex
-            ? "active"
-            : "");
-
-
+        const isCurrent = index === currentSongIndex;
+        const item = document.createElement('div');
+        item.className = `flex items-center justify-between p-3 rounded-2xl cursor-pointer transition-all border ${isCurrent ? 'bg-white/25 border-white/50 shadow-lg' : 'bg-white/5 border-white/10 hover:bg-white/15'}`;
+        
         item.innerHTML = `
-
-          <div class="song-number">
-            ${index + 1}
-          </div>
-
-          <div class="song-info">
-
-            <div class="song-name">
-              ${escapeHTML(song.title)}
+          <div class="flex items-center gap-3 overflow-hidden">
+            <div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0 text-sm font-bold">
+              ${isCurrent ? '<i class="fa-solid fa-volume-high text-pink-300 animate-pulse"></i>' : (index + 1)}
             </div>
-
-            <div class="song-artist">
-              ${escapeHTML(song.artist || "Unknown Artist")}
+            <div class="text-left truncate">
+              <h4 class="text-sm font-bold truncate ${isCurrent ? 'text-pink-200' : 'text-white'}">${song.title}</h4>
+              <p class="text-xs text-white/70 truncate">${song.artist || "Unknown Artist"}</p>
             </div>
-
           </div>
-
-          <div class="text-[10px] text-white/40">
-            ${song.duration}
-          </div>
-
+          <span class="text-xs text-white/60 font-mono ml-2 flex-shrink-0">${song.duration}</span>
         `;
 
-
-        item.addEventListener(
-          "click",
-          () => {
-
-            const wasPlaying =
-              isPlaying;
-
-            currentSongIndex =
-              index;
-
-            loadSong(
-              playlist[currentSongIndex]
-            );
-
-            if (wasPlaying) {
-
-              playSong();
-
-            } else {
-
-              playSong();
-
-            }
-
-          }
-        );
-
-
-        playlistContainer.appendChild(item);
-
-      });
-
-    }
-
-
-    /* ==========================================
-       ESCAPE HTML
-    ========================================== */
-
-    function escapeHTML(text) {
-
-      const div =
-        document.createElement("div");
-
-      div.textContent =
-        text;
-
-      return div.innerHTML;
-
-    }
-
-
-    /* ==========================================
-       SHUFFLE
-    ========================================== */
-
-    shuffleBtn.addEventListener(
-      "click",
-      () => {
-
-        shuffleEnabled =
-          !shuffleEnabled;
-
-        shuffleStatus.textContent =
-          shuffleEnabled
-            ? "On"
-            : "Off";
-
-        shuffleBtn.style.background =
-          shuffleEnabled
-            ? "rgba(255,255,255,0.16)"
-            : "";
-
-      }
-    );
-
-
-    /* ==========================================
-       REPEAT
-    ========================================== */
-
-    repeatBtn.addEventListener(
-      "click",
-      () => {
-
-        if (repeatMode === "all") {
-
-          repeatMode = "one";
-
-          repeatStatus.textContent =
-            "Current song";
-
-        } else {
-
-          repeatMode = "all";
-
-          repeatStatus.textContent =
-            "All songs";
-
-        }
-
-      }
-    );
-
-
-    /* ==========================================
-       BACKGROUND
-    ========================================== */
-
-    document.querySelectorAll(".bg-option")
-      .forEach(option => {
-
-        option.addEventListener(
-          "click",
-          () => {
-
-            const newBackground =
-              option.dataset.bg;
-
-            backgroundImage.src =
-              newBackground;
-
-
-            document.querySelectorAll(
-              ".bg-option"
-            ).forEach(bg => {
-
-              bg.classList.remove(
-                "active"
-              );
-
-            });
-
-
-            option.classList.add(
-              "active"
-            );
-
-          }
-        );
-
-      });
-
-
-    /* ==========================================
-       BUTTON EVENTS
-    ========================================== */
-
-    playBtn.addEventListener(
-      "click",
-      togglePlay
-    );
-
-    prevBtn.addEventListener(
-      "click",
-      prevSong
-    );
-
-    nextBtn.addEventListener(
-      "click",
-      nextSong
-    );
-
-
-    /* ==========================================
-       AUDIO PROGRESS
-    ========================================== */
-
-    audioElement.addEventListener(
-      "timeupdate",
-      () => {
-
-        if (audioElement.duration) {
-
-          const progressPercent =
-            (audioElement.currentTime /
-            audioElement.duration) * 100;
-
-          seekBar.value =
-            progressPercent;
-
-          currentTimeEl.textContent =
-            formatTime(
-              audioElement.currentTime
-            );
-
-        }
-
-      }
-    );
-
-
-    /* ==========================================
-       SEEK
-    ========================================== */
-
-    seekBar.addEventListener(
-      "input",
-      () => {
-
-        if (audioElement.duration) {
-
-          const seekTime =
-            (seekBar.value / 100) *
-            audioElement.duration;
-
-          audioElement.currentTime =
-            seekTime;
-
-        }
-
-      }
-    );
-
-
-    /* ==========================================
-       SONG ENDED
-    ========================================== */
-
-    audioElement.addEventListener(
-      "ended",
-      () => {
-
-        if (repeatMode === "one") {
-
-          audioElement.currentTime = 0;
-
+        item.addEventListener('click', () => {
+          currentSongIndex = index;
+          loadSong(playlist[currentSongIndex]);
           playSong();
+          toggleModal();
+        });
 
-        } else {
+        songsList.appendChild(item);
+      });
+    }
 
-          nextSong();
+    function toggleModal() {
+      playlistModal.classList.toggle('hidden');
+      if (!playlistModal.classList.contains('hidden')) {
+        renderMenu();
+      }
+    }
 
+    menuBtn.addEventListener('click', toggleModal);
+    closeModal.addEventListener('click', toggleModal);
+    playlistModal.addEventListener('click', (e) => {
+      if (e.target === playlistModal) toggleModal();
+    });
+
+    // Shuffle Toggle Logic
+    shuffleToggle.addEventListener('click', () => {
+      isShuffle = !isShuffle;
+      shuffleStatus.textContent = isShuffle ? "On" : "Off";
+    });
+
+    // Repeat Toggle Logic
+    repeatToggle.addEventListener('click', () => {
+      repeatMode = (repeatMode + 1) % 2;
+      repeatStatus.textContent = repeatMode === 0 ? "All songs" : "Single loop";
+    });
+
+    // Background Changer Logic
+    document.querySelectorAll('.bg-thumb').forEach(thumb => {
+      thumb.addEventListener('click', () => {
+        const newBg = thumb.getAttribute('data-bg');
+        bgImage.src = newBg;
+      });
+    });
+
+    function loadSong(song) {
+      songTitle.textContent = song.title;
+      artistName.textContent = song.artist || "Unknown Artist";
+      albumCover.src = defaultCover;
+      audioElement.src = song.src;
+      totalDurationEl.textContent = song.duration !== "—" ? song.duration : "0:00";
+      seekBar.value = 0;
+      currentTimeEl.textContent = "0:00";
+    }
+
+    function togglePlay() {
+      if (isPlaying) pauseSong();
+      else playSong();
+    }
+
+    function playSong() {
+      isPlaying = true;
+      audioElement.play().then(() => { errorCount = 0; }).catch(e => console.log("Play blocked"));
+      playIcon.classList.remove('fa-play');
+      playIcon.classList.add('fa-pause');
+      albumCover.classList.remove('paused-spin');
+    }
+
+    function pauseSong() {
+      isPlaying = false;
+      audioElement.pause();
+      playIcon.classList.remove('fa-pause');
+      playIcon.classList.add('fa-play');
+      albumCover.classList.add('paused-spin');
+    }
+
+    function prevSong() {
+      currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
+      loadSong(playlist[currentSongIndex]);
+      if (isPlaying) playSong();
+    }
+
+    function nextSong() {
+      if (repeatMode === 1) {
+        audioElement.currentTime = 0;
+        playSong();
+        return;
+      }
+
+      if (isShuffle) {
+        currentSongIndex = Math.floor(Math.random() * playlist.length);
+      } else {
+        currentSongIndex = (currentSongIndex + 1) % playlist.length;
+      }
+
+      errorCount++;
+      if (errorCount > playlist.length) {
+        pauseSong();
+        errorCount = 0;
+        return;
+      }
+      loadSong(playlist[currentSongIndex]);
+      if (isPlaying) playSong();
+    }
+
+    playBtn.addEventListener('click', togglePlay);
+    prevBtn.addEventListener('click', prevSong);
+    nextBtn.addEventListener('click', nextSong);
+
+    audioElement.addEventListener('timeupdate', () => {
+      if (audioElement.duration) {
+        const progressPercent = (audioElement.currentTime / audioElement.duration) * 100;
+        seekBar.value = progressPercent;
+        currentTimeEl.textContent = formatTime(audioElement.currentTime);
+        
+        if (playlist[currentSongIndex].duration === "—" || !totalDurationEl.textContent || totalDurationEl.textContent === "0:00") {
+          totalDurationEl.textContent = formatTime(audioElement.duration);
         }
-
       }
-    );
+    });
 
-
-    /* ==========================================
-       ERROR HANDLING
-    ========================================== */
-
-    audioElement.addEventListener(
-      "error",
-      () => {
-
-        console.log(
-          "Song failed to load"
-        );
-
-        setTimeout(() => {
-
-          nextSong();
-
-        }, 500);
-
+    seekBar.addEventListener('input', () => {
+      if (audioElement.duration) {
+        audioElement.currentTime = (seekBar.value / 100) * audioElement.duration;
       }
-    );
+    });
 
+    audioElement.addEventListener('ended', nextSong);
+    audioElement.addEventListener('error', nextSong);
 
-    /* ==========================================
-       INITIALIZE
-    ========================================== */
-
-    loadSong(
-      playlist[currentSongIndex]
-    );
-
-    renderPlaylist();
-
+    loadSong(playlist[currentSongIndex]);
   </script>
-
 </body>
 </html>
