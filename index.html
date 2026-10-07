@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>N0t Music Player</title>
+<title>N0tSuryansh Premium Music Player</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -50,12 +50,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(0,0,0,.35),
-      rgba(0,0,0,.65)
-    );
+  background: rgba(0, 0, 0, 0.15); /* Yahan dark layer ko bahut halka kar diya hai taaki image bright rahe */
   pointer-events: none;
 }
 
@@ -65,7 +60,7 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: brightness(.5) saturate(1.1);
+  filter: brightness(0.95) saturate(1.15); /* Yahan image ki brightness badha di hai */
   opacity: 0;
   transition: opacity 1.6s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: opacity;
@@ -659,7 +654,7 @@ body {
       </div>
     </div>
 
-    <div class="badge">N0tSuryansh</div>
+    <div class="badge">N0tSuryansh Premium</div>
   </main>
 </div>
 
@@ -669,7 +664,7 @@ body {
     <div class="modal-header">
       <div>
         <h3 class="modal-title">Music Menu</h3>
-        <p class="modal-subtitle">Player Settings</p>
+        <p class="modal-subtitle">Premium Player Settings</p>
       </div>
       <button id="close-menu" class="glass-btn close-button" aria-label="Close Menu">
         <i class="fa-solid fa-xmark"></i>
