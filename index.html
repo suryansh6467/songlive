@@ -589,6 +589,10 @@ body{
     animation-duration:.01ms!important;
   }
 }
+.hours-red{
+  color:#ff0000 !important;
+  text-shadow:0 0 12px rgba(255,0,0,.7);
+}
 </style>
 </head>
 
@@ -607,7 +611,9 @@ body{
 <div class="app">
 
 <header class="header">
-  <div id="digital-clock" class="clock">00:00:00</div>
+  <div id="digital-clock" class="clock">
+  <span class="hours-red">00</span><span>:</span><span id="clock-minutes">00</span><span>:</span><span id="clock-seconds">00</span>
+</div>
 
   <button id="menu-btn"
           class="glass-btn menu-button"
@@ -869,6 +875,9 @@ const currentTimeEl = document.getElementById("current-time");
 const totalDurationEl = document.getElementById("total-duration");
 
 const clockEl = document.getElementById("digital-clock");
+const hoursRed = document.querySelector(".hours-red");
+const clockMinutes = document.getElementById("clock-minutes");
+const clockSeconds = document.getElementById("clock-seconds");
 
 const modal = document.getElementById("playlist-modal");
 const menuBtn = document.getElementById("menu-btn");
@@ -916,11 +925,14 @@ function updateClock(){
 
   const now = new Date();
 
-  clockEl.textContent =
-    now.toLocaleTimeString("en-GB", {
-      hour12:false
-    });
+  hoursRed.textContent =
+    String(now.getHours()).padStart(2,"0");
 
+  clockMinutes.textContent =
+    String(now.getMinutes()).padStart(2,"0");
+
+  clockSeconds.textContent =
+    String(now.getSeconds()).padStart(2,"0");
 }
 
 updateClock();
