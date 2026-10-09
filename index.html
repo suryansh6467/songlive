@@ -839,6 +839,7 @@ const playlist = [
   {title:"Afsos",artist:"Anuv Jain & AP Dhillon",duration:"",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_2FhgKp_lfJQ_Anuv-Jain-AFSOS-ft-AP-Dhillon-Official-Visualizer_009_128k.mp3"},
   {title:"Sanam Re",artist:"Arijit Singh",duration:"",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_liSbkrbNj6Y_Sanam-Re-Arijit-Singh-Lyrics-Lyrical-Bam-Hindi_009_128k.mp3"},
   {title:"Aarzu",artist:"Noor Khan, Madhurxo & Kalakar",duration:"",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_KxzCuvCsRx0_Aarzu-Lyrics-Noor-Khan-Madhurxo-Kalakar-R44j_009_128k.mp3"},
+  {title: "Bekhudi",artist: "T-Series",duration: "",src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_RmSU9drvPis_Bekhudi-lyrics-T-series_008_128k.mp3"},
   {title:"Aaya Woh Phir Nazar",artist:"Tune Jo Na Kaha",duration:"",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_XigHCp4uE4g_Aaya-woh-phir-nazar-aise-tune-jo-na-kaha-full-song-lyrics_009_128k.mp3"},
   {title:"Roi Na",artist:"Talwiinder",duration:"",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_u2IWrmGXEgw_Roi-Na-Talwiinder-Cover-Offically-sung-by-NInja-Heartbreak-Tribute_009_128k.mp3"}
 ];
@@ -850,7 +851,7 @@ const playlist = [
 
 let currentSongIndex = 0;
 let isPlaying = false;
-let isShuffle = false;
+let isShuffle = true;
 let repeatMode = 0;
 let currentBgIndex = 0;
 let activeLayer = 1;
@@ -1044,6 +1045,8 @@ async function playSong(){
     showPlaybackStatus("");
 
   }catch(error){
+
+    showPlaybackStatus("Tap Play to start audio. Your browser blocked autoplay.");
 
     console.warn(
       "Playback blocked/error:",
@@ -1762,11 +1765,23 @@ document.addEventListener(
 ========================================================= */
 
 renderPlaylist();
-updateMediaSession(playlist[currentSongIndex]);
+// Start each visit with a different random song when possible.
+let previousSongIndex = -1;
+try {
+  previousSongIndex = Number(localStorage.getItem("n0tSuryansh_song"));
+  if (!Number.isInteger(previousSongIndex) || previousSongIndex < 0 || previousSongIndex >= playlist.length) {
+    previousSongIndex = -1;
+  }
+} catch (e) {}
 
-loadSong(
-  playlist[currentSongIndex]
-);
+if (playlist.length > 1) {
+  do {
+    currentSongIndex = Math.floor(Math.random() * playlist.length);
+  } while (currentSongIndex === previousSongIndex);
+}
+
+shuffleStatus.textContent = "On";
+loadSong(playlist[currentSongIndex], true);
 
 
 /* =========================================================
