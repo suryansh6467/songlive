@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +7,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <link rel="stylesheet"
@@ -58,7 +58,7 @@ body{
   filter:brightness(.95) saturate(1.15);
   opacity:0;
   transition:opacity 1.6s cubic-bezier(.4,0,.2,1);
-  will-change:opacity;
+
 }
 
 .bg-image.active{
@@ -218,6 +218,8 @@ body{
   align-items:center;
   gap:12px;
 }
+
+.playback-status{min-height:16px;margin:7px 0 0;font-size:11px;color:rgba(255,255,255,.75)}
 
 .time{
   width:38px;
@@ -663,6 +665,7 @@ body{
         </span>
 
       </div>
+      <p id="playback-status" class="playback-status" role="status" aria-live="polite"></p>
 
     </div>
 
@@ -786,7 +789,7 @@ body{
 
 </div>
 
-<audio id="audio-element" preload="metadata"></audio>
+<audio id="audio-element" preload="auto" playsinline></audio>
 
 <script>
 "use strict";
@@ -852,7 +855,7 @@ let repeatMode = 0;
 let currentBgIndex = 0;
 let activeLayer = 1;
 let isSeeking = false;
-let animationFrame = null;
+
 let lastDisplayedSecond = -1;
 
 
@@ -873,7 +876,8 @@ const coverEl = document.getElementById("album-cover");
 const seekBar = document.getElementById("seek-bar");
 const currentTimeEl = document.getElementById("current-time");
 const totalDurationEl = document.getElementById("total-duration");
-
+const playbackStatusEl = document.getElementById("playback-status");
+function showPlaybackStatus(message){ playbackStatusEl.textContent = message; }
 const clockEl = document.getElementById("digital-clock");
 const hoursRed = document.querySelector(".hours-red");
 const clockMinutes = document.getElementById("clock-minutes");
@@ -900,7 +904,9 @@ const bg2 = document.getElementById("bg2");
    AUDIO CONFIG
 ========================================================= */
 
-audio.preload = "metadata";
+audio.preload = "auto";
+audio.playsInline = true;
+function showPlaybackStatus(message){ playbackStatusEl.textContent = message; }
 
 audio.addEventListener("error", () => {
   isPlaying = false;
@@ -909,6 +915,7 @@ audio.addEventListener("error", () => {
     "fa-solid fa-play play-icon";
 
   coverEl.classList.remove("playing");
+  showPlaybackStatus("Unable to load this track. Check its link or select another song.");
 
   console.warn(
     "Unable to play:",
@@ -917,6 +924,24 @@ audio.addEventListener("error", () => {
 });
 
 
+/* =========================================================
+   LOCK-SCREEN MEDIA CONTROLS
+========================================================= */
+function updateMediaSession(song){
+  if(!("mediaSession" in navigator)) return;
+  navigator.mediaSession.metadata = new MediaMetadata({
+    title: song.title,
+    artist: song.artist || "Unknown Artist",
+    album: "N0tSuryansh Music Player",
+    artwork: [{ src: defaultCover, sizes: "512x512", type: "image/jpeg" }]
+  });
+  for (const [action, handler] of Object.entries({
+    play: () => playSong(), pause: () => pauseSong(),
+    previoustrack: () => previousSong(), nexttrack: () => nextSong()
+  })) {
+    try { navigator.mediaSession.setActionHandler(action, handler); } catch (_) {}
+  }
+}
 /* =========================================================
    CLOCK
 ========================================================= */
@@ -989,6 +1014,8 @@ function loadSong(song, autoPlay = false){
   lastDisplayedSecond = -1;
 
   audio.src = song.src;
+  audio.load();
+  updateMediaSession(song);
 
   updateCurrentPlaylistItem();
 
@@ -1006,8 +1033,15 @@ function loadSong(song, autoPlay = false){
 async function playSong(){
 
   try{
-
+    if(!audio.src){
+      audio.src = playlist[currentSongIndex].src;
+      audio.load();
+    }
+    showPlaybackStatus("Loading song…");
+    showPlaybackStatus("Loading song…");
     await audio.play();
+    showPlaybackStatus("");
+    showPlaybackStatus("");
 
   }catch(error){
 
@@ -1128,8 +1162,6 @@ function updateProgress(){
     !Number.isFinite(audio.duration) ||
     isSeeking
   ){
-
-    animationFrame = null;
     return;
 
   }
@@ -1158,35 +1190,14 @@ function updateProgress(){
 
   }
 
-  animationFrame =
-    requestAnimationFrame(updateProgress);
-
 }
 
 
-function startProgressAnimation(){
-
-  stopProgressAnimation();
-
-  animationFrame =
-    requestAnimationFrame(updateProgress);
-
-}
-
-
-function stopProgressAnimation(){
-
-  if(animationFrame !== null){
-
-    cancelAnimationFrame(
-      animationFrame
-    );
-
-    animationFrame = null;
-
-  }
-
-}
+function startProgressAnimation(){ updateProgress(); }
+function stopProgressAnimation(){} 
+audio.addEventListener("timeupdate", updateProgress);
+audio.addEventListener("waiting", () => showPlaybackStatus("Buffering audio…"));
+audio.addEventListener("playing", () => showPlaybackStatus(""));
 
 
 /* =========================================================
@@ -1616,18 +1627,7 @@ const backgrounds = [
    PRELOAD BACKGROUNDS
 ========================================================= */
 
-backgrounds.forEach(src => {
-
-  const img =
-    new Image();
-
-  img.decoding =
-    "async";
-
-  img.src =
-    src;
-
-});
+// Backgrounds load on demand so they do not compete with audio downloads.
 
 
 /* =========================================================
@@ -1646,8 +1646,8 @@ function changeBackground(index){
   const nextSrc =
     backgrounds[index];
 
-  const img =
-    new Image();
+  const img = new Image();
+  img.decoding = "async";
 
   img.onload = () => {
 
@@ -1686,17 +1686,8 @@ function changeBackground(index){
 }
 
 
-setInterval(
-  () => {
-
-    changeBackground(
-      (currentBgIndex + 1) %
-      backgrounds.length
-    );
-
-  },
-  35000
-);
+let backgroundTimer = setInterval(() => { if (!document.hidden) changeBackground((currentBgIndex + 1) % backgrounds.length); }, 60000);
+document.addEventListener("visibilitychange", () => { clearInterval(backgroundTimer); if (!document.hidden) backgroundTimer = setInterval(() => { if (!document.hidden) changeBackground((currentBgIndex + 1) % backgrounds.length); }, 60000); });
 
 
 /* =========================================================
@@ -1771,6 +1762,7 @@ document.addEventListener(
 ========================================================= */
 
 renderPlaylist();
+updateMediaSession(playlist[currentSongIndex]);
 
 loadSong(
   playlist[currentSongIndex]
@@ -1802,4 +1794,10 @@ window.addEventListener(
 
 </body>
 </html>
-```
+
+
+
+
+
+
+
