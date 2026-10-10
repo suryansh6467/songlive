@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,805 +10,170 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-*{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
-}
-
-html,body{
-  width:100%;
-  height:100%;
-  margin:0;
-}
-
-body{
-  font-family:"Plus Jakarta Sans",sans-serif;
-  background:#000;
-  color:#fff;
-  overflow:hidden;
-  user-select:none;
-}
-
-.background{
-  position:fixed;
-  inset:0;
-  z-index:0;
-  overflow:hidden;
-  background:#000;
-}
-
-.background::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,.15);
-  pointer-events:none;
-}
-
-.bg-image{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  filter:brightness(.95) saturate(1.15);
-  opacity:0;
-  transition:opacity 1.6s cubic-bezier(.4,0,.2,1);
-
-}
-
-.bg-image.active{
-  opacity:1;
-}
-
-.app{
-  position:relative;
-  z-index:5;
-  width:100%;
-  height:100dvh;
-  min-height:100dvh;
-  padding:20px;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-}
-
-.header{
-  width:100%;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-
-.clock{
-  font-size:clamp(20px,3.5vw,32px);
-  font-weight:800;
-  letter-spacing:2px;
-  color:rgba(255,255,255,.95);
-  text-shadow:0 4px 20px rgba(0,0,0,.5);
-}
-
-.glass{
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.18);
-  backdrop-filter:blur(25px);
-  -webkit-backdrop-filter:blur(25px);
-  box-shadow:
-    0 25px 50px rgba(0,0,0,.4),
-    inset 0 1px 0 rgba(255,255,255,.2);
-}
-
-.glass-btn{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border:1px solid rgba(255,255,255,.22);
-  color:#fff;
-  background:rgba(255,255,255,.12);
-  backdrop-filter:blur(15px);
-  -webkit-backdrop-filter:blur(15px);
-  box-shadow:
-    inset 0 1px 2px rgba(255,255,255,.25),
-    0 8px 20px rgba(0,0,0,.3);
-  cursor:pointer;
-  transition:all .25s cubic-bezier(.4,0,.2,1);
-}
-
-.glass-btn:hover{
-  background:rgba(255,255,255,.22);
-  border-color:rgba(255,255,255,.4);
-  transform:translateY(-2px);
-  box-shadow:0 10px 25px rgba(0,0,0,.4);
-}
-
-.glass-btn:active{
-  transform:scale(.93);
-}
-
-.menu-button{
-  width:46px;
-  height:46px;
-  border-radius:50%;
-  font-size:16px;
-}
-
-.main{
-  width:100%;
-  max-width:950px;
-  margin:auto;
-  padding:10px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-}
-
-.player{
-  width:100%;
-  padding:18px 24px;
-  border-radius:36px;
-  display:flex;
-  align-items:center;
-  gap:24px;
-}
-
-.cover-wrapper{
-  flex-shrink:0;
-  width:110px;
-  height:110px;
-  border-radius:50%;
-  overflow:hidden;
-  border:3px solid rgba(255,255,255,.4);
-  box-shadow:
-    0 15px 35px rgba(0,0,0,.5),
-    0 0 25px rgba(255,255,255,.12);
-  position:relative;
-}
-
-.cover{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  animation:spin 14s linear infinite;
-  animation-play-state:paused;
-  will-change:transform;
-}
-
-.cover.playing{
-  animation-play-state:running;
-}
-
-@keyframes spin{
-  from{transform:rotate(0deg)}
-  to{transform:rotate(360deg)}
-}
-
-.song-area{
-  flex:1;
-  min-width:0;
-}
-
-.song-title{
-  margin:0;
-  font-size:clamp(18px,2.2vw,24px);
-  font-weight:700;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  letter-spacing:.4px;
-}
-
-.artist{
-  margin:4px 0 0;
-  font-size:13px;
-  color:rgba(255,255,255,.65);
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.progress-row{
-  width:100%;
-  margin-top:14px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;height:100%;margin:0}
+body{font-family:"Plus Jakarta Sans",sans-serif;background:#000;color:#fff;overflow:hidden;user-select:none}
+.background{position:fixed;inset:0;z-index:0;overflow:hidden;background:#000}
+.background:after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.15);pointer-events:none}
+.bg-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.95) saturate(1.15);opacity:0;transition:opacity 1.6s cubic-bezier(.4,0,.2,1)}
+.bg-image.active{opacity:1}
+.app{position:relative;z-index:5;width:100%;height:100dvh;min-height:100dvh;padding:20px;display:flex;flex-direction:column;justify-content:space-between}
+.header{width:100%;display:flex;align-items:center;justify-content:space-between}
+.clock{font-size:clamp(20px,3.5vw,32px);font-weight:800;letter-spacing:2px;color:rgba(255,255,255,.95);text-shadow:0 4px 20px rgba(0,0,0,.5)}
+.hours-red{color:#f00!important;text-shadow:0 0 12px rgba(255,0,0,.7)}
+.glass{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(25px);-webkit-backdrop-filter:blur(25px);box-shadow:0 25px 50px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.2)}
+.glass-btn{display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.22);color:#fff;background:rgba(255,255,255,.12);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);box-shadow:inset 0 1px 2px rgba(255,255,255,.25),0 8px 20px rgba(0,0,0,.3);cursor:pointer;transition:all .25s cubic-bezier(.4,0,.2,1)}
+.glass-btn:hover{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.4);transform:translateY(-2px)}
+.glass-btn:active{transform:scale(.93)}
+.menu-button{width:46px;height:46px;border-radius:50%;font-size:16px}
+.main{width:100%;max-width:950px;margin:auto;padding:10px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.player{width:100%;padding:18px 24px;border-radius:36px;display:flex;align-items:center;gap:24px}
+.cover-wrapper{flex-shrink:0;width:110px;height:110px;border-radius:50%;overflow:hidden;border:3px solid rgba(255,255,255,.4);box-shadow:0 15px 35px rgba(0,0,0,.5),0 0 25px rgba(255,255,255,.12)}
+.cover{width:100%;height:100%;object-fit:cover;animation:spin 14s linear infinite;animation-play-state:paused;will-change:transform}
+.cover.playing{animation-play-state:running}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.song-area{flex:1;min-width:0}
+.song-title{margin:0;font-size:clamp(18px,2.2vw,24px);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.4px}
+.artist{margin:4px 0 0;font-size:13px;color:rgba(255,255,255,.65);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.progress-row{width:100%;margin-top:14px;display:flex;align-items:center;gap:12px}
 .playback-status{min-height:16px;margin:7px 0 0;font-size:11px;color:rgba(255,255,255,.75)}
-
-.time{
-  width:38px;
-  font-size:11px;
-  font-family:monospace;
-  color:rgba(255,255,255,.7);
-}
-
-.time.right{text-align:left}
-.time.left{text-align:right}
-
-.seek{
-  flex:1;
-  width:100%;
-  appearance:none;
-  -webkit-appearance:none;
-  height:6px;
-  border-radius:10px;
-  background:rgba(255,255,255,.2);
-  outline:none;
-  cursor:pointer;
-}
-
-.seek::-webkit-slider-thumb{
-  appearance:none;
-  -webkit-appearance:none;
-  width:15px;
-  height:15px;
-  border-radius:50%;
-  background:#fff;
-  box-shadow:0 0 15px rgba(255,255,255,.8);
-  cursor:pointer;
-}
-
-.seek::-moz-range-thumb{
-  width:15px;
-  height:15px;
-  border:none;
-  border-radius:50%;
-  background:#fff;
-  cursor:pointer;
-}
-
-.controls-container{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin-top:16px;
-}
-
-.controls{
-  display:flex;
-  align-items:center;
-  gap:14px;
-}
-
-.control{
-  width:46px;
-  height:46px;
-  border-radius:50%;
-  font-size:15px;
-}
-
-.play-button{
-  width:58px;
-  height:58px;
-  border-radius:50%;
-  font-size:20px;
-  background:rgba(255,255,255,.22);
-}
-
-.play-icon{
-  margin-left:2px;
-}
-
-.badge{
-  margin-top:18px;
-  padding:6px 18px;
-  border:1px solid rgba(255,255,255,.4);
-  border-radius:999px;
-  background:rgba(0,0,0,.4);
-  backdrop-filter:blur(12px);
-  font-size:11px;
-  font-weight:700;
-  letter-spacing:3px;
-  box-shadow:0 10px 25px rgba(0,0,0,.3);
-}
-
-/* MENU */
-
-.modal{
-  position:fixed;
-  inset:0;
-  z-index:50;
-  padding:15px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:rgba(0,0,0,.75);
-  backdrop-filter:blur(15px);
-  -webkit-backdrop-filter:blur(15px);
-  opacity:1;
-  visibility:visible;
-  transition:all .3s ease;
-}
-
-.modal.hidden{
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-}
-
-.modal-box{
-  width:100%;
-  max-width:480px;
-  max-height:88dvh;
-  padding:22px;
-  border-radius:30px;
-  display:flex;
-  flex-direction:column;
-  transform:translateY(0) scale(1);
-  transition:transform .3s cubic-bezier(.34,1.56,.64,1);
-}
-
-.modal.hidden .modal-box{
-  transform:translateY(20px) scale(.95);
-}
-
-.modal-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding-bottom:14px;
-  margin-bottom:12px;
-  border-bottom:1px solid rgba(255,255,255,.15);
-}
-
-.modal-title{
-  margin:0;
-  font-size:20px;
-  font-weight:700;
-}
-
-.modal-subtitle{
-  margin:3px 0 0;
-  font-size:11px;
-  color:rgba(255,255,255,.55);
-}
-
-.close-button{
-  width:38px;
-  height:38px;
-  border-radius:50%;
-}
-
-.menu-content{
-  overflow-y:auto;
-  padding-right:4px;
-  scrollbar-width:thin;
-}
-
-.menu-content::-webkit-scrollbar{
-  width:5px;
-}
-
-.menu-content::-webkit-scrollbar-thumb{
-  background:rgba(255,255,255,.3);
-  border-radius:20px;
-}
-
-.option{
-  width:100%;
-  padding:12px 14px;
-  margin-bottom:8px;
-  border-radius:16px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.1);
-  cursor:pointer;
-  transition:all .2s ease;
-}
-
-.option:hover{
-  background:rgba(255,255,255,.12);
-}
-
-.option-left{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.option-icon{
-  width:36px;
-  height:36px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:rgba(255,255,255,.15);
-  font-size:13px;
-}
-
-.option-title{
-  margin:0;
-  font-size:13px;
-  font-weight:700;
-}
-
-.option-status{
-  margin:2px 0 0;
-  font-size:11px;
-  color:rgba(255,255,255,.55);
-}
-
-.section-title{
-  margin:16px 0 8px;
-  font-size:10px;
-  font-weight:700;
-  letter-spacing:1.5px;
-  text-transform:uppercase;
-  color:rgba(255,255,255,.55);
-}
-
-.playlist-heading{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-top:14px;
-}
-
-.song-count{
-  font-size:10px;
-  color:rgba(255,255,255,.55);
-}
-
-.songs-list{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-  margin-top:6px;
-}
-
-.song-item{
-  padding:10px;
-  border-radius:14px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  border:1px solid rgba(255,255,255,.08);
-  background:rgba(255,255,255,.04);
-  cursor:pointer;
-  transition:all .2s ease;
-}
-
-.song-item:hover{
-  background:rgba(255,255,255,.12);
-}
-
-.song-item.current{
-  background:rgba(255,255,255,.2);
-  border-color:rgba(255,255,255,.4);
-}
-
-.song-left{
-  min-width:0;
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.song-number{
-  width:32px;
-  height:32px;
-  flex-shrink:0;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:rgba(255,255,255,.1);
-  font-size:11px;
-  font-weight:700;
-}
-
-.song-text{
-  min-width:0;
-}
-
-.song-name{
-  margin:0;
-  font-size:12px;
-  font-weight:700;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.song-artist{
-  margin:2px 0 0;
-  font-size:10px;
-  color:rgba(255,255,255,.58);
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.song-duration{
-  display:none;
-}
-
-@media(max-width:768px){
-  .app{
-    padding:14px;
-  }
-
-  .player{
-    border-radius:28px;
-    padding:14px;
-    gap:14px;
-    flex-wrap:wrap;
-  }
-
-  .cover-wrapper{
-    width:84px;
-    height:84px;
-  }
-
-  .song-area{
-    flex:1;
-    min-width:calc(100% - 110px);
-  }
-
-  .controls-container{
-    width:100%;
-    margin-top:12px;
-  }
-}
-
-@media(max-width:380px){
-  .cover-wrapper{
-    width:70px;
-    height:70px;
-  }
-
-  .song-title{
-    font-size:15px;
-  }
-
-  .controls{
-    gap:8px;
-  }
-
-  .control{
-    width:40px;
-    height:40px;
-  }
-
-  .play-button{
-    width:50px;
-    height:50px;
-  }
-}
-
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{
-    transition-duration:.01ms!important;
-    animation-duration:.01ms!important;
-  }
-}
-.hours-red{
-  color:#ff0000 !important;
-  text-shadow:0 0 12px rgba(255,0,0,.7);
-}
+.time{width:38px;font-size:11px;font-family:monospace;color:rgba(255,255,255,.7)}
+.time.right{text-align:left}.time.left{text-align:right}
+.seek{flex:1;width:100%;appearance:none;-webkit-appearance:none;height:6px;border-radius:10px;background:rgba(255,255,255,.2);outline:none;cursor:pointer}
+.seek::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:#fff;box-shadow:0 0 15px rgba(255,255,255,.8);cursor:pointer}
+.seek::-moz-range-thumb{width:15px;height:15px;border:none;border-radius:50%;background:#fff;cursor:pointer}
+.controls-container{display:flex;align-items:center;justify-content:center;margin-top:16px}
+.controls{display:flex;align-items:center;gap:14px}
+.control{width:46px;height:46px;border-radius:50%;font-size:15px}
+.play-button{width:58px;height:58px;border-radius:50%;font-size:20px;background:rgba(255,255,255,.22)}
+.play-icon{margin-left:2px}
+.badge{margin-top:18px;padding:6px 18px;border:1px solid rgba(255,255,255,.4);border-radius:999px;background:rgba(0,0,0,.4);backdrop-filter:blur(12px);font-size:11px;font-weight:700;letter-spacing:3px;box-shadow:0 10px 25px rgba(0,0,0,.3)}
+.modal{position:fixed;inset:0;z-index:50;padding:15px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.75);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);opacity:1;visibility:visible;transition:all .3s ease}
+.modal.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.modal-box{width:100%;max-width:480px;max-height:88dvh;padding:22px;border-radius:30px;display:flex;flex-direction:column;transform:translateY(0) scale(1);transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+.modal.hidden .modal-box{transform:translateY(20px) scale(.95)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding-bottom:14px;margin-bottom:12px;border-bottom:1px solid rgba(255,255,255,.15)}
+.modal-title{margin:0;font-size:20px;font-weight:700}
+.modal-subtitle{margin:3px 0 0;font-size:11px;color:rgba(255,255,255,.55)}
+.close-button{width:38px;height:38px;border-radius:50%}
+.menu-content{overflow-y:auto;padding-right:4px;scrollbar-width:thin}
+.menu-content::-webkit-scrollbar{width:5px}
+.menu-content::-webkit-scrollbar-thumb{background:rgba(255,255,255,.3);border-radius:20px}
+.option{width:100%;padding:12px 14px;margin-bottom:8px;border-radius:16px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);cursor:pointer;transition:all .2s ease}
+.option:hover{background:rgba(255,255,255,.12)}
+.option-left{display:flex;align-items:center;gap:12px}
+.option-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.15);font-size:13px}
+.option-title{margin:0;font-size:13px;font-weight:700}
+.option-status{margin:2px 0 0;font-size:11px;color:rgba(255,255,255,.55)}
+.section-title{margin:16px 0 8px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.playlist-heading{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+.song-count{font-size:10px;color:rgba(255,255,255,.55)}
+.songs-list{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.song-item{padding:10px;border-radius:14px;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);cursor:pointer;transition:all .2s ease}
+.song-item:hover{background:rgba(255,255,255,.12)}
+.song-item.current{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.4)}
+.song-left{min-width:0;display:flex;align-items:center;gap:10px}
+.song-number{width:32px;height:32px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.1);font-size:11px;font-weight:700}
+.song-text{min-width:0}
+.song-name{margin:0;font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.song-artist{margin:2px 0 0;font-size:10px;color:rgba(255,255,255,.58);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:768px){.app{padding:14px}.player{border-radius:28px;padding:14px;gap:14px;flex-wrap:wrap}.cover-wrapper{width:84px;height:84px}.song-area{flex:1;min-width:calc(100% - 110px)}.controls-container{width:100%;margin-top:12px}}
+@media(max-width:380px){.cover-wrapper{width:70px;height:70px}.song-title{font-size:15px}.controls{gap:8px}.control{width:40px;height:40px}.play-button{width:50px;height:50px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
 </style>
 </head>
 
 <body>
-
 <div class="background">
-  <img id="bg1" class="bg-image active"
-       src="https://raw.githubusercontent.com/suryansh6467/songs/main/172404-your_name-mitsuha_miyamizu-taki_tachibana-anime-atmosphere-7680x4320.jpg"
-       alt="Background">
-
-  <img id="bg2" class="bg-image"
-       src="https://raw.githubusercontent.com/suryansh6467/songs/main/anime-girl-meteor-streak-10k-0t.jpg"
-       alt="Background">
+  <img id="bg1" class="bg-image active" src="https://raw.githubusercontent.com/suryansh6467/songs/main/172404-your_name-mitsuha_miyamizu-taki_tachibana-anime-atmosphere-7680x4320.jpg" alt="Background">
+  <img id="bg2" class="bg-image" src="https://raw.githubusercontent.com/suryansh6467/songs/main/anime-girl-meteor-streak-10k-0t.jpg" alt="Background">
 </div>
 
 <div class="app">
-
-<header class="header">
-  <div id="digital-clock" class="clock">
-  <span class="hours-red">00</span><span>:</span><span id="clock-minutes">00</span><span>:</span><span id="clock-seconds">00</span>
-</div>
-
-  <button id="menu-btn"
-          class="glass-btn menu-button"
-          title="Music Menu"
-          aria-label="Open Music Menu">
-    <i class="fa-solid fa-bars"></i>
-  </button>
-</header>
-
-<main class="main">
-
-  <div class="player glass">
-
-    <div class="cover-wrapper">
-      <img id="album-cover"
-           class="cover"
-           src="https://raw.githubusercontent.com/suryansh6467/songs/main/1313eb05e394d398870fc6a320eec62e.jpg"
-           alt="Album Cover">
+  <header class="header">
+    <div id="digital-clock" class="clock">
+      <span class="hours-red">00</span>:<span id="clock-minutes">00</span>:<span id="clock-seconds">00</span>
     </div>
+    <button id="menu-btn" class="glass-btn menu-button" title="Music Menu" aria-label="Open Music Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </header>
 
-    <div class="song-area">
-
-      <h2 id="song-title" class="song-title">
-        Song Title
-      </h2>
-
-      <p id="artist-name" class="artist">
-        Artist Name
-      </p>
-
-      <div class="progress-row">
-
-        <span id="current-time" class="time left">
-          0:00
-        </span>
-
-        <input id="seek-bar"
-               class="seek"
-               type="range"
-               min="0"
-               max="100"
-               value="0"
-               aria-label="Song progress">
-
-        <span id="total-duration" class="time right">
-          0:00
-        </span>
-
-      </div>
-      <p id="playback-status" class="playback-status" role="status" aria-live="polite"></p>
-
-    </div>
-
-    <div class="controls-container">
-
-      <div class="controls">
-
-        <button id="prev-btn"
-                class="glass-btn control"
-                title="Previous"
-                aria-label="Previous Song">
-          <i class="fa-solid fa-chevron-left"></i>
-        </button>
-
-        <button id="play-btn"
-                class="glass-btn play-button"
-                title="Play / Pause"
-                aria-label="Play or Pause">
-          <i id="play-icon"
-             class="fa-solid fa-play play-icon"></i>
-        </button>
-
-        <button id="next-btn"
-                class="glass-btn control"
-                title="Next"
-                aria-label="Next Song">
-          <i class="fa-solid fa-chevron-right"></i>
-        </button>
-
+  <main class="main">
+    <div class="player glass">
+      <div class="cover-wrapper">
+        <img id="album-cover" class="cover" src="https://raw.githubusercontent.com/suryansh6467/songs/main/1313eb05e394d398870fc6a320eec62e.jpg" alt="Album Cover">
       </div>
 
+      <div class="song-area">
+        <h2 id="song-title" class="song-title">Song Title</h2>
+        <p id="artist-name" class="artist">Artist Name</p>
+        <div class="progress-row">
+          <span id="current-time" class="time left">0:00</span>
+          <input id="seek-bar" class="seek" type="range" min="0" max="100" value="0" aria-label="Song progress">
+          <span id="total-duration" class="time right">0:00</span>
+        </div>
+        <p id="playback-status" class="playback-status" role="status" aria-live="polite"></p>
+      </div>
+
+      <div class="controls-container">
+        <div class="controls">
+          <button id="prev-btn" class="glass-btn control" title="Previous" aria-label="Previous Song"><i class="fa-solid fa-chevron-left"></i></button>
+          <button id="play-btn" class="glass-btn play-button" title="Play / Pause" aria-label="Play or Pause"><i id="play-icon" class="fa-solid fa-play play-icon"></i></button>
+          <button id="next-btn" class="glass-btn control" title="Next" aria-label="Next Song"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+      </div>
     </div>
-
-  </div>
-
-  <div class="badge">
-    N0tSuryansh
-  </div>
-
-</main>
+    <div class="badge">N0tSuryansh</div>
+  </main>
 </div>
-
-<!-- MUSIC MENU -->
 
 <div id="playlist-modal" class="modal hidden">
-
   <div class="modal-box glass">
-
     <div class="modal-header">
-
       <div>
         <h3 class="modal-title">Music Menu</h3>
         <p class="modal-subtitle">Player Settings</p>
       </div>
-
-      <button id="close-menu"
-              class="glass-btn close-button"
-              aria-label="Close Menu">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-
+      <button id="close-menu" class="glass-btn close-button" aria-label="Close Menu"><i class="fa-solid fa-xmark"></i></button>
     </div>
-
     <div class="menu-content">
-
       <div id="shuffle-toggle" class="option">
-
         <div class="option-left">
-
-          <div class="option-icon">
-            <i class="fa-solid fa-shuffle"></i>
-          </div>
-
-          <div>
-            <h4 class="option-title">Shuffle</h4>
-            <p id="shuffle-status" class="option-status">Off</p>
-          </div>
-
+          <div class="option-icon"><i class="fa-solid fa-shuffle"></i></div>
+          <div><h4 class="option-title">Shuffle</h4><p id="shuffle-status" class="option-status">On</p></div>
         </div>
-
         <i class="fa-solid fa-chevron-right"></i>
-
       </div>
-
       <div id="repeat-toggle" class="option">
-
         <div class="option-left">
-
-          <div class="option-icon">
-            <i class="fa-solid fa-repeat"></i>
-          </div>
-
-          <div>
-            <h4 class="option-title">Repeat</h4>
-            <p id="repeat-status" class="option-status">All songs</p>
-          </div>
-
+          <div class="option-icon"><i class="fa-solid fa-repeat"></i></div>
+          <div><h4 class="option-title">Repeat</h4><p id="repeat-status" class="option-status">All songs</p></div>
         </div>
-
         <i class="fa-solid fa-chevron-right"></i>
-
       </div>
-
       <div class="playlist-heading">
-
-        <div class="section-title">
-          Playlist
-        </div>
-
-        <span id="playlist-count" class="song-count">
-          0 Songs
-        </span>
-
+        <div class="section-title">Playlist</div>
+        <span id="playlist-count" class="song-count">0 Songs</span>
       </div>
-
       <div id="songs-list" class="songs-list"></div>
-
     </div>
-
   </div>
-
 </div>
 
-<audio id="audio-element" preload="auto" playsinline></audio>
+<audio id="audio-element" preload="metadata" playsinline></audio>
 
 <script>
 "use strict";
 
-/* =========================================================
-   N0tSuryansh MUSIC PLAYER — OPTIMIZED ENGINE
-========================================================= */
+const defaultCover = "https://raw.githubusercontent.com/suryansh6467/songs/main/1313eb05e394d398870fc6a320eec62e.jpg";
 
-const defaultCover =
-"https://raw.githubusercontent.com/suryansh6467/songs/main/1313eb05e394d398870fc6a320eec62e.jpg";
-
-
-/* =========================================================
-   PLAYLIST
-========================================================= */
-
-const songs = [
-  // 1. Romantic vibes ❤️
+/* PLAYLIST — FIXED: variable name is playlist */
+const playlist = [
+  // Romantic vibes
   {title:"Jeene Laga Hoon",artist:"Atif Aslam, Shreya Ghoshal",duration:"",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_dMOwlHNIGM0_Jeene-Laga-Hoon-Lyrics-Ramaiya-Vastavaiya-Atif-Aslam-Shreya-Ghoshal_009_128k.mp3"},
   {title:"Tu Chahiye",artist:"Atif Aslam",duration:"4:27",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Tu-Chahiye-SnapYT.App.mp3"},
   {title:"Kaun Tujhe",artist:"Palak Muchhal",duration:"4:01",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Palak-Muchhal-SnapYT.App.mp3"},
@@ -818,7 +184,7 @@ const songs = [
   {title:"Ik Mulaqaat",artist:"Altamash Faridi, Palak Muchhal",duration:"3:15",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Ik%20Mulaqaat%20-%20Full%20Video%20_%20Dream%20Girl%20_%20Ayushmann%20Khurrana%2C%20Nushrratt%20Bharuccha_%20Altamash%20F%2C%20Palak%20M%20128kbps.mp4"},
   {title:"Labon Ko",artist:"KK",duration:"",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_U9Ba5qJU6fw_Labon-Ko-Lyrics-Bhool-Bhulaiyaa-Pritam-K-K-Akshay-Kumar-Shiney-Ahuja-Vidya-Balan_009_128k.mp3"},
 
-  // 2. Deep love & memories 💗
+  // Deep love & memories
   {title:"Tum Se Hi",artist:"Mohit Chauhan",duration:"5:23",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Mohit-Chauhan-SnapYT.App.mp3"},
   {title:"Tum Mile (Love Reprise)",artist:"Javed Ali",duration:"",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_8JbEH5rs18Q_Pritam-Javed-Ali-Tum-Mile-Love-Reprise-Lyrics_009_128k.mp3"},
   {title:"Chal Wahan Jaate Hain",artist:"Arijit Singh",duration:"5:25",src:"https://raw.githubusercontent.com/suryansh6467/songs/21af342f0afc8d5385497db07c2d854e18807747/Chal%20Wahan%20Jaate%20Hain%20(From%20Chal%20Wahan%20Jaate%20Hain).mp3"},
@@ -828,7 +194,7 @@ const songs = [
   {title:"Tere Bin",artist:"Ranveer Singh & Sara Ali Khan",duration:"3:34",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/videoplayback.m4a"},
   {title:"Tere Bin",artist:"Aviverse",duration:"3:15",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Tere-Bin-SnapYT.App.mp3"},
 
-  // 3. Emotional & heartbreak 🥀
+  // Emotional & heartbreak
   {title:"Meri Aashiqui",artist:"Arijit Singh, Palak Muchhal",duration:"",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_jfh7ZKHxNTI_Meri-Aashiqui-Lyrical-Arijit-Singh-Palak-Muchhal-Ashiqui-2-Bollywood-Songs_009_128k.mp3"},
   {title:"Roke Na Ruke Naina",artist:"Arijit Singh",duration:"",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_10cOJl1v4J8_Arijit-Singh-Roke-Na-Ruke-Naina-Lyrics-Video-Badrinath-Ki-Dulhania-Varun-Dhawan_009_128k.mp3"},
   {title:"Ae Dil Hai Mushkil",artist:"Arijit Singh",duration:"5:00",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Ae%20Dil%20Hai%20Mushkil%20Title%20Track%20Full%20Video%20-%20Ranbir%2C%20Anushka%2C%20Aishwarya%20_%20Arijit%20Singh_%20Pritam%2048KBPS.mp4"},
@@ -841,13 +207,13 @@ const songs = [
   {title:"Aaya Woh Phir Nazar",artist:"Tune Jo Na Kaha",duration:"",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_XigHCp4uE4g_Aaya-woh-phir-nazar-aise-tune-jo-na-kaha-full-song-lyrics_009_128k.mp3"},
   {title:"Bekhudi",artist:"T-Series",duration:"",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_RmSU9drvPis_Bekhudi-lyrics-T-series_008_128k.mp3"},
   {title:"Faasle",artist:"Aditya Rikhari",duration:"3:36",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_EiiOYwqk3A0_Aditya-Rikhari-FAASLE_009_128k.mp3"},
-  {title:"Khat",artist:"Navjot Ahuja",duration:"3:45",src:"https://github.com/suryansh6467/songs/raw/refs/heads/main/Khat%20Navjot%20Ahuja%20320%20Kbps%20(1).mp3"},
+  {title:"Khat",artist:"Navjot Ahuja",duration:"3:45",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Khat%20Navjot%20Ahuja%20320%20Kbps%20(1).mp3"},
   {title:"Virhaa",artist:"Mizajii, Sammohitt",duration:"3:00",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/mizajii-sammohit--prod-by-dikshyant.mp3"},
   {title:"O Re Bewafa",artist:"Asad Naeem",duration:"4:12",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_dkrEyjEsjLs_O-Re-Bewafa-Asad-Naeem-Heart-Touching-Sad-Song-song_009_128k.mp3"},
   {title:"Afsos",artist:"Anuv Jain & AP Dhillon",duration:"",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_2FhgKp_lfJQ_Anuv-Jain-AFSOS-ft-AP-Dhillon-Official-Visualizer_009_128k.mp3"},
   {title:"Roi Na",artist:"Talwiinder",duration:"",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_u2IWrmGXEgw_Roi-Na-Talwiinder-Cover-Offically-sung-by-NInja-Heartbreak-Tribute_009_128k.mp3"},
 
-  // 4. Punjabi & indie vibes 🎧
+  // Punjabi & indie vibes
   {title:"Je Mile Oh Kudi (Cover)",artist:"Talwiinder ft. PUSH",duration:"",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_JpYCJX5t4xM_Je-Mile-Oh-Kudi-Cover-by-Talwiinder-ft-Push-Heartfelt-Punjabi-Vibes_009_128k.mp3"},
   {title:"Tareyaan De Des (Cover)",artist:"Talwiinder ft. PUSH",duration:"",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_2-DngvMasNo_Tareyaan-De-Des-Cover-by-Talwiinder-ft-PUSH_007_128k.mp3"},
   {title:"Phir Bhi (Cover)",artist:"Talwiinder",duration:"1:48",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_YzrUThw6dHE_Talwiinder-Phir-Bhi-Cover-Hindi-Lofi_008_128k.mp3"},
@@ -856,14 +222,11 @@ const songs = [
   {title:"Aarzu",artist:"Noor Khan, Madhurxo & Kalakar",duration:"",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_KxzCuvCsRx0_Aarzu-Lyrics-Noor-Khan-Madhurxo-Kalakar-R44j_009_128k.mp3"},
   {title:"Alfaaz",artist:"Hamza Malik x Zain Zohaib",duration:"3:50",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Alfaaz%20_%20Hamza%20Malik%20x%20Zain%20Zohaib%20_%20Official%20Visualiser%20128KBPS.mp3"},
   {title:"Bol Kaffara Kya Hoga",artist:"Neha Kakkar",duration:"3:17",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Bol%20Kaffara%20Kya%20Hoga%20-%20Neha%20Kakkar.mp3"},
-  {title:"Tu Jaane Na",artist:"Atif Aslam",duration:"5:37",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Tu%20Jaane%20Na%20-%20Atif%20Aslam%20(Lyrics)%20_%20Lyrical%20Bam%20Hindi%20128kbps.mp4"]
-
-
+  /* FIXED: last song object now closes correctly */
+  {title:"Tu Jaane Na",artist:"Atif Aslam",duration:"5:37",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Tu%20Jaane%20Na%20-%20Atif%20Aslam%20(Lyrics)%20_%20Lyrical%20Bam%20Hindi%20128kbps.mp4"}
 ];
-/* =========================================================
-   STATE
-========================================================= */
 
+/* STATE */
 let currentSongIndex = 0;
 let isPlaying = false;
 let isShuffle = true;
@@ -871,963 +234,422 @@ let repeatMode = 0;
 let currentBgIndex = 0;
 let activeLayer = 1;
 let isSeeking = false;
-
 let lastDisplayedSecond = -1;
+let backgroundTimer = null;
 
-
-/* =========================================================
-   ELEMENTS
-========================================================= */
-
+/* ELEMENTS */
 const audio = document.getElementById("audio-element");
 const playBtn = document.getElementById("play-btn");
 const playIcon = document.getElementById("play-icon");
 const prevBtn = document.getElementById("prev-btn");
 const nextBtn = document.getElementById("next-btn");
-
 const titleEl = document.getElementById("song-title");
 const artistEl = document.getElementById("artist-name");
 const coverEl = document.getElementById("album-cover");
-
 const seekBar = document.getElementById("seek-bar");
 const currentTimeEl = document.getElementById("current-time");
 const totalDurationEl = document.getElementById("total-duration");
 const playbackStatusEl = document.getElementById("playback-status");
-function showPlaybackStatus(message){ playbackStatusEl.textContent = message; }
-const clockEl = document.getElementById("digital-clock");
 const hoursRed = document.querySelector(".hours-red");
 const clockMinutes = document.getElementById("clock-minutes");
 const clockSeconds = document.getElementById("clock-seconds");
-
 const modal = document.getElementById("playlist-modal");
 const menuBtn = document.getElementById("menu-btn");
 const closeMenu = document.getElementById("close-menu");
-
 const songsList = document.getElementById("songs-list");
 const playlistCount = document.getElementById("playlist-count");
-
 const shuffleToggle = document.getElementById("shuffle-toggle");
 const shuffleStatus = document.getElementById("shuffle-status");
-
 const repeatToggle = document.getElementById("repeat-toggle");
 const repeatStatus = document.getElementById("repeat-status");
-
 const bg1 = document.getElementById("bg1");
 const bg2 = document.getElementById("bg2");
 
-
-/* =========================================================
-   AUDIO CONFIG
-========================================================= */
-
-audio.preload = "auto";
-audio.playsInline = true;
-function showPlaybackStatus(message){ playbackStatusEl.textContent = message; }
-
-audio.addEventListener("error", () => {
-  isPlaying = false;
-
-  playIcon.className =
-    "fa-solid fa-play play-icon";
-
-  coverEl.classList.remove("playing");
-  showPlaybackStatus("Unable to load this track. Check its link or select another song.");
-
-  console.warn(
-    "Unable to play:",
-    playlist[currentSongIndex]?.title
-  );
-});
-
-
-/* =========================================================
-   LOCK-SCREEN MEDIA CONTROLS
-========================================================= */
-function updateMediaSession(song){
-  if(!("mediaSession" in navigator)) return;
-  navigator.mediaSession.metadata = new MediaMetadata({
-    title: song.title,
-    artist: song.artist || "Unknown Artist",
-    album: "N0tSuryansh Music Player",
-    artwork: [{ src: defaultCover, sizes: "512x512", type: "image/jpeg" }]
-  });
-  for (const [action, handler] of Object.entries({
-    play: () => playSong(), pause: () => pauseSong(),
-    previoustrack: () => previousSong(), nexttrack: () => nextSong()
-  })) {
-    try { navigator.mediaSession.setActionHandler(action, handler); } catch (_) {}
-  }
+function showPlaybackStatus(message) {
+  playbackStatusEl.textContent = message;
 }
-/* =========================================================
-   CLOCK
-========================================================= */
 
-function updateClock(){
+function formatTime(seconds) {
+  if (!Number.isFinite(seconds) || seconds < 0) return "0:00";
+  const minutes = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${minutes}:${String(secs).padStart(2, "0")}`;
+}
 
+/* CLOCK */
+function updateClock() {
   const now = new Date();
-
-  hoursRed.textContent =
-    String(now.getHours()).padStart(2,"0");
-
-  clockMinutes.textContent =
-    String(now.getMinutes()).padStart(2,"0");
-
-  clockSeconds.textContent =
-    String(now.getSeconds()).padStart(2,"0");
+  hoursRed.textContent = String(now.getHours()).padStart(2, "0");
+  clockMinutes.textContent = String(now.getMinutes()).padStart(2, "0");
+  clockSeconds.textContent = String(now.getSeconds()).padStart(2, "0");
 }
-
 updateClock();
+setInterval(updateClock, 1000);
 
-setInterval(updateClock,1000);
+/* MEDIA SESSION — safely handles unsupported browsers */
+function updateMediaSession(song) {
+  if (!("mediaSession" in navigator) || typeof MediaMetadata === "undefined") return;
 
+  try {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: song.title,
+      artist: song.artist || "Unknown Artist",
+      album: "N0tSuryansh Music Player",
+      artwork: [{src:defaultCover,sizes:"512x512",type:"image/jpeg"}]
+    });
 
-/* =========================================================
-   TIME FORMAT
-========================================================= */
+    const actions = {
+      play: () => playSong(),
+      pause: () => pauseSong(),
+      previoustrack: () => previousSong(),
+      nexttrack: () => nextSong()
+    };
 
-function formatTime(seconds){
-
-  if(!Number.isFinite(seconds) || seconds < 0){
-    return "0:00";
+    for (const [action, handler] of Object.entries(actions)) {
+      try { navigator.mediaSession.setActionHandler(action, handler); } catch (_) {}
+    }
+  } catch (error) {
+    console.warn("Media session unavailable:", error);
   }
-
-  const minutes =
-    Math.floor(seconds / 60);
-
-  const secs =
-    Math.floor(seconds % 60);
-
-  return `${minutes}:${String(secs).padStart(2,"0")}`;
-
 }
 
+/* PLAYLIST DISPLAY */
+function escapeHTML(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
 
-/* =========================================================
-   LOAD SONG
-========================================================= */
+function renderPlaylist() {
+  const fragment = document.createDocumentFragment();
 
-function loadSong(song, autoPlay = false){
+  playlist.forEach((song, index) => {
+    const item = document.createElement("div");
+    item.className = "song-item";
+    item.dataset.index = String(index);
 
+    item.innerHTML = `
+      <div class="song-left">
+        <div class="song-number">${index + 1}</div>
+        <div class="song-text">
+          <p class="song-name">${escapeHTML(song.title)}</p>
+          <p class="song-artist">${escapeHTML(song.artist || "Unknown Artist")}</p>
+        </div>
+      </div>
+    `;
+    fragment.appendChild(item);
+  });
+
+  songsList.replaceChildren(fragment);
+  playlistCount.textContent = `${playlist.length} Songs`;
+  updateCurrentPlaylistItem();
+}
+
+function updateCurrentPlaylistItem() {
+  Array.from(songsList.children).forEach((item, index) => {
+    const number = item.querySelector(".song-number");
+
+    if (index === currentSongIndex) {
+      item.classList.add("current");
+      number.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+    } else {
+      item.classList.remove("current");
+      number.textContent = String(index + 1);
+    }
+  });
+}
+
+/* AUDIO PLAYER */
+function loadSong(song, autoPlay = false) {
   pauseSong();
 
-  titleEl.textContent =
-    song.title;
-
-  artistEl.textContent =
-    song.artist || "Unknown Artist";
-
-  coverEl.src =
-    defaultCover;
-
+  titleEl.textContent = song.title;
+  artistEl.textContent = song.artist || "Unknown Artist";
+  coverEl.src = defaultCover;
   seekBar.value = 0;
-
-  currentTimeEl.textContent =
-    "0:00";
-
-  totalDurationEl.textContent =
-    song.duration || "0:00";
-
+  currentTimeEl.textContent = "0:00";
+  totalDurationEl.textContent = song.duration || "0:00";
   lastDisplayedSecond = -1;
 
   audio.src = song.src;
   audio.load();
-  updateMediaSession(song);
 
+  updateMediaSession(song);
   updateCurrentPlaylistItem();
 
-  if(autoPlay){
-    playSong();
-  }
-
+  if (autoPlay) playSong();
 }
 
+async function playSong() {
+  if (!playlist[currentSongIndex]) return;
 
-/* =========================================================
-   PLAY
-========================================================= */
-
-async function playSong(){
-
-  try{
-    if(!audio.src){
+  try {
+    if (!audio.src) {
       audio.src = playlist[currentSongIndex].src;
       audio.load();
     }
-    showPlaybackStatus("Loading song…");
+
     showPlaybackStatus("Loading song…");
     await audio.play();
     showPlaybackStatus("");
-    showPlaybackStatus("");
-
-  }catch(error){
-
-    showPlaybackStatus("Tap Play to start audio. Your browser blocked autoplay.");
-
-    console.warn(
-      "Playback blocked/error:",
-      error
-    );
-
+  } catch (error) {
+    showPlaybackStatus("Couldn't play this song. Tap Play again or try another track.");
+    console.warn("Playback error:", error);
   }
-
 }
 
-
-/* =========================================================
-   PAUSE
-========================================================= */
-
-function pauseSong(){
-
-  if(!audio.paused){
-    audio.pause();
-  }
-
+function pauseSong() {
+  audio.pause();
   isPlaying = false;
-
-  playIcon.className =
-    "fa-solid fa-play play-icon";
-
+  playIcon.className = "fa-solid fa-play play-icon";
   coverEl.classList.remove("playing");
-
-  stopProgressAnimation();
-
 }
 
-
-/* =========================================================
-   PLAY / PAUSE
-========================================================= */
-
-function togglePlay(){
-
-  if(audio.paused){
-
-    playSong();
-
-  }else{
-
-    pauseSong();
-
-  }
-
+function togglePlay() {
+  if (audio.paused) playSong();
+  else pauseSong();
 }
-
-
-/* =========================================================
-   AUDIO PLAY
-========================================================= */
 
 audio.addEventListener("play", () => {
-
   isPlaying = true;
-
-  playIcon.className =
-    "fa-solid fa-pause play-icon";
-
+  playIcon.className = "fa-solid fa-pause play-icon";
   coverEl.classList.add("playing");
-
-  startProgressAnimation();
-
 });
-
-
-/* =========================================================
-   AUDIO PAUSE
-========================================================= */
 
 audio.addEventListener("pause", () => {
-
   isPlaying = false;
-
-  playIcon.className =
-    "fa-solid fa-play play-icon";
-
+  playIcon.className = "fa-solid fa-play play-icon";
   coverEl.classList.remove("playing");
-
-  stopProgressAnimation();
-
 });
 
-
-/* =========================================================
-   AUDIO METADATA
-========================================================= */
-
-audio.addEventListener(
-  "loadedmetadata",
-  () => {
-
-    if(Number.isFinite(audio.duration)){
-
-      totalDurationEl.textContent =
-        formatTime(audio.duration);
-
-    }
-
+audio.addEventListener("loadedmetadata", () => {
+  if (Number.isFinite(audio.duration)) {
+    totalDurationEl.textContent = formatTime(audio.duration);
   }
-);
+});
 
+audio.addEventListener("timeupdate", () => {
+  if (!Number.isFinite(audio.duration) || audio.duration <= 0 || isSeeking) return;
 
-/* =========================================================
-   SMOOTH PROGRESS ENGINE
-========================================================= */
+  seekBar.value = String((audio.currentTime / audio.duration) * 100);
 
-function updateProgress(){
-
-  if(
-    !audio.duration ||
-    !Number.isFinite(audio.duration) ||
-    isSeeking
-  ){
-    return;
-
+  const currentSecond = Math.floor(audio.currentTime);
+  if (currentSecond !== lastDisplayedSecond) {
+    currentTimeEl.textContent = formatTime(audio.currentTime);
+    lastDisplayedSecond = currentSecond;
   }
+});
 
-  const percent =
-    (audio.currentTime / audio.duration) * 100;
-
-  seekBar.value =
-    Math.max(0, Math.min(100, percent));
-
-  const currentSecond =
-    Math.floor(audio.currentTime);
-
-  /*
-    Text only changes once per second.
-    This reduces unnecessary DOM updates.
-  */
-
-  if(currentSecond !== lastDisplayedSecond){
-
-    currentTimeEl.textContent =
-      formatTime(audio.currentTime);
-
-    lastDisplayedSecond =
-      currentSecond;
-
-  }
-
-}
-
-
-function startProgressAnimation(){ updateProgress(); }
-function stopProgressAnimation(){} 
-audio.addEventListener("timeupdate", updateProgress);
 audio.addEventListener("waiting", () => showPlaybackStatus("Buffering audio…"));
 audio.addEventListener("playing", () => showPlaybackStatus(""));
 
+audio.addEventListener("error", () => {
+  isPlaying = false;
+  playIcon.className = "fa-solid fa-play play-icon";
+  coverEl.classList.remove("playing");
+  showPlaybackStatus("Unable to load this track. Check the link or select another song.");
+  console.warn("Unable to play:", playlist[currentSongIndex]?.title, audio.error);
+});
 
-/* =========================================================
-   SEEKING
-========================================================= */
+seekBar.addEventListener("pointerdown", () => { isSeeking = true; });
 
-seekBar.addEventListener(
-  "pointerdown",
-  () => {
+seekBar.addEventListener("input", () => {
+  if (!Number.isFinite(audio.duration) || audio.duration <= 0) return;
+  const time = (Number(seekBar.value) / 100) * audio.duration;
+  currentTimeEl.textContent = formatTime(time);
+});
 
-    isSeeking = true;
-
-  }
-);
-
-
-seekBar.addEventListener(
-  "input",
-  () => {
-
-    if(!audio.duration){
-      return;
-    }
-
-    const time =
-      (Number(seekBar.value) / 100) *
-      audio.duration;
-
-    currentTimeEl.textContent =
-      formatTime(time);
-
-  }
-);
-
-
-seekBar.addEventListener(
-  "change",
-  () => {
-
-    if(!audio.duration){
-
-      isSeeking = false;
-      return;
-
-    }
-
-    audio.currentTime =
-      (Number(seekBar.value) / 100) *
-      audio.duration;
-
+function finishSeek() {
+  if (Number.isFinite(audio.duration) && audio.duration > 0) {
+    audio.currentTime = (Number(seekBar.value) / 100) * audio.duration;
     lastDisplayedSecond = -1;
-
-    isSeeking = false;
-
-    if(isPlaying){
-      startProgressAnimation();
-    }
-
   }
-);
+  isSeeking = false;
+}
+seekBar.addEventListener("change", finishSeek);
+seekBar.addEventListener("pointerup", finishSeek);
+seekBar.addEventListener("pointercancel", () => { isSeeking = false; });
 
-
-seekBar.addEventListener(
-  "pointerup",
-  () => {
-
-    isSeeking = false;
-
-  }
-);
-
-
-/* =========================================================
-   NEXT SONG
-========================================================= */
-
-function nextSong(){
-
-  if(repeatMode === 1){
-
+/* NEXT / PREVIOUS */
+function nextSong() {
+  if (repeatMode === 1) {
     audio.currentTime = 0;
-
     playSong();
-
     return;
-
   }
 
-
-  if(isShuffle){
-
+  if (isShuffle && playlist.length > 1) {
     let nextIndex;
-
-    do{
-
-      nextIndex =
-        Math.floor(
-          Math.random() *
-          playlist.length
-        );
-
-    }while(
-      playlist.length > 1 &&
-      nextIndex === currentSongIndex
-    );
-
-    currentSongIndex =
-      nextIndex;
-
-  }else{
-
-    currentSongIndex =
-      (currentSongIndex + 1) %
-      playlist.length;
-
+    do {
+      nextIndex = Math.floor(Math.random() * playlist.length);
+    } while (nextIndex === currentSongIndex);
+    currentSongIndex = nextIndex;
+  } else {
+    currentSongIndex = (currentSongIndex + 1) % playlist.length;
   }
 
-
-  loadSong(
-    playlist[currentSongIndex],
-    true
-  );
-
+  loadSong(playlist[currentSongIndex], true);
 }
 
-
-/* =========================================================
-   PREVIOUS SONG
-========================================================= */
-
-function previousSong(){
-
-  currentSongIndex =
-    (currentSongIndex - 1 + playlist.length) %
-    playlist.length;
-
-  loadSong(
-    playlist[currentSongIndex],
-    true
-  );
-
-}
-
-
-/* =========================================================
-   SONG ENDED
-========================================================= */
-
-audio.addEventListener(
-  "ended",
-  () => {
-
-    if(repeatMode === 1){
-
-      audio.currentTime = 0;
-
-      playSong();
-
-    }else{
-
-      nextSong();
-
-    }
-
-  }
-);
-
-
-/* =========================================================
-   PLAYLIST RENDER
-   Render ONCE instead of every song change
-========================================================= */
-
-function renderPlaylist(){
-
-  const fragment =
-    document.createDocumentFragment();
-
-  playlist.forEach(
-    (song,index) => {
-
-      const item =
-        document.createElement("div");
-
-      item.className =
-        "song-item";
-
-      item.dataset.index =
-        index;
-
-      item.innerHTML = `
-
-        <div class="song-left">
-
-          <div class="song-number">
-            ${index + 1}
-          </div>
-
-          <div class="song-text">
-
-            <p class="song-name">
-              ${escapeHTML(song.title)}
-            </p>
-
-            <p class="song-artist">
-              ${escapeHTML(
-                song.artist ||
-                "Unknown Artist"
-              )}
-            </p>
-
-          </div>
-
-        </div>
-
-      `;
-
-      fragment.appendChild(item);
-
-    }
-  );
-
-  songsList.replaceChildren(fragment);
-
-  playlistCount.textContent =
-    `${playlist.length} Songs`;
-
-  updateCurrentPlaylistItem();
-
-}
-
-
-/* =========================================================
-   UPDATE ONLY CURRENT ITEM
-========================================================= */
-
-function updateCurrentPlaylistItem(){
-
-  const items =
-    songsList.children;
-
-  for(let i = 0; i < items.length; i++){
-
-    const item =
-      items[i];
-
-    const number =
-      item.querySelector(".song-number");
-
-    if(i === currentSongIndex){
-
-      item.classList.add("current");
-
-      number.innerHTML =
-        '<i class="fa-solid fa-volume-high"></i>';
-
-    }else{
-
-      item.classList.remove("current");
-
-      number.textContent =
-        i + 1;
-
-    }
-
+function previousSong() {
+  if (audio.currentTime > 3) {
+    audio.currentTime = 0;
+    return;
   }
 
+  currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
+  loadSong(playlist[currentSongIndex], true);
 }
 
-
-/* =========================================================
-   PLAYLIST CLICK
-========================================================= */
-
-songsList.addEventListener(
-  "click",
-  event => {
-
-    const item =
-      event.target.closest(".song-item");
-
-    if(!item){
-      return;
-    }
-
-    const index =
-      Number(item.dataset.index);
-
-    if(!Number.isInteger(index)){
-      return;
-    }
-
-    currentSongIndex =
-      index;
-
-    loadSong(
-      playlist[currentSongIndex],
-      true
-    );
-
-    closeModalWindow();
-
+audio.addEventListener("ended", () => {
+  if (repeatMode === 1) {
+    audio.currentTime = 0;
+    playSong();
+  } else {
+    nextSong();
   }
-);
+});
 
-
-/* =========================================================
-   HTML ESCAPE
-========================================================= */
-
-function escapeHTML(value){
-
-  return String(value)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-
-}
-
-
-/* =========================================================
-   MENU
-========================================================= */
-
-function openModal(){
-
+/* MENU */
+function openModal() {
   modal.classList.remove("hidden");
-
   updateCurrentPlaylistItem();
-
 }
 
-
-function closeModalWindow(){
-
+function closeModalWindow() {
   modal.classList.add("hidden");
-
 }
 
+menuBtn.addEventListener("click", openModal);
+closeMenu.addEventListener("click", closeModalWindow);
 
-menuBtn.addEventListener(
-  "click",
-  openModal
-);
+modal.addEventListener("click", event => {
+  if (event.target === modal) closeModalWindow();
+});
 
+songsList.addEventListener("click", event => {
+  const item = event.target.closest(".song-item");
+  if (!item) return;
 
-closeMenu.addEventListener(
-  "click",
-  closeModalWindow
-);
+  const index = Number(item.dataset.index);
+  if (!Number.isInteger(index) || index < 0 || index >= playlist.length) return;
 
+  currentSongIndex = index;
+  loadSong(playlist[currentSongIndex], true);
+  closeModalWindow();
+});
 
-modal.addEventListener(
-  "click",
-  event => {
+shuffleToggle.addEventListener("click", () => {
+  isShuffle = !isShuffle;
+  shuffleStatus.textContent = isShuffle ? "On" : "Off";
+});
 
-    if(event.target === modal){
+repeatToggle.addEventListener("click", () => {
+  repeatMode = repeatMode === 0 ? 1 : 0;
+  repeatStatus.textContent = repeatMode === 1 ? "Single loop" : "All songs";
+});
 
-      closeModalWindow();
-
-    }
-
-  }
-);
-
-
-/* =========================================================
-   SHUFFLE
-========================================================= */
-
-shuffleToggle.addEventListener(
-  "click",
-  () => {
-
-    isShuffle =
-      !isShuffle;
-
-    shuffleStatus.textContent =
-      isShuffle
-      ? "On"
-      : "Off";
-
-  }
-);
-
-
-/* =========================================================
-   REPEAT
-========================================================= */
-
-repeatToggle.addEventListener(
-  "click",
-  () => {
-
-    repeatMode =
-      repeatMode === 0
-      ? 1
-      : 0;
-
-    repeatStatus.textContent =
-      repeatMode === 1
-      ? "Single loop"
-      : "All songs";
-
-  }
-);
-
-
-/* =========================================================
-   BACKGROUNDS
-========================================================= */
-
+/* BACKGROUND ROTATION */
 const backgrounds = [
-
   "https://raw.githubusercontent.com/suryansh6467/songs/main/172404-your_name-mitsuha_miyamizu-taki_tachibana-anime-atmosphere-7680x4320.jpg",
-
   "https://raw.githubusercontent.com/suryansh6467/songs/main/anime-girl-meteor-streak-10k-0t.jpg",
-
   "https://raw.githubusercontent.com/suryansh6467/songs/main/horizon-clouds-sea-sunset-calm-8k-3q.jpg"
-
 ];
 
-
-/* =========================================================
-   PRELOAD BACKGROUNDS
-========================================================= */
-
-// Backgrounds load on demand so they do not compete with audio downloads.
-
-
-/* =========================================================
-   BACKGROUND SWITCH
-========================================================= */
-
-function changeBackground(index){
-
-  if(
-    index < 0 ||
-    index >= backgrounds.length
-  ){
-    return;
-  }
-
-  const nextSrc =
-    backgrounds[index];
+function changeBackground(index) {
+  if (index < 0 || index >= backgrounds.length) return;
 
   const img = new Image();
   img.decoding = "async";
 
   img.onload = () => {
-
-    if(activeLayer === 1){
-
-      bg2.src =
-        nextSrc;
-
+    if (activeLayer === 1) {
+      bg2.src = backgrounds[index];
       bg2.classList.add("active");
-
       bg1.classList.remove("active");
-
       activeLayer = 2;
-
-    }else{
-
-      bg1.src =
-        nextSrc;
-
+    } else {
+      bg1.src = backgrounds[index];
       bg1.classList.add("active");
-
       bg2.classList.remove("active");
-
       activeLayer = 1;
-
     }
-
-    currentBgIndex =
-      index;
-
+    currentBgIndex = index;
   };
 
-  img.src =
-    nextSrc;
-
+  img.onerror = () => console.warn("Background failed to load:", backgrounds[index]);
+  img.src = backgrounds[index];
 }
 
-
-let backgroundTimer = setInterval(() => { if (!document.hidden) changeBackground((currentBgIndex + 1) % backgrounds.length); }, 60000);
-document.addEventListener("visibilitychange", () => { clearInterval(backgroundTimer); if (!document.hidden) backgroundTimer = setInterval(() => { if (!document.hidden) changeBackground((currentBgIndex + 1) % backgrounds.length); }, 60000); });
-
-
-/* =========================================================
-   BUTTON EVENTS
-========================================================= */
-
-playBtn.addEventListener(
-  "click",
-  togglePlay
-);
-
-
-prevBtn.addEventListener(
-  "click",
-  previousSong
-);
-
-
-nextBtn.addEventListener(
-  "click",
-  nextSong
-);
-
-
-/* =========================================================
-   KEYBOARD
-========================================================= */
-
-document.addEventListener(
-  "keydown",
-  event => {
-
-    if(
-      event.target.tagName === "INPUT" ||
-      event.target.tagName === "TEXTAREA"
-    ){
-      return;
+function startBackgroundTimer() {
+  if (backgroundTimer) clearInterval(backgroundTimer);
+  backgroundTimer = setInterval(() => {
+    if (!document.hidden) {
+      changeBackground((currentBgIndex + 1) % backgrounds.length);
     }
+  }, 60000);
+}
 
-    if(event.code === "Space"){
-
-      event.preventDefault();
-
-      togglePlay();
-
-    }
-
-    else if(event.code === "ArrowRight"){
-
-      nextSong();
-
-    }
-
-    else if(event.code === "ArrowLeft"){
-
-      previousSong();
-
-    }
-
-    else if(event.key === "Escape"){
-
-      closeModalWindow();
-
-    }
-
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    if (backgroundTimer) clearInterval(backgroundTimer);
+    backgroundTimer = null;
+  } else {
+    startBackgroundTimer();
   }
-);
+});
 
+/* BUTTONS */
+playBtn.addEventListener("click", togglePlay);
+prevBtn.addEventListener("click", previousSong);
+nextBtn.addEventListener("click", nextSong);
 
-/* =========================================================
-   INITIALIZE
-========================================================= */
+/* KEYBOARD */
+document.addEventListener("keydown", event => {
+  if (event.target.matches("input, textarea, select, [contenteditable='true']")) return;
 
+  if (event.code === "Space") {
+    event.preventDefault();
+    togglePlay();
+  } else if (event.code === "ArrowRight") {
+    nextSong();
+  } else if (event.code === "ArrowLeft") {
+    previousSong();
+  } else if (event.key === "Escape") {
+    closeModalWindow();
+  }
+});
+
+/* INITIALIZE */
 renderPlaylist();
-// Start each visit with a different random song when possible.
-let previousSongIndex = -1;
-try {
-  previousSongIndex = Number(localStorage.getItem("n0tSuryansh_song"));
-  if (!Number.isInteger(previousSongIndex) || previousSongIndex < 0 || previousSongIndex >= playlist.length) {
-    previousSongIndex = -1;
-  }
-} catch (e) {}
 
-if (playlist.length > 1) {
-  do {
+try {
+  const savedIndex = Number(localStorage.getItem("n0tSuryansh_song"));
+  if (Number.isInteger(savedIndex) && savedIndex >= 0 && savedIndex < playlist.length) {
+    currentSongIndex = savedIndex;
+  } else {
     currentSongIndex = Math.floor(Math.random() * playlist.length);
-  } while (currentSongIndex === previousSongIndex);
+  }
+} catch (_) {
+  currentSongIndex = Math.floor(Math.random() * playlist.length);
 }
 
 shuffleStatus.textContent = "On";
-loadSong(playlist[currentSongIndex], true);
+repeatStatus.textContent = "All songs";
 
+/* Load a track without forcing autoplay on page load.
+   Browsers often block autoplay until the user interacts. */
+loadSong(playlist[currentSongIndex], false);
+startBackgroundTimer();
 
-/* =========================================================
-   SAVE LAST SONG
-   Optional lightweight local storage
-========================================================= */
-
-window.addEventListener(
-  "beforeunload",
-  () => {
-
-    try{
-
-      localStorage.setItem(
-        "n0tSuryansh_song",
-        currentSongIndex
-      );
-
-    }catch(e){}
-
-  }
-);
-
+window.addEventListener("beforeunload", () => {
+  try {
+    localStorage.setItem("n0tSuryansh_song", String(currentSongIndex));
+  } catch (_) {}
+});
 </script>
-
 </body>
 </html>
-
-
-
-
-
-
-
