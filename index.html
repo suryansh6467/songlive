@@ -106,7 +106,7 @@
       background: rgba(255, 255, 255, 0.4);
     }
 
-    /* Red Glowing Neon Effect */
+    /* Red Glowing Neon Effect for Hours */
     .red-glow {
       color: #ff3b3b;
       text-shadow: 0 0 10px rgba(255, 59, 59, 0.8), 
@@ -124,16 +124,17 @@
          alt="Background">
   </div>
 
-  <header class="w-full flex justify-between items-center z-10 max-w-5xl">
-    <!-- Top-Left: Digital Clock (HH:MM:SS with Glowing Red Hours) -->
-    <div id="digital-clock" class="text-2xl sm:text-4xl font-bold tracking-wider drop-shadow-md text-white/95">
+  <!-- Perfectly Responsive Header -->
+  <header class="w-full flex justify-between items-center z-10 max-w-4xl px-2 gap-2">
+    <!-- Top-Left: Digital Clock (Auto Scaled) -->
+    <div id="digital-clock" class="text-xl sm:text-3xl font-bold tracking-wider drop-shadow-md text-white/95 flex-shrink-0">
       <span id="hours-part" class="red-glow">00</span>:00:00
     </div>
 
     <!-- Top-Right: Playlist Toggle Menu Button -->
-    <button id="menu-toggle-btn" title="Open Playlist Menu" class="btn-glass px-4 py-2 rounded-full flex items-center gap-2 text-sm font-semibold tracking-wide">
-      <i class="fa-solid fa-bars text-lg"></i>
-      <span class="hidden sm:inline">Playlist</span>
+    <button id="menu-toggle-btn" title="Open Playlist Menu" class="btn-glass px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-wide flex-shrink-0">
+      <i class="fa-solid fa-bars text-base sm:text-lg"></i>
+      <span class="inline">Playlist</span>
     </button>
   </header>
 
@@ -232,49 +233,49 @@
   <script>
     const defaultCover = "https://raw.githubusercontent.com/suryansh6467/songs/main/1313eb05e394d398870fc6a320eec62e.jpg";
     const playlist = [
-      {title: "Jeene Laga Hoon", artist: "Atif Aslam, Shreya Ghoshal", duration: "—", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_dMOwlHNIGM0_Jeene-Laga-Hoon-Lyrics-Ramaiya-Vastavaiya-Atif-Aslam-Shreya-Ghoshal_009_128k.mp3"},
-      {title: "Tu Chahiye", artist: "Atif Aslam", duration: "4:27", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Tu-Chahiye-SnapYT.App.mp3"},
-      {title: "Kaun Tujhe", artist: "Palak Muchhal", duration: "4:01", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Palak-Muchhal-SnapYT.App.mp3"},
-      {title: "Zara Zara Behekta", artist: "Omkar & Aditya Bhardwaj", duration: "3:56", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Zara-Zara-Behekta-SnapYT.App.mp3"},
-      {title: "Samjhawan", artist: "Arijit Singh & Shreya Ghoshal", duration: "4:28", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Samjhawan-Lyrics-SnapYT.App.mp3"},
-      {title: "Humsafar", artist: "Varun & Alia Bhatt", duration: "3:34", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Humsafar-Full-Video-SnapYT.App.mp3"},
-      {title: "Main Rang Sharbaton Ka", artist: "Atif Aslam", duration: "—", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_lljypZOn5p8_Main-rang-sharbaton-ka-Atif-Aslam-lyrics-Phata-poster-Nikla-Hero-Shahid-ileana-R_009_128k.mp3"},
-      {title: "Ik Mulaqaat", artist: "Altamash Faridi, Palak Muchhal", duration: "3:15", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Ik%20Mulaqaat%20-%20Full%20Video%20_%20Dream%20Girl%20_%20Ayushmann%20Khurrana%2C%20Nushrratt%20Bharuccha_%20Altamash%20F%2C%20Palak%20M%20128kbps.mp4"},
-      {title: "Labon Ko", artist: "KK", duration: "—", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_U9Ba5qJU6fw_Labon-Ko-Lyrics-Bhool-Bhulaiyaa-Pritam-K-K-Akshay-Kumar-Shiney-Ahuja-Vidya-Balan_009_128k.mp3"},
-      {title: "Tum Se Hi", artist: "Mohit Chauhan", duration: "5:23", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Mohit-Chauhan-SnapYT.App.mp3"},
-      {title: "Tum Mile (Love Reprise)", artist: "Javed Ali", duration: "—", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_8JbEH5rs18Q_Pritam-Javed-Ali-Tum-Mile-Love-Reprise-Lyrics_009_128k.mp3"},
-      {title: "Chal Wahan Jaate Hain", artist: "Arijit Singh", duration: "5:25", src: "https://raw.githubusercontent.com/suryansh6467/songs/21af342f0afc8d5385497db07c2d854e18807747/Chal%20Wahan%20Jaate%20Hain%20(From%20Chal%20Wahan%20Jaate%20Hain).mp3"},
-      {title: "Maula Mere Maula", artist: "Roop Kumar Rathod", duration: "6:04", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Maula-Mere-Maula-SnapYT.App.mp3"},
-      {title: "Tu Hai Kahan", artist: "AUR", duration: "—", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_AX6OrbgS8lI_Tu-Hai-Kahan-by-AUR-%D8%AA%D9%88-%DB%81%DB%92-%DA%A9%DB%81%D8%A7%DA%BA-Official-Music-Video_008_128k.mp3"},
-      {title: "Sanam Re", artist: "Arijit Singh", duration: "—", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_liSbkrbNj6Y_Sanam-Re-Arijit-Singh-Lyrics-Lyrical-Bam-Hindi_009_128k.mp3"},
-      {title: "Tere Bin", artist: "Ranveer Singh & Sara Ali Khan", duration: "3:34", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/videoplayback.m4a"},
-      {title: "Tere Bin", artist: "Aviverse", duration: "3:15", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Tere-Bin-SnapYT.App.mp3"},
-      {title: "Meri Aashiqui", artist: "Arijit Singh, Palak Muchhal", duration: "—", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_jfh7ZKHxNTI_Meri-Aashiqui-Lyrical-Arijit-Singh-Palak-Muchhal-Ashiqui-2-Bollywood-Songs_009_128k.mp3"},
-      {title: "Roke Na Ruke Naina", artist: "Arijit Singh", duration: "—", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_10cOJl1v4J8_Arijit-Singh-Roke-Na-Ruke-Naina-Lyrics-Video-Badrinath-Ki-Dulhania-Varun-Dhawan_009_128k.mp3"},
-      {title: "Ae Dil Hai Mushkil", artist: "Arijit Singh", duration: "5:00", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Ae%20Dil%20Hai%20Mushkil%20Title%20Track%20Full%20Video%20-%20Ranbir%2C%20Anushka%2C%20Aishwarya%20_%20Arijit%20Singh_%20Pritam%2048KBPS.mp4"},
-      {title: "Ye Fitoor Mera", artist: "Arijit Singh", duration: "4:44", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Ye-Fitoor-Mera-SnapYT.App.mp3"},
-      {title: "Thodi Jagah", artist: "Arijit Singh", duration: "3:32", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Thodi-Jagah-lyrics-SnapYT.App.mp3"},
-      {title: "Saanson Ko", artist: "Arijit Singh", duration: "4:48", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_moLdtaxes1g_Arijit-Singh-Shaarib-Toshi-Saanson-Ko-Lyrics-7clouds-Hindi_009_128k.mp3"},
-      {title: "Bekhayali", artist: "Arijit Singh", duration: "4:06", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Bekhayali-Lyrical-SnapYT.App.mp3"},
-      {title: "Main Dhoondne Ko", artist: "Arijit Singh", duration: "4:29", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Main-Dhoondne-Ko-SnapYT.App.mp3"},
-      {title: "Tune Jo Na Kaha", artist: "Mohit Chauhan", duration: "2:23", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Tune%20Jo%20Na%20Kaha%20Song%20_%20New%20York%20_%20John%20Abraham%2C%20Katrina%20Kaif%2C%20Neil%20Nitin%20M%20_%20Mohit%20Chauhan%20_%20Pritam%20128kbps.mp4"},
-      {title: "Aaya Woh Phir Nazar", artist: "Tune Jo Na Kaha", duration: "—", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_XigHCp4uE4g_Aaya-woh-phir-nazar-aise-tune-jo-na-kaha-full-song-lyrics_009_128k.mp3"},
-      {title: "Bekhudi", artist: "T-Series", duration: "—", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_RmSU9drvPis_Bekhudi-lyrics-T-series_008_128k.mp3"},
-      {title: "Faasle", artist: "Aditya Rikhari", duration: "3:36", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_EiiOYwqk3A0_Aditya-Rikhari-FAASLE_009_128k.mp3"},
-      {title: "Khat", artist: "Navjot Ahuja", duration: "3:45", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Khat%20Navjot%20Ahuja%20320%20Kbps%20(1).mp3"},
-      {title: "Virhaa", artist: "Mizajii, Sammohitt", duration: "3:00", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/mizajii-sammohit--prod-by-dikshyant.mp3"},
-      {title: "O Re Bewafa", artist: "Asad Naeem", duration: "4:12", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_dkrEyjEsjLs_O-Re-Bewafa-Asad-Naeem-Heart-Touching-Sad-Song-song_009_128k.mp3"},
-      {title: "Afsos", artist: "Anuv Jain & AP Dhillon", duration: "—", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_2FhgKp_lfJQ_Anuv-Jain-AFSOS-ft-AP-Dhillon-Official-Visualizer_009_128k.mp3"},
-      {title: "Roi Na", artist: "Talwiinder", duration: "—", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_u2IWrmGXEgw_Roi-Na-Talwiinder-Cover-Offically-sung-by-NInja-Heartbreak-Tribute_009_128k.mp3"},
-      {title: "Je Mile Oh Kudi (Cover)", artist: "Talwiinder ft. PUSH", duration: "—", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_JpYCJX5t4xM_Je-Mile-Oh-Kudi-Cover-by-Talwiinder-ft-Push-Heartfelt-Punjabi-Vibes_009_128k.mp3"},
-      {title: "Tareyaan De Des (Cover)", artist: "Talwiinder ft. PUSH", duration: "—", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_2-DngvMasNo_Tareyaan-De-Des-Cover-by-Talwiinder-ft-PUSH_007_128k.mp3"},
-      {title: "Phir Bhi (Cover)", artist: "Talwiinder", duration: "1:48", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_YzrUThw6dHE_Talwiinder-Phir-Bhi-Cover-Hindi-Lofi_008_128k.mp3"},
-      {title: "Main Tan Vi Pyar Kardan", artist: "Happy Raikoti & Millind Gaba", duration: "4:00", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_alEDoQMeaj4_Main-Tan-Vi-Pyar-Kardan-Full-Lyrics-Video-Happy-Raikoti-Millind-Gaba-Latest-Punj_006_128k.mp3"},
-      {title: "Ishqa Ve", artist: "Zeeshan Ali", duration: "3:37", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20ishqa%20ve%20chhaddeya%20tu%20kakh%20da%20nai%20saanu%20(Lyrics)%20Ishqa%20Ve%20%20-%20Zeeshan%20Ali%20128KBPS.mp4"},
-      {title: "Aarzu", artist: "Noor Khan, Madhurxo & Kalakar", duration: "—", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_KxzCuvCsRx0_Aarzu-Lyrics-Noor-Khan-Madhurxo-Kalakar-R44j_009_128k.mp3"},
-      {title: "Alfaaz", artist: "Hamza Malik x Zain Zohaib", duration: "3:50", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Alfaaz%20_%20Hamza%20Malik%20x%20Zain%20Zohaib%20_%20Official%20Visualiser%20128KBPS.mp3"},
-      {title: "Bol Kaffara Kya Hoga", artist: "Neha Kakkar", duration: "3:17", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Bol%20Kaffara%20Kya%20Hoga%20-%20Neha%20Kakkar.mp3"},
-      {title: "Tu Jaane Na", artist: "Atif Aslam", duration: "5:37", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Tu%20Jaane%20Na%20-%20Atif%20Aslam%20(Lyrics)%20_%20Lyrical%20Bam%20Hindi%20128kbps.mp4"}
+      {title: "Jeene Laga Hoon", artist: "Atif Aslam, Shreya Ghoshal", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_dMOwlHNIGM0_Jeene-Laga-Hoon-Lyrics-Ramaiya-Vastavaiya-Atif-Aslam-Shreya-Ghoshal_009_128k.mp3"},
+      {title: "Tu Chahiye", artist: "Atif Aslam", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Tu-Chahiye-SnapYT.App.mp3"},
+      {title: "Kaun Tujhe", artist: "Palak Muchhal", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Palak-Muchhal-SnapYT.App.mp3"},
+      {title: "Zara Zara Behekta", artist: "Omkar & Aditya Bhardwaj", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Zara-Zara-Behekta-SnapYT.App.mp3"},
+      {title: "Samjhawan", artist: "Arijit Singh & Shreya Ghoshal", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Samjhawan-Lyrics-SnapYT.App.mp3"},
+      {title: "Humsafar", artist: "Varun & Alia Bhatt", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Humsafar-Full-Video-SnapYT.App.mp3"},
+      {title: "Main Rang Sharbaton Ka", artist: "Atif Aslam", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_lljypZOn5p8_Main-rang-sharbaton-ka-Atif-Aslam-lyrics-Phata-poster-Nikla-Hero-Shahid-ileana-R_009_128k.mp3"},
+      {title: "Ik Mulaqaat", artist: "Altamash Faridi, Palak Muchhal", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Ik%20Mulaqaat%20-%20Full%20Video%20_%20Dream%20Girl%20_%20Ayushmann%20Khurrana%2C%20Nushrratt%20Bharuccha_%20Altamash%20F%2C%20Palak%20M%20128kbps.mp4"},
+      {title: "Labon Ko", artist: "KK", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_U9Ba5qJU6fw_Labon-Ko-Lyrics-Bhool-Bhulaiyaa-Pritam-K-K-Akshay-Kumar-Shiney-Ahuja-Vidya-Balan_009_128k.mp3"},
+      {title: "Tum Se Hi", artist: "Mohit Chauhan", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Mohit-Chauhan-SnapYT.App.mp3"},
+      {title: "Tum Mile (Love Reprise)", artist: "Javed Ali", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_8JbEH5rs18Q_Pritam-Javed-Ali-Tum-Mile-Love-Reprise-Lyrics_009_128k.mp3"},
+      {title: "Chal Wahan Jaate Hain", artist: "Arijit Singh", src: "https://raw.githubusercontent.com/suryansh6467/songs/21af342f0afc8d5385497db07c2d854e18807747/Chal%20Wahan%20Jaate%20Hain%20(From%20Chal%20Wahan%20Jaate%20Hain).mp3"},
+      {title: "Maula Mere Maula", artist: "Roop Kumar Rathod", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Maula-Mere-Maula-SnapYT.App.mp3"},
+      {title: "Tu Hai Kahan", artist: "AUR", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_AX6OrbgS8lI_Tu-Hai-Kahan-by-AUR-%D8%AA%D9%88-%DB%81%DB%92-%DA%A9%DB%81%D8%A7%DA%BA-Official-Music-Video_008_128k.mp3"},
+      {title: "Sanam Re", artist: "Arijit Singh", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_liSbkrbNj6Y_Sanam-Re-Arijit-Singh-Lyrics-Lyrical-Bam-Hindi_009_128k.mp3"},
+      {title: "Tere Bin", artist: "Ranveer Singh & Sara Ali Khan", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/videoplayback.m4a"},
+      {title: "Tere Bin", artist: "Aviverse", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Tere-Bin-SnapYT.App.mp3"},
+      {title: "Meri Aashiqui", artist: "Arijit Singh, Palak Muchhal", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_jfh7ZKHxNTI_Meri-Aashiqui-Lyrical-Arijit-Singh-Palak-Muchhal-Ashiqui-2-Bollywood-Songs_009_128k.mp3"},
+      {title: "Roke Na Ruke Naina", artist: "Arijit Singh", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_10cOJl1v4J8_Arijit-Singh-Roke-Na-Ruke-Naina-Lyrics-Video-Badrinath-Ki-Dulhania-Varun-Dhawan_009_128k.mp3"},
+      {title: "Ae Dil Hai Mushkil", artist: "Arijit Singh", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Ae%20Dil%20Hai%20Mushkil%20Title%20Track%20Full%20Video%20-%20Ranbir%2C%20Anushka%2C%20Aishwarya%20_%20Arijit%20Singh_%20Pritam%2048KBPS.mp4"},
+      {title: "Ye Fitoor Mera", artist: "Arijit Singh", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Ye-Fitoor-Mera-SnapYT.App.mp3"},
+      {title: "Thodi Jagah", artist: "Arijit Singh", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Thodi-Jagah-lyrics-SnapYT.App.mp3"},
+      {title: "Saanson Ko", artist: "Arijit Singh", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_moLdtaxes1g_Arijit-Singh-Shaarib-Toshi-Saanson-Ko-Lyrics-7clouds-Hindi_009_128k.mp3"},
+      {title: "Bekhayali", artist: "Arijit Singh", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Bekhayali-Lyrical-SnapYT.App.mp3"},
+      {title: "Main Dhoondne Ko", artist: "Arijit Singh", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Main-Dhoondne-Ko-SnapYT.App.mp3"},
+      {title: "Tune Jo Na Kaha", artist: "Mohit Chauhan", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Tune%20Jo%20Na%20Kaha%20Song%20_%20New%20York%20_%20John%20Abraham%2C%20Katrina%20Kaif%2C%20Neil%20Nitin%20M%20_%20Mohit%20Chauhan%20_%20Pritam%20128kbps.mp4"},
+      {title: "Aaya Woh Phir Nazar", artist: "Tune Jo Na Kaha", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_XigHCp4uE4g_Aaya-woh-phir-nazar-aise-tune-jo-na-kaha-full-song-lyrics_009_128k.mp3"},
+      {title: "Bekhudi", artist: "T-Series", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_RmSU9drvPis_Bekhudi-lyrics-T-series_008_128k.mp3"},
+      {title: "Faasle", artist: "Aditya Rikhari", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_EiiOYwqk3A0_Aditya-Rikhari-FAASLE_009_128k.mp3"},
+      {title: "Khat", artist: "Navjot Ahuja", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Khat%20Navjot%20Ahuja%20320%20Kbps%20(1).mp3"},
+      {title: "Virhaa", artist: "Mizajii, Sammohitt", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/mizajii-sammohit--prod-by-dikshyant.mp3"},
+      {title: "O Re Bewafa", artist: "Asad Naeem", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_dkrEyjEsjLs_O-Re-Bewafa-Asad-Naeem-Heart-Touching-Sad-Song-song_009_128k.mp3"},
+      {title: "Afsos", artist: "Anuv Jain & AP Dhillon", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_2FhgKp_lfJQ_Anuv-Jain-AFSOS-ft-AP-Dhillon-Official-Visualizer_009_128k.mp3"},
+      {title: "Roi Na", artist: "Talwiinder", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_u2IWrmGXEgw_Roi-Na-Talwiinder-Cover-Offically-sung-by-NInja-Heartbreak-Tribute_009_128k.mp3"},
+      {title: "Je Mile Oh Kudi (Cover)", artist: "Talwiinder ft. PUSH", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_JpYCJX5t4xM_Je-Mile-Oh-Kudi-Cover-by-Talwiinder-ft-Push-Heartfelt-Punjabi-Vibes_009_128k.mp3"},
+      {title: "Tareyaan De Des (Cover)", artist: "Talwiinder ft. PUSH", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_2-DngvMasNo_Tareyaan-De-Des-Cover-by-Talwiinder-ft-PUSH_007_128k.mp3"},
+      {title: "Phir Bhi (Cover)", artist: "Talwiinder", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_YzrUThw6dHE_Talwiinder-Phir-Bhi-Cover-Hindi-Lofi_008_128k.mp3"},
+      {title: "Main Tan Vi Pyar Kardan", artist: "Happy Raikoti & Millind Gaba", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_alEDoQMeaj4_Main-Tan-Vi-Pyar-Kardan-Full-Lyrics-Video-Happy-Raikoti-Millind-Gaba-Latest-Punj_006_128k.mp3"},
+      {title: "Ishqa Ve", artist: "Zeeshan Ali", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20ishqa%20ve%20chhaddeya%20tu%20kakh%20da%20nai%20saanu%20(Lyrics)%20Ishqa%20Ve%20%20-%20Zeeshan%20Ali%20128KBPS.mp4"},
+      {title: "Aarzu", artist: "Noor Khan, Madhurxo & Kalakar", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_KxzCuvCsRx0_Aarzu-Lyrics-Noor-Khan-Madhurxo-Kalakar-R44j_009_128k.mp3"},
+      {title: "Alfaaz", artist: "Hamza Malik x Zain Zohaib", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Alfaaz%20_%20Hamza%20Malik%20x%20Zain%20Zohaib%20_%20Official%20Visualiser%20128KBPS.mp3"},
+      {title: "Bol Kaffara Kya Hoga", artist: "Neha Kakkar", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/Bol%20Kaffara%20Kya%20Hoga%20-%20Neha%20Kakkar.mp3"},
+      {title: "Tu Jaane Na", artist: "Atif Aslam", src: "https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Tu%20Jaane%20Na%20-%20Atif%20Aslam%20(Lyrics)%20_%20Lyrical%20Bam%20Hindi%20128kbps.mp4"}
     ];
 
     let currentSongIndex = Math.floor(Math.random() * playlist.length);
@@ -291,7 +292,6 @@
     const seekBar = document.getElementById('seek-bar');
     const currentTimeEl = document.getElementById('current-time');
     const totalDurationEl = document.getElementById('total-duration');
-    const hoursPart = document.getElementById('hours-part');
     const digitalClock = document.getElementById('digital-clock');
 
     // Drawer Elements
@@ -307,7 +307,6 @@
       const minutes = String(now.getMinutes()).padStart(2, '0');
       const seconds = String(now.getSeconds()).padStart(2, '0');
       
-      // Update with glowing red hours
       digitalClock.innerHTML = `<span id="hours-part" class="red-glow">${hours}</span>:${minutes}:${seconds}`;
     }
     setInterval(updateClock, 1000);
@@ -325,16 +324,15 @@
         }`;
 
         item.innerHTML = `
-          <div class="flex items-center gap-3 overflow-hidden">
+          <div class="flex items-center gap-3 overflow-hidden w-full">
             <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-xs flex-shrink-0">
               ${isCurrent ? '<i class="fa-solid fa-compact-disc text-amber-300 spinning"></i>' : (idx + 1)}
             </div>
-            <div class="truncate">
+            <div class="truncate w-full">
               <h4 class="text-sm font-semibold truncate ${isCurrent ? 'text-amber-300' : 'text-white'}">${song.title}</h4>
               <p class="text-xs text-white/60 truncate">${song.artist || 'Unknown Artist'}</p>
             </div>
           </div>
-          <span class="text-xs text-white/50 font-mono ml-2">${song.duration}</span>
         `;
 
         item.addEventListener('click', () => {
@@ -366,7 +364,7 @@
       artistName.textContent = song.artist || "Unknown Artist";
       albumCover.src = defaultCover;
       audioElement.src = song.src;
-      totalDurationEl.textContent = song.duration;
+      totalDurationEl.textContent = "0:00"; // Reset till metadata loads
       seekBar.value = 0;
       currentTimeEl.textContent = "0:00";
       renderPlaylist();
@@ -382,7 +380,16 @@
 
     function playSong() {
       isPlaying = true;
-      audioElement.play().catch(e => console.log("Audio play allowed after user click"));
+      const playPromise = audioElement.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          console.log("Autoplay prevented or network error:", error);
+          isPlaying = false;
+          playIcon.classList.remove('fa-pause');
+          playIcon.classList.add('fa-play');
+          albumCover.classList.add('paused-spin');
+        });
+      }
       playIcon.classList.remove('fa-play');
       playIcon.classList.add('fa-pause');
       albumCover.classList.remove('paused-spin');
@@ -418,6 +425,12 @@
     prevBtn.addEventListener('click', prevSong);
     nextBtn.addEventListener('click', nextSong);
 
+    audioElement.addEventListener('loadedmetadata', () => {
+      if(audioElement.duration) {
+        totalDurationEl.textContent = formatTime(audioElement.duration);
+      }
+    });
+
     audioElement.addEventListener('timeupdate', () => {
       if (audioElement.duration) {
         const progressPercent = (audioElement.currentTime / audioElement.duration) * 100;
@@ -434,7 +447,13 @@
     });
 
     audioElement.addEventListener('ended', nextSong);
-    audioElement.addEventListener('error', nextSong);
+    
+    audioElement.addEventListener('error', (e) => {
+      console.error("Error loading audio source, skipping to next song...", e);
+      setTimeout(() => {
+        nextSong();
+      }, 500);
+    });
 
     loadSong(playlist[currentSongIndex]);
   </script>
