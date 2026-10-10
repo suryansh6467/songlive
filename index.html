@@ -113,18 +113,32 @@
                    0 0 20px rgba(255, 59, 59, 0.6), 
                    0 0 30px rgba(255, 59, 59, 0.4);
     }
+
+    /* Smooth Background Image Cross-Fade Styles */
+    .bg-slide {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.55);
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
+    }
+
+    .bg-slide.active {
+      opacity: 1;
+    }
   </style>
 </head>
 <body class="relative flex flex-col justify-between items-center text-white p-4 sm:p-8 bg-black">
 
-  <!-- Responsive Background Image Layer -->
-  <div class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
-    <img src="https://raw.githubusercontent.com/suryansh6467/songs/main/172404-your_name-mitsuha_miyamizu-taki_tachibana-anime-atmosphere-7680x4320.jpg" 
-         class="w-full h-full object-cover filter brightness-[0.55]" 
-         alt="Background">
+  <div id="bg-slider-container" class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
+    <img src="https://raw.githubusercontent.com/suryansh6467/songs/main/172404-your_name-mitsuha_miyamizu-taki_tachibana-anime-atmosphere-7680x4320.jpg" class="bg-slide active" alt="Background 1">
+    <img src="https://raw.githubusercontent.com/suryansh6467/songs/main/anime-girl-meteor-streak-10k-0t.jpg" class="bg-slide" alt="Background 2">
+    <img src="https://raw.githubusercontent.com/suryansh6467/songs/main/horizon-clouds-sea-sunset-calm-8k-3q.jpg" class="bg-slide" alt="Background 3">
   </div>
 
-  <!-- Full-Width Responsive Header (Clock on Far Left, Menu on Far Right) -->
   <header class="w-full flex justify-between items-center z-10 px-2 sm:px-6">
     <!-- Top-Left: Digital Clock -->
     <div id="digital-clock" class="text-xl sm:text-3xl font-bold tracking-wider drop-shadow-md text-white/95 flex-shrink-0">
@@ -142,7 +156,7 @@
     <!-- Main Player Capsule Container -->
     <div class="w-full glass-capsule rounded-3xl sm:rounded-full p-4 sm:p-5 flex flex-col md:flex-row items-center gap-4 sm:gap-6 relative">
       
-      <!-- Album Art (Left Side Circular Container) -->
+      <!-- Album Art Container -->
       <div class="relative flex-shrink-0">
         <div class="w-20 h-20 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-white/40 shadow-2xl relative flex items-center justify-center">
           <img id="album-cover" 
@@ -153,9 +167,8 @@
         </div>
       </div>
 
-      <!-- Center Song Info & Controls -->
+      <!-- Song Details & Progress Slider -->
       <div class="flex-grow w-full flex flex-col justify-center gap-2 px-2">
-        <!-- Title & Subtitle -->
         <div class="text-left">
           <h2 id="song-title" class="text-lg sm:text-2xl font-bold text-white tracking-wide truncate">
             Song Title
@@ -165,7 +178,6 @@
           </p>
         </div>
 
-        <!-- Progress Bar & Time Stamps -->
         <div class="flex items-center gap-3">
           <span id="current-time" class="text-xs text-white/80 font-mono w-8 text-right">0:00</span>
           
@@ -177,19 +189,16 @@
         </div>
       </div>
 
-      <!-- Right Media Control Buttons -->
+      <!-- Playback Controls -->
       <div class="flex items-center gap-2 sm:gap-3 px-2">
-        <!-- Previous Button -->
         <button id="prev-btn" title="Previous Song" class="btn-glass w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white/90">
           <i class="fa-solid fa-chevron-left text-sm sm:text-base"></i>
         </button>
 
-        <!-- Play / Pause Main Button -->
         <button id="play-btn" title="Play / Pause" class="btn-glass w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center text-white shadow-xl">
           <i id="play-icon" class="fa-solid fa-play text-base sm:text-xl ml-0.5"></i>
         </button>
 
-        <!-- Next Button -->
         <button id="next-btn" title="Next Song" class="btn-glass w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white/90">
           <i class="fa-solid fa-chevron-right text-sm sm:text-base"></i>
         </button>
@@ -197,7 +206,7 @@
 
     </div>
 
-    <!-- Name Badge Positioned Just Below the Music Player Capsule -->
+    <!-- Name Badge Positioned Below Music Player -->
     <div class="mt-4 flex justify-center">
       <span class="border border-white/60 px-4 py-1 rounded-full bg-black/40 backdrop-blur-md text-xs sm:text-sm font-semibold tracking-widest text-white shadow-lg">
         N0tSuryansh
@@ -205,12 +214,9 @@
     </div>
   </main>
 
-  <!-- Slide-out Playlist Drawer Backdrop -->
   <div id="drawer-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
 
-  <!-- Slide-out Playlist Drawer Container -->
   <aside id="playlist-drawer" class="fixed top-0 right-0 h-full w-full max-w-sm glass-capsule z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col p-6 rounded-l-3xl">
-    <!-- Drawer Header -->
     <div class="flex items-center justify-between pb-4 border-b border-white/20">
       <div class="flex items-center gap-2">
         <i class="fa-solid fa-music text-lg"></i>
@@ -221,13 +227,11 @@
       </button>
     </div>
 
-    <!-- Scrollable Songs List -->
     <div id="playlist-items" class="flex-grow overflow-y-auto my-4 space-y-2 pr-1 custom-scrollbar">
-      <!-- Dynamic list items will be injected by JavaScript -->
+      <!-- Injected by JavaScript -->
     </div>
   </aside>
 
-  <!-- Hidden Audio Player -->
   <audio id="audio-element"></audio>
 
   <script>
@@ -300,6 +304,19 @@
     const menuToggleBtn = document.getElementById('menu-toggle-btn');
     const closeDrawerBtn = document.getElementById('close-drawer-btn');
     const playlistItemsContainer = document.getElementById('playlist-items');
+
+    // Automatic Background Slideshow Logic (Every 30 Seconds)
+    const bgSlides = document.querySelectorAll('.bg-slide');
+    let currentBgIndex = 0;
+
+    function changeBackground() {
+      bgSlides[currentBgIndex].classList.remove('active');
+      currentBgIndex = (currentBgIndex + 1) % bgSlides.length;
+      bgSlides[currentBgIndex].classList.add('active');
+    }
+    
+    // Cycle background images every 30000ms (30 seconds)
+    setInterval(changeBackground, 30000);
 
     function updateClock() {
       const now = new Date();
