@@ -491,7 +491,56 @@ function nextSong() {
     currentSongIndex = (currentSongIndex + 1) % playlist.length;
   }
 
-  loadSong(playlist[currentSongIndex], true);
+
+  
+const savedMusic = JSON.parse(localStorage.getItem("n0tMusicState") || "null");
+
+if (
+  savedMusic &&
+  Number.isInteger(savedMusic.index) &&
+  savedMusic.index >= 0 &&
+  savedMusic.index < playlist.length
+) {
+  // Website dobara khuli: wahi song restore karo
+  currentSongIndex = savedMusic.index;
+} else {
+  // First visit: random song select karo
+  currentSongIndex = Math.floor(Math.random() * playlist.length);
+}
+
+loadSong(playlist[currentSongIndex], false);
+
+const musicAudio = document.querySelector("audio");
+
+if (musicAudio) {
+  musicAudio.addEventListener("loadedmetadata", () => {
+    const saved = JSON.parse(
+      localStorage.getItem("n0tMusicState") || "null"
+    );
+
+    if (
+      saved &&
+      saved.index === currentSongIndex &&
+      Number.isFinite(saved.time) &&
+      saved.time > 0 &&
+      Number.isFinite(musicAudio.duration) &&
+      saved.time < musicAudio.duration
+    ) {
+      musicAudio.currentTime = saved.time;
+    }
+  });
+
+  musicAudio.addEventListener("timeupdate", () => {
+    localStorage.setItem(
+      "n0tMusicState",
+      JSON.stringify({
+        index: currentSongIndex,
+        time: musicAudio.currentTime
+      })
+    );
+  });
+}
+
 }
 
 function previousSong() {
