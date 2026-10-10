@@ -124,9 +124,9 @@
          alt="Background">
   </div>
 
-  <!-- Perfectly Responsive Header -->
-  <header class="w-full flex justify-between items-center z-10 max-w-4xl px-2 gap-2">
-    <!-- Top-Left: Digital Clock (Auto Scaled) -->
+  <!-- Full-Width Responsive Header (Clock on Far Left, Menu on Far Right) -->
+  <header class="w-full flex justify-between items-center z-10 px-2 sm:px-6">
+    <!-- Top-Left: Digital Clock -->
     <div id="digital-clock" class="text-xl sm:text-3xl font-bold tracking-wider drop-shadow-md text-white/95 flex-shrink-0">
       <span id="hours-part" class="red-glow">00</span>:00:00
     </div>
@@ -364,7 +364,7 @@
       artistName.textContent = song.artist || "Unknown Artist";
       albumCover.src = defaultCover;
       audioElement.src = song.src;
-      totalDurationEl.textContent = "0:00"; // Reset till metadata loads
+      totalDurationEl.textContent = "0:00";
       seekBar.value = 0;
       currentTimeEl.textContent = "0:00";
       renderPlaylist();
