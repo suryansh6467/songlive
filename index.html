@@ -116,6 +116,9 @@ header {
 
 <div class="grid grid-cols-2 gap-2 mt-4">
 <button data-category="all" class="category-btn active btn-glass rounded-xl py-3 text-sm font-semibold"><i class="fa-solid fa-music mr-1"></i> All Songs</button>
+
+<button data-category="oneside" class="category-btn btn-glass rounded-xl py-3 text-sm font-semibold"><i class="fa-solid fa-heart-crack mr-1"></i> One Side Love</button>
+
 <button data-category="sad" class="category-btn btn-glass rounded-xl py-3 text-sm font-semibold"><i class="fa-solid fa-cloud-rain mr-1"></i> Sad</button>
 <button data-category="driving" class="category-btn btn-glass rounded-xl py-3 text-sm font-semibold"><i class="fa-solid fa-car-side mr-1"></i> Driving</button>
 <button data-category="talwiinder" class="category-btn btn-glass rounded-xl py-3 text-sm font-semibold"><i class="fa-solid fa-headphones mr-1"></i> Talwiinder</button>
@@ -184,6 +187,7 @@ const playlist = [
   {title:"Teri Khair Mangdi",artist:"Bilal Saeed",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Teri-Khair-Mangdi-SnapYT.App.mp3"},
   {title:"Amplifier",artist:"Imran Khan",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/AMPLIFIER-Imran-SnapYT.App.mp3"},
   {title:"Tu Aake Dekh",artist:"King",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Tu-aake-dekh-SnapYT.App.mp3"},
+  {title:"Ae Dil Hai Mushkil ",artist:"Arijit Singh, Pritam",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Arijit-Singh-Pritam-SnapYT.App.mp3",category:"sad"},
   {title:"Mi Amor",artist:"Sharn",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Mi-Amor-Lyrics-SnapYT.App.mp3"},
   {title:"O Saathi",artist:"Atif Aslam",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Atif-Aslam-SnapYT.App.mp3"},
   {title:"Tera Ban Jaunga",artist:"Akhil Sachdeva & Tulsi Kumar",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Tera-Ban-Jaunga-SnapYT.App.mp3"},
@@ -198,6 +202,9 @@ const sadTitles = [
   "Bekhudi","Faasle","Khat","Virhaa","O Re Bewafa","Afsos",
   "Roi Na","Aarzu","Ruposh","Bol Kaffara Kya Hoga"
 ];
+const onesideTitles = [
+  "Ae Dil Hai Mushkil ",
+];
 
 const drivingTitles = [
   "Teri Khair Mangdi","Amplifier","Tu Aake Dekh","Labon Ko","Haareya",
@@ -209,6 +216,7 @@ const talwiinderTitles = [
 
 const categoryNames = {
   all:"All Songs",
+  oneside:"One Side",
   sad:"Sad Songs",
   driving:"Driving Songs",
   talwiinder:"Talwiinder Songs"
@@ -244,6 +252,7 @@ function getFilteredSongs(){
 return playlist.map((song,index)=>({song,index})).filter(({song})=>{
 if(currentCategory==="all")return true;
 if(currentCategory==="sad")return sadTitles.includes(song.title);
+if (currentCategory === "oneside") return onesideTitles.includes(song.title);
 if(currentCategory==="driving")return drivingTitles.includes(song.title);
 if(currentCategory==="talwiinder")return talwiinderTitles.includes(song.title);
 return true;
