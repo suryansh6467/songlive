@@ -3,535 +3,619 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090909">
 <title>N0tSuryansh Music Player</title>
-<script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;height:100dvh;overflow:hidden;font-family:'Plus Jakarta Sans',sans-serif;user-select:none;-webkit-tap-highlight-color:transparent}
+body{background:#080808;color:white;display:flex;flex-direction:column;justify-content:space-between;align-items:center;padding:16px}
+button{font:inherit;color:inherit;cursor:pointer}
 .glass-capsule{background:rgba(255,255,255,.12);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border:1px solid rgba(255,255,255,.25);box-shadow:0 20px 40px #0006,inset 0 1px 0 #ffffff26}
-.btn-glass{background:#ffffff20;border:1px solid #ffffff40;backdrop-filter:blur(10px);box-shadow:inset 0 1px 2px #ffffff30,0 4px 10px #0004;transition:.2s}
-.btn-glass:active{transform:scale(.95)}
-input[type=range]{appearance:none;-webkit-appearance:none;width:100%;background:transparent;cursor:pointer}
-input[type=range]::-webkit-slider-runnable-track{height:5px;background:#ffffff50;border-radius:8px}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:white;margin-top:-4.5px;box-shadow:0 0 10px #fff}
+.btn-glass{background:#ffffff20;border:1px solid #ffffff40;backdrop-filter:blur(10px);transition:background .18s,transform .18s}
+.btn-glass:active{transform:scale(.96)}
+.bg-slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.58);opacity:0;transition:opacity 1.5s}
+.bg-slide.active{opacity:1}
 .spinning{animation:spin 12s linear infinite}
 .paused-spin{animation-play-state:paused}
 @keyframes spin{to{transform:rotate(360deg)}}
 .red-glow{color:#ff3b3b;text-shadow:0 0 10px #ff3b3bcc,0 0 25px #ff3b3b80}
-.bg-slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.58);opacity:0;transition:opacity 1.5s}
-.bg-slide.active{opacity:1}
+input[type=range]{appearance:none;-webkit-appearance:none;width:100%;background:transparent;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:5px;background:#ffffff50;border-radius:8px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:white;margin-top:-4.5px}
 .custom-scrollbar::-webkit-scrollbar{width:5px}
 .custom-scrollbar::-webkit-scrollbar-thumb{background:#ffffff50;border-radius:10px}
-.category-btn.active{background:#ffffff35;border-color:white;color:#ffd166}
-.song-item{min-width:0}
-#playlist-drawer{width:min(100%,400px)}
-/* CENTER THE MUSIC PLAYER */
-main {
-  flex-grow: 0 !important;
-  width: 100%;
-  margin-top: auto !important;
-  margin-bottom: auto !important;
-  transform: translateY(25px);
-}
-
-/* Keep header at the top */
-header {
-  flex-shrink: 0;
-}
-
-/* Keep the player responsive on mobile */
-@media (max-width: 640px) {
-  main {
-    transform: translateY(10px);
-  }
+header{width:100%;display:flex;justify-content:space-between;align-items:center;z-index:10;padding:0 8px}
+main{width:100%;max-width:900px;margin:auto;z-index:10;transform:translateY(15px)}
+.player{border-radius:30px;padding:20px;display:flex;align-items:center;gap:22px}
+.cover-wrap{width:110px;height:110px;flex-shrink:0;border-radius:50%;overflow:hidden;border:2px solid #ffffff70}
+.cover-wrap img{width:100%;height:100%;object-fit:cover}
+.song-info{flex:1;min-width:0}
+.song-info h2{font-size:22px;margin:0 0 5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.song-info p{margin:0;color:#ffffffa8;font-size:13px}
+.progress{display:flex;align-items:center;gap:10px;margin-top:17px}
+.progress span{font-size:11px;font-family:monospace;color:#ffffffd0;white-space:nowrap}
+.controls{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.control-btn{width:44px;height:44px;border-radius:50%}
+#play-btn{width:54px;height:54px;border-radius:50%}
+.brand{text-align:center;margin-top:22px}
+.brand span{display:inline-block;border:1px solid #ffffff80;padding:6px 17px;border-radius:30px;background:#0006;font-size:12px;letter-spacing:2px;font-weight:700}
+#drawer-backdrop{position:fixed;inset:0;background:#000b;backdrop-filter:blur(5px);z-index:40;opacity:0;pointer-events:none;transition:opacity .25s}
+#drawer-backdrop.show{opacity:1;pointer-events:auto}
+#playlist-drawer{position:fixed;top:0;right:0;width:min(100%,410px);height:100%;height:100dvh;z-index:50;transform:translateX(105%);transition:transform .25s ease;display:flex;flex-direction:column;padding:20px;border-radius:25px 0 0 25px;background:rgba(17,17,17,.91);backdrop-filter:blur(25px);border-left:1px solid #ffffff30}
+#playlist-drawer.open{transform:translateX(0)}
+.drawer-header{display:flex;justify-content:space-between;align-items:center;padding-bottom:15px;border-bottom:1px solid #ffffff25}
+.drawer-header h3{font-size:18px;margin:0}
+.close-btn{width:38px;height:38px;border-radius:50%}
+#category-screen,#songs-screen{display:flex;flex-direction:column;flex:1;min-height:0}
+#songs-screen[hidden]{display:none}
+#category-screen[hidden]{display:none}
+.drawer-subtitle{color:#ffffff8c;font-size:12px;margin:15px 0 10px}
+.category-list{display:flex;flex-direction:column;gap:10px;overflow-y:auto;padding:2px 3px 10px}
+.category-card{display:flex;align-items:center;gap:13px;padding:15px;border-radius:16px;text-align:left;width:100%;background:#ffffff0d;border:1px solid #ffffff18;transition:background .2s,border-color .2s}
+.category-card:hover{background:#ffffff1b;border-color:#ffffff55}
+.category-icon{width:44px;height:44px;display:grid;place-items:center;border-radius:13px;background:#ffffff16;font-size:17px;flex-shrink:0}
+.category-copy{flex:1;min-width:0}
+.category-copy strong{display:block;font-size:14px}
+.category-copy small{display:block;color:#ffffff80;font-size:11px;margin-top:4px}
+.category-arrow{color:#ffffff80}
+.songs-header{display:flex;align-items:center;gap:10px;margin:14px 0 5px}
+.back-btn{width:38px;height:38px;border-radius:12px;flex-shrink:0}
+.songs-heading{flex:1;min-width:0}
+.songs-heading h4{font-size:15px;margin:0}
+.songs-heading p{font-size:11px;color:#ffffff80;margin:4px 0 0}
+#playlist-items{flex:1;min-height:0;overflow-y:auto;margin-top:10px;padding-right:3px}
+.song-item{width:100%;display:flex;align-items:center;gap:12px;padding:11px;border-radius:13px;border:1px solid transparent;background:transparent;text-align:left;margin-bottom:5px}
+.song-item.current{background:#ffffff1c;border-color:#ffffff35}
+.song-number{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:#ffffff12;flex-shrink:0;font-size:12px}
+.song-meta{flex:1;min-width:0}
+.song-meta strong{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.song-meta small{display:block;font-size:11px;color:#ffffff80;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:4px}
+.song-item.current .song-meta strong{color:#ffd166}
+.song-right{font-size:12px;color:#ffffff80}
+@media(max-width:640px){
+body{padding:12px}
+header{padding:0 3px}
+#digital-clock{font-size:23px}
+.player{flex-direction:column;text-align:center;gap:15px;padding:19px 15px;border-radius:27px}
+.cover-wrap{width:95px;height:95px}
+.song-info{width:100%}
+.song-info h2{text-align:center;font-size:19px}
+.song-info>p{text-align:center}
+.progress{gap:7px;margin-top:15px}
+.controls{justify-content:center}
+.control-btn{width:42px;height:42px}
+#play-btn{width:50px;height:50px}
+main{transform:translateY(5px)}
+.brand{margin-top:17px}
+#playlist-drawer{padding:17px}
 }
 </style>
 </head>
 
-<body class="relative flex flex-col justify-between items-center text-white p-3 sm:p-8 bg-black">
-
-<div class="absolute inset-0 overflow-hidden pointer-events-none">
+<body>
+<div style="position:fixed;inset:0;overflow:hidden;pointer-events:none">
 <img src="https://raw.githubusercontent.com/suryansh6467/songs/main/172404-your_name-mitsuha_miyamizu-taki_tachibana-anime-atmosphere-7680x4320.jpg" class="bg-slide active" alt="">
 <img src="https://raw.githubusercontent.com/suryansh6467/songs/main/anime-girl-meteor-streak-10k-0t.jpg" class="bg-slide" alt="">
 <img src="https://raw.githubusercontent.com/suryansh6467/songs/main/horizon-clouds-sea-sunset-calm-8k-3q.jpg" class="bg-slide" alt="">
 </div>
 
-<header class="w-full flex justify-between items-center z-10 px-2 sm:px-6">
-<div id="digital-clock" class="text-xl sm:text-3xl font-bold tracking-wider">
-<span class="red-glow">00</span>:00:00
-</div>
-<button id="menu-toggle-btn" class="btn-glass px-4 py-2 rounded-full flex items-center gap-2 text-sm font-semibold">
-<i class="fa-solid fa-bars"></i> Playlist
+<header>
+<div id="digital-clock" style="font-size:25px;font-weight:700;letter-spacing:1px">00:00:00</div>
+<button id="menu-toggle-btn" class="btn-glass" style="padding:11px 17px;border-radius:30px;font-size:13px;font-weight:600">
+<i class="fa-solid fa-bars"></i> Music Menu
 </button>
 </header>
 
-<main class="flex flex-col items-center justify-center flex-grow z-10 my-auto w-full max-w-4xl px-1">
-<div class="w-full glass-capsule rounded-3xl sm:rounded-full p-4 sm:p-5 flex flex-col md:flex-row items-center gap-4 sm:gap-6">
-
-<div class="flex-shrink-0">
-<div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-white/40 shadow-2xl">
-<img id="album-cover" src="https://raw.githubusercontent.com/suryansh6467/songs/main/1313eb05e394d398870fc6a320eec62e.jpg" class="w-full h-full object-cover spinning paused-spin" alt="Album cover">
+<main>
+<div class="player glass-capsule">
+<div class="cover-wrap">
+<img id="album-cover" src="https://raw.githubusercontent.com/suryansh6467/songs/main/1313eb05e394d398870fc6a320eec62e.jpg" class="spinning paused-spin" alt="Album cover">
+</div>
+<div class="song-info">
+<h2 id="song-title">Loading music...</h2>
+<p id="artist-name">N0tSuryansh Player</p>
+<div class="progress">
+<span id="current-time">0:00</span>
+<input type="range" id="seek-bar" value="0" min="0" max="100" step="0.1" aria-label="Seek song">
+<span id="total-duration">0:00</span>
+</div>
+<p id="playback-status" style="margin-top:10px;font-size:11px">Ready to play</p>
+</div>
+<div class="controls">
+<button id="prev-btn" class="btn-glass control-btn" aria-label="Previous song"><i class="fa-solid fa-backward-step"></i></button>
+<button id="play-btn" class="btn-glass" aria-label="Play or pause"><i id="play-icon" class="fa-solid fa-play"></i></button>
+<button id="next-btn" class="btn-glass control-btn" aria-label="Next song"><i class="fa-solid fa-forward-step"></i></button>
 </div>
 </div>
-
-<div class="flex-grow w-full min-w-0 flex flex-col justify-center gap-3 px-2">
-<div class="text-left min-w-0">
-<h2 id="song-title" class="text-lg sm:text-2xl font-bold truncate">Loading music...</h2>
-<p id="artist-name" class="text-xs sm:text-sm text-white/70">N0tSuryansh Player</p>
-</div>
-
-<div class="flex items-center gap-3">
-<span id="current-time" class="text-xs text-white/80 font-mono">0:00</span>
-<input type="range" id="seek-bar" value="0" min="0" max="100">
-<span id="total-duration" class="text-xs text-white/80 font-mono">0:00</span>
-</div>
-<p id="playback-status" class="text-xs text-white/60 text-left">Ready to play</p>
-</div>
-
-<div class="flex items-center gap-3">
-<button id="prev-btn" class="btn-glass w-10 h-10 sm:w-12 sm:h-12 rounded-full"><i class="fa-solid fa-backward-step"></i></button>
-<button id="play-btn" class="btn-glass w-12 h-12 sm:w-14 sm:h-14 rounded-full"><i id="play-icon" class="fa-solid fa-play"></i></button>
-<button id="next-btn" class="btn-glass w-10 h-10 sm:w-12 sm:h-12 rounded-full"><i class="fa-solid fa-forward-step"></i></button>
-</div>
-</div>
-
-<div class="mt-4">
-<span class="border border-white/60 px-4 py-1 rounded-full bg-black/40 backdrop-blur-md text-xs sm:text-sm font-semibold tracking-widest">N0tSuryansh</span>
-</div>
+<div class="brand"><span>N0tSuryansh</span></div>
 </main>
 
-<div id="drawer-backdrop" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+<div id="drawer-backdrop"></div>
 
-<aside id="playlist-drawer" class="fixed top-0 right-0 h-full glass-capsule z-50 translate-x-full transition-transform duration-300 flex flex-col p-4 sm:p-6 rounded-l-3xl">
-<div class="flex items-center justify-between pb-4 border-b border-white/20">
-<div class="flex items-center gap-2">
-<i class="fa-solid fa-headphones text-lg"></i>
-<h3 class="text-lg font-bold">Music Library</h3>
-</div>
-<button id="close-drawer-btn" class="btn-glass w-9 h-9 rounded-full"><i class="fa-solid fa-xmark"></i></button>
+<aside id="playlist-drawer">
+<div class="drawer-header">
+<h3><i class="fa-solid fa-headphones"></i> Music Library</h3>
+<button id="close-drawer-btn" class="btn-glass close-btn" aria-label="Close menu"><i class="fa-solid fa-xmark"></i></button>
 </div>
 
-<div class="grid grid-cols-2 gap-2 mt-4">
-<button data-category="all" class="category-btn active btn-glass rounded-xl py-3 text-sm font-semibold"><i class="fa-solid fa-music mr-1"></i> All Songs</button>
-
-<button data-category="oneside" class="category-btn btn-glass rounded-xl py-3 text-sm font-semibold"><i class="fa-solid fa-heart-crack mr-1"></i> One Side Love</button>
-
-<button data-category="sad" class="category-btn btn-glass rounded-xl py-3 text-sm font-semibold"><i class="fa-solid fa-cloud-rain mr-1"></i> Sad</button>
-<button data-category="driving" class="category-btn btn-glass rounded-xl py-3 text-sm font-semibold"><i class="fa-solid fa-car-side mr-1"></i> Driving</button>
-<button data-category="talwiinder" class="category-btn btn-glass rounded-xl py-3 text-sm font-semibold"><i class="fa-solid fa-headphones mr-1"></i> Talwiinder</button>
+<!-- SCREEN 1: Category menu -->
+<div id="category-screen">
+<p class="drawer-subtitle">CHOOSE YOUR MUSIC</p>
+<div class="category-list">
+<button class="category-card" data-category="all">
+<span class="category-icon"><i class="fa-solid fa-music"></i></span>
+<span class="category-copy"><strong>All Songs</strong><small>Complete music library</small></span>
+<i class="fa-solid fa-chevron-right category-arrow"></i>
+</button>
+<button class="category-card" data-category="oneside">
+<span class="category-icon"><i class="fa-solid fa-heart-crack"></i></span>
+<span class="category-copy"><strong>One Side Love</strong><small>Unspoken feelings and memories</small></span>
+<i class="fa-solid fa-chevron-right category-arrow"></i>
+</button>
+<button class="category-card" data-category="sad">
+<span class="category-icon"><i class="fa-solid fa-cloud-rain"></i></span>
+<span class="category-copy"><strong>Sad Songs</strong><small>Emotional and heartbreak songs</small></span>
+<i class="fa-solid fa-chevron-right category-arrow"></i>
+</button>
+<button class="category-card" data-category="driving">
+<span class="category-icon"><i class="fa-solid fa-car-side"></i></span>
+<span class="category-copy"><strong>Driving</strong><small>Songs for the road</small></span>
+<i class="fa-solid fa-chevron-right category-arrow"></i>
+</button>
+<button class="category-card" data-category="talwiinder">
+<span class="category-icon"><i class="fa-solid fa-headphones"></i></span>
+<span class="category-copy"><strong>Talwiinder</strong><small>Talwiinder and cover tracks</small></span>
+<i class="fa-solid fa-chevron-right category-arrow"></i>
+</button>
+</div>
 </div>
 
-<div class="flex items-center justify-between mt-4">
-<h4 id="category-heading" class="font-semibold text-sm">All Songs</h4>
-<span id="playlist-count" class="text-xs text-white/60">0 songs</span>
+<!-- SCREEN 2: Only the selected category's songs -->
+<div id="songs-screen" hidden>
+<div class="songs-header">
+<button id="back-categories-btn" class="btn-glass back-btn" aria-label="Back to categories"><i class="fa-solid fa-arrow-left"></i></button>
+<div class="songs-heading">
+<h4 id="category-heading">All Songs</h4>
+<p id="playlist-count">0 songs</p>
 </div>
-
-<div id="playlist-items" class="flex-grow overflow-y-auto mt-3 space-y-2 pr-1 custom-scrollbar"></div>
+</div>
+<div id="playlist-items" class="custom-scrollbar"></div>
+</div>
 </aside>
 
-<audio id="audio-element" preload="metadata" playsinline></audio>
+<audio id="audio-element" preload="auto" playsinline></audio>
 
 <script>
-const defaultCover = "https://raw.githubusercontent.com/suryansh6467/songs/main/1313eb05e394d398870fc6a320eec62e.jpg";
+"use strict";
 
-const playlist = [
-  {title:"Jeene Laga Hoon",artist:"Atif Aslam, Shreya Ghoshal",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_dMOwlHNIGM0_Jeene-Laga-Hoon-Lyrics-Ramaiya-Vastavaiya-Atif-Aslam-Shreya-Ghoshal_009_128k.mp3"},
-  {title:"Tu Chahiye",artist:"Atif Aslam",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Tu-Chahiye-SnapYT.App.mp3"},
-  {title:"Kaun Tujhe",artist:"Palak Muchhal",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Palak-Muchhal-SnapYT.App.mp3"},
-  {title:"Zara Zara Behekta",artist:"Omkar & Aditya Bhardwaj",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Zara-Zara-Behekta-SnapYT.App.mp3"},
-  {title:"Samjhawan",artist:"Arijit Singh & Shreya Ghoshal",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Samjhawan-Lyrics-SnapYT.App.mp3"},
-  {title:"Humsafar",artist:"Varun & Alia Bhatt",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Humsafar-Full-Video-SnapYT.App.mp3"},
-  {title:"Main Rang Sharbaton Ka",artist:"Atif Aslam",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_lljypZOn5p8_Main-rang-sharbaton-ka-Atif-Aslam-lyrics-Phata-poster-Nikla-Hero-Shahid-ileana-R_009_128k.mp3"},
-  {title:"Ik Mulaqaat",artist:"Altamash Faridi, Palak Muchhal",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Ik%20Mulaqaat%20-%20Full%20Video%20_%20Dream%20Girl%20_%20Ayushmann%20Khurrana%2C%20Nushrratt%20Bharuccha_%20Altamash%20F%2C%20Palak%20M%20128kbps.mp4"},
-  {title:"Labon Ko",artist:"KK",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_U9Ba5qJU6fw_Labon-Ko-Lyrics-Bhool-Bhulaiyaa-Pritam-K-K-Akshay-Kumar-Shiney-Ahuja-Vidya-Balan_009_128k.mp3"},
-  {title:"Tum Se Hi",artist:"Mohit Chauhan",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Mohit-Chauhan-SnapYT.App.mp3"},
-  {title:"Tum Mile (Love Reprise)",artist:"Javed Ali",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_8JbEH5rs18Q_Pritam-Javed-Ali-Tum-Mile-Love-Reprise-Lyrics_009_128k.mp3"},
-  {title:"Chal Wahan Jaate Hain",artist:"Arijit Singh",src:"https://raw.githubusercontent.com/suryansh6467/songs/21af342f0afc8d5385497db07c2d854e18807747/Chal%20Wahan%20Jaate%20Hain%20(From%20Chal%20Wahan%20Jaate%20Hain).mp3"},
-  {title:"Maula Mere Maula",artist:"Roop Kumar Rathod",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Maula-Mere-Maula-SnapYT.App.mp3"},
-  {title:"Tu Hai Kahan",artist:"AUR",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_AX6OrbgS8lI_Tu-Hai-Kahan-by-AUR-%D8%AA%D9%88-%DB%81%DB%92-%DA%A9%DB%81%D8%A7%DA%BA-Official-Music-Video_008_128k.mp3"},
-  {title:"Sanam Re",artist:"Arijit Singh",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_liSbkrbNj6Y_Sanam-Re-Arijit-Singh-Lyrics-Lyrical-Bam-Hindi_009_128k.mp3"},
-  {title:"Tere Bin",artist:"Ranveer Singh & Sara Ali Khan",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/videoplayback.m4a"},
-  {title:"Tere Bin",artist:"Aviverse",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Tere-Bin-SnapYT.App.mp3"},
-  {title:"Meri Aashiqui",artist:"Arijit Singh, Palak Muchhal",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_jfh7ZKHxNTI_Meri-Aashiqui-Lyrical-Aashiqui-2-Bollywood-Songs_009_128k.mp3"},
-  {title:"Roke Na Ruke Naina",artist:"Arijit Singh",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_10cOJl1v4J8_Arijit-Singh-Roke-Na-Ruke-Naina-Lyrics-Video-Badrinath-Ki-Dulhania-Varun-Dhawan_009_128k.mp3"},
-  {title:"Ae Dil Hai Mushkil",artist:"Arijit Singh",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Ae%20Dil%20Hai%20Mushkil%20Title%20Track%20Full%20Video%20-%20Ranbir%2C%20Anushka%2C%20Aishwarya%20_%20Arijit%20Singh_%20Pritam%2048KBPS.mp4"},
-  {title:"Ye Fitoor Mera",artist:"Arijit Singh",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Ye-Fitoor-Mera-SnapYT.App.mp3"},
-  {title:"Thodi Jagah",artist:"Arijit Singh",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Thodi-Jagah-lyrics-SnapYT.App.mp3"},
-  {title:"Saanson Ko",artist:"Arijit Singh",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_moLdtaxes1g_Arijit-Singh-Shaarib-Toshi-Saanson-Ko-Lyrics-7clouds-Hindi_009_128k.mp3"},
-  {title:"Bekhayali",artist:"Sachet Tandon",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Bekhayali-Lyrical-SnapYT.App.mp3"},
-  {title:"Main Dhoondne Ko",artist:"Arijit Singh",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Main-Dhoondne-Ko-SnapYT.App.mp3"},
-  {title:"Tune Jo Na Kaha",artist:"Mohit Chauhan",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Tune%20Jo%20Na%20Kaha%20Song%20_%20New%20York%20_%20John%20Abraham%2C%20Katrina%20Kaif%2C%20Neil%20Nitin%20M%20_%20Mohit%20Chauhan%20_%20Pritam%20128kbps.mp4"},
-  {title:"Aaya Woh Phir Nazar",artist:"Tune Jo Na Kaha",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_XigHCp4uE4g_Aaya-woh-phir-nazar-aise-tune-jo-na-kaha-full-song-lyrics_009_128k.mp3"},
-  {title:"Bekhudi",artist:"T-Series",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_RmSU9drvPis_Bekhudi-lyrics-T-series_008_128k.mp3"},
-  {title:"Faasle",artist:"Aditya Rikhari",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_EiiOYwqk3A0_Aditya-Rikhari-FAASLE_009_128k.mp3"},
-  {title:"Khat",artist:"Navjot Ahuja",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Khat%20Navjot%20Ahuja%20320%20Kbps%20(1).mp3"},
-  {title:"Virhaa",artist:"Mizajii, Sammohitt",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/mizajii-sammohit--prod-by-dikshyant.mp3"},
-  {title:"O Re Bewafa",artist:"Asad Naeem",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_dkrEyjEsjLs_O-Re-Bewafa-Asad-Naeem-Heart-Touching-Sad-Song-song_009_128k.mp3"},
-  {title:"Afsos",artist:"Anuv Jain & AP Dhillon",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_2FhgKp_lfJQ_Anuv-Jain-AFSOS-ft-AP-Dhillon-Official-Visualizer_009_128k.mp3"},
-  {title:"Roi Na",artist:"Talwiinder",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_u2IWrmGXEgw_Roi-Na-Talwiinder-Cover-Offically-sung-by-NInja-Heartbreak-Tribute_009_128k.mp3"},
-  {title:"Je Mile Oh Kudi (Cover)",artist:"Talwiinder ft. PUSH",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_JpYCJX5t4xM_Je-Mile-Oh-Kudi-Cover-by-Talwiinder-ft-Push-Heartfelt-Punjabi-Vibes_009_128k.mp3"},
-  {title:"Tareyaan De Des (Cover)",artist:"Talwiinder ft. PUSH",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_2-DngvMasNo_Tareyaan-De-Des-Cover-by-Talwiinder-ft-PUSH_007_128k.mp3"},
-  {title:"Phir Bhi (Cover)",artist:"Talwiinder",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_YzrUThw6dHE_Talwiinder-Phir-Bhi-Cover-Hindi-Lofi_008_128k.mp3"},
-  {title:"Main Tan Vi Pyar Kardan",artist:"Happy Raikoti & Millind Gaba",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_alEDoQMeaj4_Main-Tan-Vi-Pyar-Kardan-Full-Lyrics-Video-Happy-Raikoti-Millind-Gaba-Latest-Punj_006_128k.mp3"},
-  {title:"Ishqa Ve",artist:"Zeeshan Ali",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20ishqa%20ve%20chhaddeya%20tu%20kakh%20da%20nai%20saanu%20(Lyrics)%20Ishqa%20Ve%20%20-%20Zeeshan%20Ali%20128KBPS.mp4"},
-  {title:"Aarzu",artist:"Noor Khan, Madhurxo & Kalakar",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_KxzCuvCsRx0_Aarzu-Lyrics-Noor-Khan-Madhurxo-Kalakar-R44j_009_128k.mp3"},
-  {title:"Alfaaz",artist:"Hamza Malik x Zain Zohaib",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Alfaaz%20_%20Hamza%20Malik%20x%20Zain%20Zohaib%20_%20Official%20Visualiser%20128KBPS.mp3"},
-  {title:"Bol Kaffara Kya Hoga",artist:"Neha Kakkar",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Bol%20Kaffara%20Kya%20Hoga%20-%20Neha%20Kakkar.mp3"},
-  {title:"Tu Jaane Na",artist:"Atif Aslam",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Tu%20Jaane%20Na%20-%20Atif%20Aslam%20(Lyrics)%20_%20Lyrical%20Bam%20Hindi%20128kbps.mp4"},
-  {title:"Ruposh",artist:"Wajhi Farooki",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/RUPOSH-WAJHI-SnapYT.App.mp3"},
-  {title:"Mann Mera",artist:"Gajendra Verma",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Gajendra-Verma-SnapYT.App.mp3"},
-  {title:"Chupke Se",artist:"Sadhana Sargam, Murtuza Khan & Qadir Khan",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Chupke-Se-Flac-SnapYT.App.mp3"},
-  {title:"Teri Khair Mangdi",artist:"Bilal Saeed",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Teri-Khair-Mangdi-SnapYT.App.mp3"},
-  {title:"Amplifier",artist:"Imran Khan",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/AMPLIFIER-Imran-SnapYT.App.mp3"},
-  {title:"Tu Aake Dekh",artist:"King",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Tu-aake-dekh-SnapYT.App.mp3"},
-  {title:"Ae Dil Hai Mushkil ",artist:"Arijit Singh, Pritam",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Arijit-Singh-Pritam-SnapYT.App.mp3",category:"sad"},
-  {title:"Mi Amor",artist:"Sharn",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Mi-Amor-Lyrics-SnapYT.App.mp3"},
-  {title:"O Saathi",artist:"Atif Aslam",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Atif-Aslam-SnapYT.App.mp3"},
-  {title:"Tera Ban Jaunga",artist:"Akhil Sachdeva & Tulsi Kumar",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Tera-Ban-Jaunga-SnapYT.App.mp3"},
-  {title:"Paniyon Sa",artist:"Atif Aslam & Tulsi Kumar",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Paniyon-sa-SnapYT.App.mp3"},
-  {title:"Haareya", artist:"Arijit Singh", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Haareya-Lyrics-SnapYT.App.mp3"},
+const defaultCover="https://raw.githubusercontent.com/suryansh6467/songs/main/1313eb05e394d398870fc6a320eec62e.jpg";
+
+const playlist=[
+{title:"Jeene Laga Hoon",artist:"Atif Aslam, Shreya Ghoshal",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_dMOwlHNIGM0_Jeene-Laga-Hoon-Lyrics-Ramaiya-Vastavaiya-Atif-Aslam-Shreya-Ghoshal_009_128k.mp3"},
+{title:"Tu Chahiye",artist:"Atif Aslam",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Tu-Chahiye-SnapYT.App.mp3"},
+{title:"Kaun Tujhe",artist:"Palak Muchhal",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Palak-Muchhal-SnapYT.App.mp3"},
+{title:"Zara Zara Behekta",artist:"Omkar & Aditya Bhardwaj",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Zara-Zara-Behekta-SnapYT.App.mp3"},
+{title:"Samjhawan",artist:"Arijit Singh & Shreya Ghoshal",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Samjhawan-Lyrics-SnapYT.App.mp3"},
+{title:"Humsafar",artist:"Varun & Alia Bhatt",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Humsafar-Full-Video-SnapYT.App.mp3"},
+{title:"Main Rang Sharbaton Ka",artist:"Atif Aslam",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_lljypZOn5p8_Main-rang-sharbaton-ka-Atif-Aslam-lyrics-Phata-poster-Nikla-Hero-Shahid-ileana-R_009_128k.mp3"},
+{title:"Ik Mulaqaat",artist:"Altamash Faridi, Palak Muchhal",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Ik%20Mulaqaat%20-%20Full%20Video%20_%20Dream%20Girl%20_%20Ayushmann%20Khurrana%2C%20Nushrratt%20Bharuccha_%20Altamash%20F%2C%20Palak%20M%20128kbps.mp4"},
+{title:"Labon Ko",artist:"KK",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_U9Ba5qJU6fw_Labon-Ko-Lyrics-Bhool-Bhulaiyaa-Pritam-K-K-Akshay-Kumar-Shiney-Ahuja-Vidya-Balan_009_128k.mp3"},
+{title:"Tum Se Hi",artist:"Mohit Chauhan",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Mohit-Chauhan-SnapYT.App.mp3"},
+{title:"Tum Mile (Love Reprise)",artist:"Javed Ali",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_8JbEH5rs18Q_Pritam-Javed-Ali-Tum-Mile-Love-Reprise-Lyrics_009_128k.mp3"},
+{title:"Chal Wahan Jaate Hain",artist:"Arijit Singh",src:"https://raw.githubusercontent.com/suryansh6467/songs/21af342f0afc8d5385497db07c2d854e18807747/Chal%20Wahan%20Jaate%20Hain%20(From%20Chal%20Wahan%20Jaate%20Hain).mp3"},
+{title:"Maula Mere Maula",artist:"Roop Kumar Rathod",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Maula-Mere-Maula-SnapYT.App.mp3"},
+{title:"Tu Hai Kahan",artist:"AUR",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_AX6OrbgS8lI_Tu-Hai-Kahan-by-AUR-%D8%AA%D9%88-%DB%81%DB%92-%DA%A9%DB%81%D8%A7%DA%BA-Official-Music-Video_008_128k.mp3"},
+{title:"Sanam Re",artist:"Arijit Singh",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_liSbkrbNj6Y_Sanam-Re-Arijit-Singh-Lyrics-Lyrical-Bam-Hindi_009_128k.mp3"},
+{title:"Tere Bin",artist:"Ranveer Singh & Sara Ali Khan",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/videoplayback.m4a"},
+{title:"Tere Bin",artist:"Aviverse",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Tere-Bin-SnapYT.App.mp3"},
+{title:"Meri Aashiqui",artist:"Arijit Singh, Palak Muchhal",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_jfh7ZKHxNTI_Meri-Aashiqui-Lyrical-Aashiqui-2-Bollywood-Songs_009_128k.mp3"},
+{title:"Roke Na Ruke Naina",artist:"Arijit Singh",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_10cOJl1v4J8_Arijit-Singh-Roke-Na-Ruke-Naina-Lyrics-Video-Badrinath-Ki-Dulhania-Varun-Dhawan_009_128k.mp3"},
+{title:"Ae Dil Hai Mushkil",artist:"Arijit Singh",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Ae%20Dil%20Hai%20Mushkil%20Title%20Track%20Full%20Video%20-%20Ranbir%2C%20Anushka%2C%20Aishwarya%20_%20Arijit%20Singh_%20Pritam%2048KBPS.mp4"},
+{title:"Ye Fitoor Mera",artist:"Arijit Singh",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Ye-Fitoor-Mera-SnapYT.App.mp3"},
+{title:"Thodi Jagah",artist:"Arijit Singh",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Thodi-Jagah-lyrics-SnapYT.App.mp3"},
+{title:"Saanson Ko",artist:"Arijit Singh",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_moLdtaxes1g_Arijit-Singh-Shaarib-Toshi-Saanson-Ko-Lyrics-7clouds-Hindi_009_128k.mp3"},
+{title:"Bekhayali",artist:"Sachet Tandon",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Bekhayali-Lyrical-SnapYT.App.mp3"},
+{title:"Main Dhoondne Ko",artist:"Arijit Singh",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Main-Dhoondne-Ko-SnapYT.App.mp3"},
+{title:"Tune Jo Na Kaha",artist:"Mohit Chauhan",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Tune%20Jo%20Na%20Kaha%20Song%20_%20New%20York%20_%20John%20Abraham%2C%20Katrina%20Kaif%2C%20Neil%20Nitin%20M%20_%20Mohit%20Chauhan%20_%20Pritam%20128kbps.mp4"},
+{title:"Aaya Woh Phir Nazar",artist:"Tune Jo Na Kaha",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_XigHCp4uE4g_Aaya-woh-phir-nazar-aise-tune-jo-na-kaha-full-song-lyrics_009_128k.mp3"},
+{title:"Bekhudi",artist:"T-Series",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_RmSU9drvPis_Bekhudi-lyrics-T-series_008_128k.mp3"},
+{title:"Faasle",artist:"Aditya Rikhari",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_EiiOYwqk3A0_Aditya-Rikhari-FAASLE_009_128k.mp3"},
+{title:"Khat",artist:"Navjot Ahuja",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Khat%20Navjot%20Ahuja%20320%20Kbps%20(1).mp3"},
+{title:"Virhaa",artist:"Mizajii, Sammohitt",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/mizajii-sammohit--prod-by-dikshyant.mp3"},
+{title:"O Re Bewafa",artist:"Asad Naeem",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_dkrEyjEsjLs_O-Re-Bewafa-Asad-Naeem-Heart-Touching-Sad-Song-song_009_128k.mp3"},
+{title:"Afsos",artist:"Anuv Jain & AP Dhillon",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_2FhgKp_lfJQ_Anuv-Jain-AFSOS-ft-AP-Dhillon-Official-Visualizer_009_128k.mp3"},
+{title:"Roi Na",artist:"Talwiinder",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_u2IWrmGXEgw_Roi-Na-Talwiinder-Cover-Offically-sung-by-NInja-Heartbreak-Tribute_009_128k.mp3"},
+{title:"Je Mile Oh Kudi (Cover)",artist:"Talwiinder ft. PUSH",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_JpYCJX5t4xM_Je-Mile-Oh-Kudi-Cover-by-Talwiinder-ft-Push-Heartfelt-Punjabi-Vibes_009_128k.mp3"},
+{title:"Tareyaan De Des (Cover)",artist:"Talwiinder ft. PUSH",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_2-DngvMasNo_Tareyaan-De-Des-Cover-by-Talwiinder-ft-PUSH_007_128k.mp3"},
+{title:"Phir Bhi (Cover)",artist:"Talwiinder",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_YzrUThw6dHE_Talwiinder-Phir-Bhi-Cover-Hindi-Lofi_008_128k.mp3"},
+{title:"Main Tan Vi Pyar Kardan",artist:"Happy Raikoti & Millind Gaba",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_alEDoQMeaj4_Main-Tan-Vi-Pyar-Kardan-Full-Lyrics-Video-Happy-Raikoti-Millind-Gaba-Latest-Punj_006_128k.mp3"},
+{title:"Ishqa Ve",artist:"Zeeshan Ali",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20ishqa%20ve%20chhaddeya%20tu%20kakh%20da%20nai%20saanu%20(Lyrics)%20Ishqa%20Ve%20%20-%20Zeeshan%20Ali%20128KBPS.mp4"},
+{title:"Aarzu",artist:"Noor Khan, Madhurxo & Kalakar",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_KxzCuvCsRx0_Aarzu-Lyrics-Noor-Khan-Madhurxo-Kalakar-R44j_009_128k.mp3"},
+{title:"Alfaaz",artist:"Hamza Malik x Zain Zohaib",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Alfaaz%20_%20Hamza%20Malik%20x%20Zain%20Zohaib%20_%20Official%20Visualiser%20128KBPS.mp3"},
+{title:"Bol Kaffara Kya Hoga",artist:"Neha Kakkar",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Bol%20Kaffara%20Kya%20Hoga%20-%20Neha%20Kakkar.mp3"},
+{title:"Tu Jaane Na",artist:"Atif Aslam",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Tu%20Jaane%20Na%20-%20Atif%20Aslam%20(Lyrics)%20_%20Lyrical%20Bam%20Hindi%20128kbps.mp4"},
+{title:"Ruposh",artist:"Wajhi Farooki",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/RUPOSH-WAJHI-SnapYT.App.mp3"},
+{title:"Mann Mera",artist:"Gajendra Verma",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Gajendra-Verma-SnapYT.App.mp3"},
+{title:"Chupke Se",artist:"Sadhana Sargam, Murtuza Khan & Qadir Khan",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Chupke-Se-Flac-SnapYT.App.mp3"},
+{title:"Teri Khair Mangdi",artist:"Bilal Saeed",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Teri-Khair-Mangdi-SnapYT.App.mp3"},
+{title:"Amplifier",artist:"Imran Khan",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/AMPLIFIER-Imran-SnapYT.App.mp3"},
+{title:"Tu Aake Dekh",artist:"King",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Tu-aake-dekh-SnapYT.App.mp3"},
+{title:"Ae Dil Hai Mushkil",artist:"Arijit Singh, Pritam",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Arijit-Singh-Pritam-SnapYT.App.mp3"},
+{title:"Mi Amor",artist:"Sharn",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Mi-Amor-Lyrics-SnapYT.App.mp3"},
+{title:"O Saathi",artist:"Atif Aslam",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Atif-Aslam-SnapYT.App.mp3"},
+{title:"Tera Ban Jaunga",artist:"Akhil Sachdeva & Tulsi Kumar",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Tera-Ban-Jaunga-SnapYT.App.mp3"},
+{title:"Paniyon Sa",artist:"Atif Aslam & Tulsi Kumar",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Paniyon-sa-SnapYT.App.mp3"},
+{title:"Haareya",artist:"Arijit Singh",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Haareya-Lyrics-SnapYT.App.mp3"},
+{title:"Zaroori Tha",artist:"Rahat Fateh Ali Khan & Jeet Gannguli",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Jeet-Gannguli-Rahat-SnapYT.App.mp3"},
+{title:"Kaise Hua",artist:"Vishal Mishra",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/KAISE-HUA-LYRICS-SnapYT.App.mp3"},
+{title:"Dil Sambhal Ja Zara",artist:"Arijit Singh, Mohammad Irfan & Saim Bhat",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Dil-Sambhal-Ja-SnapYT.App.mp3"},
+{title:"Tu Hi Meri Shab Hai",artist:"KK",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_4vI3mOS9gIo_Tu-Hi-Meri-Shab-Hai-Lyrics-K-K-Pritam-Emraan-Hashmi-Kangna-Ranaut-Gangster-Jack_008_128k.mp3"},
+{title:"Aadat",artist:"Atif Aslam",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_AKUk1v3rBvc_Aadat-Atif-Aslam-Lyrics-Kalyug_009_128k.mp3"},
+{title:"Tera Mera Rishta",artist:"Mustafa Zahid",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_K9gMyXUu5es_Pritam-Mustafa-Zahid-Tera-Mera-Rishta-Lyrics_010_128k.mp3"},
+{title:"Woh Lamhe Woh Baatein",artist:"Atif Aslam",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_mX0_1yejIQI_Woh-Lamhe-Woh-Baatein-Lyrical-Video-Emraan-Hashmi-Atif-Aslam-Shamita-Shetty-Zehe_009_128k.mp3"},
+{title:"Ya Ali",artist:"Zubin Garg",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_uwCqWvZvWf4_Ya-Ali-Zubin-Garg-Pritam-Gangster-Lyrical-Video-Sufi-Lyricable_009_128k.mp3"}
 ];
 
-const sadTitles = [
-  "Tu Hai Kahan","Tere Bin","Teri Khair Mangdi","Meri Aashiqui","Roke Na Ruke Naina",
-  "Ae Dil Hai Mushkil","Ye Fitoor Mera","Thodi Jagah","Saanson Ko",
-  "Bekhayali","Main Dhoondne Ko","Tune Jo Na Kaha","Aaya Woh Phir Nazar",
-  "Bekhudi","Faasle","Khat","Virhaa","O Re Bewafa","Afsos",
-  "Roi Na","Aarzu","Ruposh","Bol Kaffara Kya Hoga"
-];
-const onesideTitles = [
-  "Ae Dil Hai Mushkil ",
-];
+const normalize=v=>String(v||"").trim().toLowerCase();
 
-const drivingTitles = [
-  "Teri Khair Mangdi","Amplifier","Tu Aake Dekh","Labon Ko","Haareya",
-];
+/* Avoid duplicate copies of the exact same track. */
+const seen=new Set();
+for(let i=playlist.length-1;i>=0;i--){
+  playlist[i].title=playlist[i].title.trim();
+  const key=normalize(playlist[i].title)+"|"+playlist[i].src;
+  if(seen.has(key))playlist.splice(i,1);
+  else seen.add(key);
+}
 
-const talwiinderTitles = [
-  "Roi Na","Je Mile Oh Kudi (Cover)","Tareyaan De Des (Cover)","Phir Bhi (Cover)"
-];
+const sadTitles=[
+"Tu Hai Kahan","Tere Bin","Meri Aashiqui","Roke Na Ruke Naina",
+"Ae Dil Hai Mushkil","Ye Fitoor Mera","Thodi Jagah","Saanson Ko",
+"Bekhayali","Main Dhoondne Ko","Tune Jo Na Kaha","Aaya Woh Phir Nazar",
+"Bekhudi","Faasle","Khat","Virhaa","O Re Bewafa","Afsos","Roi Na",
+"Aarzu","Ruposh","Bol Kaffara Kya Hoga","Teri Khair Mangdi",
+"Zaroori Tha","Dil Sambhal Ja Zara","Aadat","Tera Mera Rishta",
+"Woh Lamhe Woh Baatein"
+].map(normalize);
 
-const categoryNames = {
-  all:"All Songs",
-  oneside:"One Side",
-  sad:"Sad Songs",
-  driving:"Driving Songs",
-  talwiinder:"Talwiinder Songs"
+const onesideTitles=[
+"Jeene Laga Hoon","Kaun Tujhe","Samjhawan","Tu Hai Kahan",
+"Tere Bin","Meri Aashiqui","Roke Na Ruke Naina","Ae Dil Hai Mushkil",
+"Thodi Jagah","Main Dhoondne Ko","Tune Jo Na Kaha","Faasle",
+"Khat","O Re Bewafa","Afsos","Roi Na","Aarzu","Ruposh","Mann Mera",
+"Zaroori Tha","Dil Sambhal Ja Zara","Aadat","Tera Mera Rishta"
+].map(normalize);
+
+const drivingTitles=[
+"Teri Khair Mangdi","Amplifier","Tu Aake Dekh","Labon Ko",
+"Haareya","Mi Amor","Main Tan Vi Pyar Kardan","Ishqa Ve",
+"Tu Jaane Na","Mann Mera","Paniyon Sa"
+].map(normalize);
+
+const talwiinderTitles=[
+"Roi Na","Je Mile Oh Kudi (Cover)","Tareyaan De Des (Cover)",
+"Phir Bhi (Cover)"
+].map(normalize);
+
+const categoryNames={
+all:"All Songs",
+oneside:"One Side Love",
+sad:"Sad Songs",
+driving:"Driving Songs",
+talwiinder:"Talwiinder Songs"
 };
 
-let currentCategory = "all";
-let currentSongIndex = Math.floor(Math.random()*playlist.length);
-let isPlaying = false;
-let isSeeking = false;
+let currentCategory="all";
+let currentSongIndex=0;
+let isSeeking=false;
+let playRequestId=0;
+let renderedCategory="";
 
-const audio = document.getElementById("audio-element");
-const playBtn = document.getElementById("play-btn");
-const playIcon = document.getElementById("play-icon");
-const albumCover = document.getElementById("album-cover");
-const songTitle = document.getElementById("song-title");
-const artistName = document.getElementById("artist-name");
-const seekBar = document.getElementById("seek-bar");
-const currentTimeEl = document.getElementById("current-time");
-const totalDurationEl = document.getElementById("total-duration");
-const playbackStatus = document.getElementById("playback-status");
-const drawer = document.getElementById("playlist-drawer");
-const backdrop = document.getElementById("drawer-backdrop");
-const playlistItems = document.getElementById("playlist-items");
+const audio=document.getElementById("audio-element");
+const playIcon=document.getElementById("play-icon");
+const albumCover=document.getElementById("album-cover");
+const songTitle=document.getElementById("song-title");
+const artistName=document.getElementById("artist-name");
+const seekBar=document.getElementById("seek-bar");
+const currentTimeEl=document.getElementById("current-time");
+const totalDurationEl=document.getElementById("total-duration");
+const playbackStatus=document.getElementById("playback-status");
+const drawer=document.getElementById("playlist-drawer");
+const backdrop=document.getElementById("drawer-backdrop");
+const categoryScreen=document.getElementById("category-screen");
+const songsScreen=document.getElementById("songs-screen");
+const playlistItems=document.getElementById("playlist-items");
 
 function formatTime(value){
-if(!Number.isFinite(value)||value<0)return "0:00";
-const mins=Math.floor(value/60);
-const secs=Math.floor(value%60);
-return `${mins}:${String(secs).padStart(2,"0")}`;
+  if(!Number.isFinite(value)||value<0)return "0:00";
+  return Math.floor(value/60)+":"+String(Math.floor(value%60)).padStart(2,"0");
 }
 
-function getFilteredSongs(){
-return playlist.map((song,index)=>({song,index})).filter(({song})=>{
-if(currentCategory==="all")return true;
-if(currentCategory==="sad")return sadTitles.includes(song.title);
-if (currentCategory === "oneside") return onesideTitles.includes(song.title);
-if(currentCategory==="driving")return drivingTitles.includes(song.title);
-if(currentCategory==="talwiinder")return talwiinderTitles.includes(song.title);
-return true;
-});
+function getFilteredSongs(category=currentCategory){
+  return playlist.map((song,index)=>({song,index})).filter(({song})=>{
+    const title=normalize(song.title);
+    if(category==="all")return true;
+    if(category==="sad")return sadTitles.includes(title);
+    if(category==="oneside")return onesideTitles.includes(title);
+    if(category==="driving")return drivingTitles.includes(title);
+    if(category==="talwiinder")return talwiinderTitles.includes(title);
+    return false;
+  });
 }
-
-function renderPlaylist(){
-playlistItems.innerHTML="";
-const filtered=getFilteredSongs();
-document.getElementById("category-heading").textContent=categoryNames[currentCategory];
-document.getElementById("playlist-count").textContent=filtered.length+" songs";
-
-if(!filtered.length){
-playlistItems.innerHTML='<p class="text-center text-white/60 py-8">No songs found.</p>';
-return;
-}
-
-filtered.forEach(({song,index},position)=>{
-const item=document.createElement("button");
-item.type="button";
-item.className="song-item w-full text-left p-3 rounded-xl flex items-center gap-3 border transition-all "+(index===currentSongIndex?"bg-white/20 border-white/40":"border-transparent hover:bg-white/10");
-
-const num=document.createElement("div");
-num.className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0 text-sm";
-if(index===currentSongIndex){
-num.innerHTML='<i class="fa-solid fa-compact-disc text-amber-300 spinning"></i>';
-}else{
-num.textContent=String(position+1);
-}
-
-const info=document.createElement("div");
-info.className="min-w-0 flex-1";
-const title=document.createElement("div");
-title.className="font-semibold text-sm truncate "+(index===currentSongIndex?"text-amber-300":"");
-title.textContent=song.title;
-const artist=document.createElement("div");
-artist.className="text-xs text-white/60 truncate";
-artist.textContent=song.artist;
-info.append(title,artist);
-
-const icon=document.createElement("i");
-icon.className=index===currentSongIndex&&isPlaying?"fa-solid fa-volume-high text-amber-300":"fa-solid fa-play text-white/50 text-xs";
-
-item.append(num,info,icon);
-item.addEventListener("click",()=>{
-currentSongIndex=index;
-loadSong(true);
-});
-playlistItems.appendChild(item);
-});
-}
-
-function selectCategory(category){
-currentCategory=category;
-document.querySelectorAll(".category-btn").forEach(button=>{
-button.classList.toggle("active",button.dataset.category===category);
-});
-renderPlaylist();
-}
-
-document.querySelectorAll(".category-btn").forEach(button=>{
-button.addEventListener("click",()=>selectCategory(button.dataset.category));
-});
 
 function openDrawer(){
-drawer.classList.remove("translate-x-full");
-backdrop.classList.remove("opacity-0","pointer-events-none");
+  drawer.classList.add("open");
+  backdrop.classList.add("show");
 }
-
 function closeDrawer(){
-drawer.classList.add("translate-x-full");
-backdrop.classList.add("opacity-0","pointer-events-none");
+  drawer.classList.remove("open");
+  backdrop.classList.remove("show");
 }
-
+function showCategories(){
+  categoryScreen.hidden=false;
+  songsScreen.hidden=true;
+  renderedCategory="";
+}
+function showSongs(category){
+  currentCategory=category;
+  categoryScreen.hidden=true;
+  songsScreen.hidden=false;
+  document.getElementById("category-heading").textContent=categoryNames[category];
+  renderPlaylist();
+}
 document.getElementById("menu-toggle-btn").addEventListener("click",openDrawer);
 document.getElementById("close-drawer-btn").addEventListener("click",closeDrawer);
+document.getElementById("back-categories-btn").addEventListener("click",showCategories);
 backdrop.addEventListener("click",closeDrawer);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDrawer()});
 
-document.addEventListener("keydown",event=>{
-if(event.key==="Escape")closeDrawer();
+document.querySelectorAll(".category-card").forEach(button=>{
+  button.addEventListener("click",()=>showSongs(button.dataset.category));
 });
 
-function updatePlayUI(playing){
-isPlaying=playing;
-playIcon.className=playing?"fa-solid fa-pause":"fa-solid fa-play";
-albumCover.classList.toggle("paused-spin",!playing);
-renderPlaylist();
+function renderPlaylist(){
+  /* Do not rebuild the same category list unless asked. */
+  const filtered=getFilteredSongs();
+  document.getElementById("playlist-count").textContent=filtered.length+" songs";
+  playlistItems.innerHTML="";
+  renderedCategory=currentCategory;
+
+  if(!filtered.length){
+    const empty=document.createElement("p");
+    empty.textContent="No songs found.";
+    empty.style.cssText="text-align:center;color:#ffffff80;padding:25px 0";
+    playlistItems.appendChild(empty);
+    return;
+  }
+
+  const fragment=document.createDocumentFragment();
+
+  filtered.forEach(({song,index},position)=>{
+    const item=document.createElement("button");
+    item.type="button";
+    item.className="song-item"+(index===currentSongIndex?" current":"");
+
+    const number=document.createElement("span");
+    number.className="song-number";
+    number.innerHTML=index===currentSongIndex
+      ?'<i class="fa-solid fa-'+(audio.paused?"music":"volume-high")+'"></i>'
+      :String(position+1);
+
+    const meta=document.createElement("span");
+    meta.className="song-meta";
+
+    const title=document.createElement("strong");
+    title.textContent=song.title;
+
+    const artist=document.createElement("small");
+    artist.textContent=song.artist||"Unknown Artist";
+    meta.append(title,artist);
+
+    const right=document.createElement("span");
+    right.className="song-right";
+    right.innerHTML=index===currentSongIndex
+      ?'<i class="fa-solid fa-volume-high"></i>'
+      :'<i class="fa-solid fa-play"></i>';
+
+    item.append(number,meta,right);
+    item.addEventListener("click",()=>{
+      currentSongIndex=index;
+      closeDrawer();
+      loadSong(true);
+    });
+    fragment.appendChild(item);
+  });
+
+  playlistItems.appendChild(fragment);
 }
 
-/* MEDIA SESSION INTEGRATION FOR BACKGROUND PLAYBACK */
-function updateMediaSession() {
-  if ('mediaSession' in navigator) {
-    const song = playlist[currentSongIndex];
-    navigator.mediaSession.metadata = new MediaMetadata({
-      title: song.title,
-      artist: song.artist || "N0tSuryansh Player",
-      album: "N0tSuryansh Music",
-      artwork: [
-        { src: defaultCover, sizes: '512x512', type: 'image/jpeg' }
-      ]
-    });
+function refreshCurrentSongRow(){
+  if(!songsScreen.hidden)renderPlaylist();
+}
 
-    navigator.mediaSession.setActionHandler('play', () => playSong());
-    navigator.mediaSession.setActionHandler('pause', () => pauseSong());
-    navigator.mediaSession.setActionHandler('previoustrack', () => prevSong());
-    navigator.mediaSession.setActionHandler('nexttrack', () => nextSong());
+function updatePlayUI(playing){
+  playIcon.className=playing?"fa-solid fa-pause":"fa-solid fa-play";
+  albumCover.classList.toggle("paused-spin",!playing);
+  if("mediaSession" in navigator){
+    try{navigator.mediaSession.playbackState=playing?"playing":"paused"}catch(e){}
   }
 }
 
+function updateMediaSession(){
+  if(!("mediaSession" in navigator))return;
+  const song=playlist[currentSongIndex];
+  if(!song)return;
+
+  try{
+    if("MediaMetadata" in window){
+      navigator.mediaSession.metadata=new MediaMetadata({
+        title:song.title,
+        artist:song.artist||"N0tSuryansh Player",
+        album:"N0tSuryansh Music",
+        artwork:[{src:defaultCover,sizes:"512x512",type:"image/jpeg"}]
+      });
+    }
+    const actions={
+      play:playSong,
+      pause:pauseSong,
+      previoustrack:prevSong,
+      nexttrack:nextSong
+    };
+    Object.entries(actions).forEach(([action,handler])=>{
+      try{navigator.mediaSession.setActionHandler(action,handler)}catch(e){}
+    });
+  }catch(e){}
+}
+
 function loadSong(autoplay=false){
-const song=playlist[currentSongIndex];
-if(!song)return;
+  const song=playlist[currentSongIndex];
+  if(!song)return;
 
-audio.pause();
-audio.src=song.src;
-audio.load();
+  playRequestId++;
+  audio.pause();
+  audio.src=song.src;
+  audio.load();
 
-songTitle.textContent=song.title;
-artistName.textContent=song.artist||"Unknown Artist";
-albumCover.src=defaultCover;
-seekBar.value=0;
-currentTimeEl.textContent="0:00";
-totalDurationEl.textContent="0:00";
-playbackStatus.textContent="Ready to play";
-updatePlayUI(false);
+  songTitle.textContent=song.title;
+  artistName.textContent=song.artist||"Unknown Artist";
+  albumCover.src=defaultCover;
+  seekBar.value=0;
+  currentTimeEl.textContent="0:00";
+  totalDurationEl.textContent="0:00";
+  playbackStatus.textContent="Ready to play";
+  updatePlayUI(false);
+  updateMediaSession();
+  refreshCurrentSongRow();
 
-updateMediaSession();
-
-if(autoplay)playSong();
+  if(autoplay)playSong();
 }
 
 async function playSong(){
-try{
-if(!audio.src)loadSong(false);
-await audio.play();
-updatePlayUI(true);
-playbackStatus.textContent="Now playing";
-}catch(error){
-updatePlayUI(false);
-playbackStatus.textContent="Unable to play — check song URL";
-console.warn("Playback failed:",error);
-}
+  const requestId=++playRequestId;
+  try{
+    if(!audio.getAttribute("src"))loadSong(false);
+    await audio.play();
+    if(requestId!==playRequestId)return;
+    updatePlayUI(true);
+    playbackStatus.textContent="Now playing";
+    updateMediaSession();
+    refreshCurrentSongRow();
+  }catch(error){
+    if(requestId!==playRequestId)return;
+    updatePlayUI(false);
+    playbackStatus.textContent="Unable to play — check song URL";
+    console.warn("Playback failed:",error);
+  }
 }
 
 function pauseSong(){
-audio.pause();
-updatePlayUI(false);
-playbackStatus.textContent="Paused";
+  playRequestId++;
+  audio.pause();
+  updatePlayUI(false);
+  playbackStatus.textContent="Paused";
+  refreshCurrentSongRow();
 }
 
-playBtn.addEventListener("click",()=>{
-if(audio.paused)playSong();
-else pauseSong();
+document.getElementById("play-btn").addEventListener("click",()=>{
+  if(audio.paused)playSong();
+  else pauseSong();
 });
 
+function getCategoryIndices(){
+  return getFilteredSongs().map(item=>item.index);
+}
+
 function nextSong(){
-currentSongIndex=(currentSongIndex+1)%playlist.length;
-loadSong(true);
+  const indices=getCategoryIndices();
+  if(!indices.length)return;
+  let pos=indices.indexOf(currentSongIndex);
+  currentSongIndex=indices[(pos+1+indices.length)%indices.length];
+  loadSong(true);
 }
 
 function prevSong(){
-if(audio.currentTime>3){
-audio.currentTime=0;
-return;
-}
-currentSongIndex=(currentSongIndex-1+playlist.length)%playlist.length;
-loadSong(true);
+  if(audio.currentTime>3){
+    audio.currentTime=0;
+    return;
+  }
+  const indices=getCategoryIndices();
+  if(!indices.length)return;
+  let pos=indices.indexOf(currentSongIndex);
+  if(pos<0)pos=0;
+  currentSongIndex=indices[(pos-1+indices.length)%indices.length];
+  loadSong(true);
 }
 
 document.getElementById("next-btn").addEventListener("click",nextSong);
 document.getElementById("prev-btn").addEventListener("click",prevSong);
 
 audio.addEventListener("loadedmetadata",()=>{
-totalDurationEl.textContent=formatTime(audio.duration);
+  totalDurationEl.textContent=formatTime(audio.duration);
 });
-
 audio.addEventListener("durationchange",()=>{
-if(Number.isFinite(audio.duration)){
-totalDurationEl.textContent=formatTime(audio.duration);
-}
+  if(Number.isFinite(audio.duration))totalDurationEl.textContent=formatTime(audio.duration);
 });
-
 audio.addEventListener("timeupdate",()=>{
-if(!Number.isFinite(audio.duration))return;
-currentTimeEl.textContent=formatTime(audio.currentTime);
-if(!isSeeking){
-seekBar.value=(audio.currentTime/audio.duration)*100;
-}
+  if(!Number.isFinite(audio.duration)||audio.duration<=0)return;
+  currentTimeEl.textContent=formatTime(audio.currentTime);
+  if(!isSeeking)seekBar.value=(audio.currentTime/audio.duration)*100;
 });
-
 seekBar.addEventListener("input",()=>{
-isSeeking=true;
-if(Number.isFinite(audio.duration)){
-currentTimeEl.textContent=formatTime((seekBar.value/100)*audio.duration);
-}
+  isSeeking=true;
+  if(Number.isFinite(audio.duration)&&audio.duration>0){
+    currentTimeEl.textContent=formatTime(Number(seekBar.value)*audio.duration/100);
+  }
 });
-
 seekBar.addEventListener("change",()=>{
-if(Number.isFinite(audio.duration)){
-audio.currentTime=(seekBar.value/100)*audio.duration;
-}
-isSeeking=false;
+  if(Number.isFinite(audio.duration)&&audio.duration>0){
+    audio.currentTime=Number(seekBar.value)*audio.duration/100;
+  }
+  isSeeking=false;
 });
-
 audio.addEventListener("play",()=>{
-updatePlayUI(true);
-playbackStatus.textContent="Now playing";
+  updatePlayUI(true);
+  playbackStatus.textContent="Now playing";
 });
-
 audio.addEventListener("pause",()=>{
-if(!audio.ended)updatePlayUI(false);
+  if(!audio.ended)updatePlayUI(false);
 });
-
 audio.addEventListener("ended",nextSong);
-
 audio.addEventListener("error",()=>{
-updatePlayUI(false);
-playbackStatus.textContent="Song unavailable — use Next";
+  updatePlayUI(false);
+  playbackStatus.textContent="Song unavailable — use Next";
 });
+audio.addEventListener("waiting",()=>{
+  if(!audio.paused)playbackStatus.textContent="Buffering...";
+});
+audio.addEventListener("playing",()=>playbackStatus.textContent="Now playing");
 
 function updateClock(){
-const now=new Date();
-const h=String(now.getHours()).padStart(2,"0");
-const m=String(now.getMinutes()).padStart(2,"0");
-const s=String(now.getSeconds()).padStart(2,"0");
-document.getElementById("digital-clock").innerHTML=
-`<span class="red-glow">${h}</span>:${m}:${s}`;
+  const now=new Date();
+  const h=String(now.getHours()).padStart(2,"0");
+  const m=String(now.getMinutes()).padStart(2,"0");
+  const s=String(now.getSeconds()).padStart(2,"0");
+  document.getElementById("digital-clock").innerHTML=
+    '<span class="red-glow">'+h+'</span>:'+m+':'+s;
 }
-setInterval(updateClock,1000);
 updateClock();
+setInterval(updateClock,1000);
 
 const backgrounds=document.querySelectorAll(".bg-slide");
 let bgIndex=0;
 setInterval(()=>{
-backgrounds[bgIndex].classList.remove("active");
-bgIndex=(bgIndex+1)%backgrounds.length;
-backgrounds[bgIndex].classList.add("active");
+  backgrounds[bgIndex].classList.remove("active");
+  bgIndex=(bgIndex+1)%backgrounds.length;
+  backgrounds[bgIndex].classList.add("active");
 },30000);
 
 albumCover.addEventListener("error",()=>{
-albumCover.src="https://placehold.co/120x120/333/fff?text=Music";
+  albumCover.src="https://placehold.co/120x120/333/fff?text=Music";
 });
 
 loadSong(false);
-renderPlaylist();
-
-/* Screen Wake Lock Fix */
-let screenWakeLock = null;
-
-async function requestScreenWakeLock() {
-  if (!("wakeLock" in navigator)) return;
-  try {
-    if (document.visibilityState === "visible" && !screenWakeLock) {
-      screenWakeLock = await navigator.wakeLock.request("screen");
-      screenWakeLock.addEventListener("release", () => {
-        screenWakeLock = null;
-      });
-    }
-  } catch (error) {
-    console.log("Wake Lock unavailable:", error);
-  }
-}
-
-async function releaseScreenWakeLock() {
-  if (screenWakeLock) {
-    await screenWakeLock.release();
-    screenWakeLock = null;
-  }
-}
-
-audio.addEventListener("play", requestScreenWakeLock);
-audio.addEventListener("pause", releaseScreenWakeLock);
-audio.addEventListener("ended", releaseScreenWakeLock);
-
-document.addEventListener("visibilitychange", async () => {
-  if (document.visibilityState === "visible" && !audio.paused) {
-    await requestScreenWakeLock();
-  }
-});
+showCategories();
 </script>
 </body>
 </html>
