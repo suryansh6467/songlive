@@ -157,7 +157,7 @@ main{transform:translateY(5px)}
 </button>
 <button class="category-card" data-category="sad">
 <span class="category-icon"><i class="fa-solid fa-cloud-rain"></i></span>
-<span class="category-copy"><strong>Sad Songs</strong><small>Emotional and heartbreak songs</small></span>
+<span class="category-copy"><strong>Bad mood</strong><small>Emotional and heartbreak songs</small></span>
 <i class="fa-solid fa-chevron-right category-arrow"></i>
 </button>
 <button class="category-card" data-category="driving">
@@ -211,7 +211,7 @@ const playlist=[
 {title:"Sanam Re",artist:"Arijit Singh",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_liSbkrbNj6Y_Sanam-Re-Arijit-Singh-Lyrics-Lyrical-Bam-Hindi_009_128k.mp3"},
 {title:"Tere Bin",artist:"Ranveer Singh & Sara Ali Khan",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/videoplayback.m4a"},
 {title:"Tere Bin",artist:"Aviverse",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Tere-Bin-SnapYT.App.mp3"},
-{title: "Meri Aashiqui",artist: "Arijit Singh, Palak Muchhal",src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_jfh7ZKHxNTI_Meri-Aashiqui-Lyrical-Arijit-Singh-Palak-Muchhal-Ashiqui-2-Bollywood-Songs_009_128k.mp3"},
+{title:"Meri Aashiqui",artist: "Arijit Singh, Palak Muchhal",src: "https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_jfh7ZKHxNTI_Meri-Aashiqui-Lyrical-Arijit-Singh-Palak-Muchhal-Ashiqui-2-Bollywood-Songs_009_128k.mp3"},
 {title:"Roke Na Ruke Naina",artist:"Arijit Singh",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_10cOJl1v4J8_Arijit-Singh-Roke-Na-Ruke-Naina-Lyrics-Video-Badrinath-Ki-Dulhania-Varun-Dhawan_009_128k.mp3"},
 {title:"Ae Dil Hai Mushkil",artist:"Arijit Singh",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Ae%20Dil%20Hai%20Mushkil%20Title%20Track%20Full%20Video%20-%20Ranbir%2C%20Anushka%2C%20Aishwarya%20_%20Arijit%20Singh_%20Pritam%2048KBPS.mp4"},
 {title:"Ye Fitoor Mera",artist:"Arijit Singh",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Ye-Fitoor-Mera-SnapYT.App.mp3"},
@@ -257,8 +257,11 @@ const playlist=[
 {title:"Tera Mera Rishta",artist:"Mustafa Zahid",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_K9gMyXUu5es_Pritam-Mustafa-Zahid-Tera-Mera-Rishta-Lyrics_010_128k.mp3"},
 {title:"Woh Lamhe Woh Baatein",artist:"Atif Aslam",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_mX0_1yejIQI_Woh-Lamhe-Woh-Baatein-Lyrical-Video-Emraan-Hashmi-Atif-Aslam-Shamita-Shetty-Zehe_009_128k.mp3"},
 {title:"Ya Ali",artist:"Zubin Garg",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_uwCqWvZvWf4_Ya-Ali-Zubin-Garg-Pritam-Gangster-Lyrical-Video-Sufi-Lyricable_009_128k.mp3"},
-  {title:"Zain Zohaib Special", artist:"Zain Zohaib", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Zain-Zohaib-SnapYT.App.mp3"},
+{title:"Oh sahib", artist:"Zain Zohaib", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Zain-Zohaib-SnapYT.App.mp3"},
 {title:"Aaya Na Tu", artist:"Arjun Kanungo & Momina Mustehsan", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Aaya-Na-Tu-SnapYT.App.mp3"},
+{title:"She Don't Give A",artist:"King",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/King-She-SnapYT.App.mp3"},
+{title:"Pyaar Tune Kya",artist:"Jubin Nautiyal",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Pyaar-Tune-Kya-SnapYT.App.mp3"},
+{title:"Maand",artist:"Bayaan, Hasan Raheem, Rovalio",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Maand-Lyrics-SnapYT.App.mp3"},
 ];
 
 const normalize=v=>String(v||"").trim().toLowerCase();
@@ -278,22 +281,20 @@ const sadTitles=[
 "Bekhayali","Main Dhoondne Ko","Tune Jo Na Kaha","Aaya Woh Phir Nazar",
 "Bekhudi","Faasle","Khat","Virhaa","O Re Bewafa","Afsos","Roi Na",
 "Aarzu","Ruposh","Bol Kaffara Kya Hoga","Teri Khair Mangdi",
-"Zaroori Tha","Dil Sambhal Ja Zara","Aadat","Tera Mera Rishta",
-"Woh Lamhe Woh Baatein"
+"Zaroori Tha","Dil Sambhal Ja Zara","Aadat","Tera Mera Rishta","Chal Wahan Jaate Hain",
+"Woh Lamhe Woh Baatein","Mann Mera","O Saathi","Ya Ali","Maand",
 ].map(normalize);
 
 const onesideTitles=[
-"Jeene Laga Hoon","Kaun Tujhe","Samjhawan","Tu Hai Kahan",
-"Tere Bin","Meri Aashiqui","Roke Na Ruke Naina","Ae Dil Hai Mushkil",
-"Thodi Jagah","Main Dhoondne Ko","Tune Jo Na Kaha","Faasle",
-"Khat","O Re Bewafa","Afsos","Roi Na","Aarzu","Ruposh","Mann Mera",
-"Zaroori Tha","Dil Sambhal Ja Zara","Aadat","Tera Mera Rishta","Zain Zohaib Special",
+"Oh sahib","Paniyon Sa","Mi Amor","Tu Aake Dekh","Khat","Bekhudi","Ae Dil Hai Mushkil","Maula Mere Maula",
+"Kaun Tujhe","Tu Chahiye","Samjhawan","Humsafar","Ik Mulaqaat","Tum Mile (Love Reprise)","Chal Wahan Jaate Hain","Tere Bin",
+"Thodi Jagah","Tune Jo Na Kaha","Faasle","Main Tan Vi Pyar Kardan","Haareya","O Saathi","Tera Ban Jaunga","Woh Lamhe Woh Baatein",
+"Aaya Na Tu","She Don't Give A","Pyaar Tune Kya","Maand",
 ].map(normalize);
 
 const drivingTitles=[
-"Teri Khair Mangdi","Dil Sambhal Ja Zara","Amplifier","Tu Aake Dekh",
-"Haareya","Mi Amor","Main Tan Vi Pyar Kardan","Ishqa Ve",
-"Tu Jaane Na","Mann Mera","Paniyon Sa","Chal Wahan Jaate Hain","Aaya Na Tu","Main Dhoondne Ko",
+"Dil Sambhal Ja Zara","Teri Khair Mangdi","O Re Bewafa","Dil Sambhal Ja Zara","Meri Aashiqui","Chal Wahan Jaate Hain",
+"Labon Ko","Tune Jo Na Kaha","Faasle","O Re Bewafa","Afsos","Mann Mera","Amplifier","Haareya","Tera Ban Jaunga",
 ].map(normalize);
 
 const talwiinderTitles=[
