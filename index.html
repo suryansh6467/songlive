@@ -66,8 +66,15 @@ main{width:100%;max-width:900px;margin:auto;z-index:10;transform:translateY(15px
 .songs-heading{flex:1;min-width:0}
 .songs-heading h4{font-size:15px;margin:0}
 .songs-heading p{font-size:11px;color:#ffffff80;margin:4px 0 0}
-#playlist-items{flex:1;min-height:0;overflow-y:auto;margin-top:10px;padding-right:3px}
-.song-item{width:100%;display:flex;align-items:center;gap:12px;padding:11px;border-radius:13px;border:1px solid transparent;background:transparent;text-align:left;margin-bottom:5px}
+#playlist-search-wrap{position:relative;margin-top:12px;flex-shrink:0}
+.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#ffffff80;pointer-events:none}
+#playlist-search{width:100%;padding:12px 14px 12px 39px;border-radius:13px;border:1px solid #ffffff25;background:#ffffff0d;color:#fff;font:inherit;font-size:13px;outline:none}
+#playlist-search::placeholder{color:#ffffff75}
+#playlist-search:focus{border-color:#ffffff70;background:#ffffff12}
+#playlist-items{flex:1;min-height:0;overflow-y:auto;margin-top:8px;padding-right:3px}
+.song-entry{display:flex;align-items:center;gap:4px;margin-bottom:5px;border-radius:13px}
+.song-item{flex:1;min-width:0;width:auto;display:flex;align-items:center;gap:12px;padding:11px;border-radius:13px;border:1px solid transparent;background:transparent;text-align:left;color:inherit;font:inherit;cursor:pointer}
+.song-item:hover{background:#ffffff0d}
 .song-item.current{background:#ffffff1c;border-color:#ffffff35}
 .song-number{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:#ffffff12;flex-shrink:0;font-size:12px}
 .song-meta{flex:1;min-width:0}
@@ -75,6 +82,9 @@ main{width:100%;max-width:900px;margin:auto;z-index:10;transform:translateY(15px
 .song-meta small{display:block;font-size:11px;color:#ffffff80;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:4px}
 .song-item.current .song-meta strong{color:#ffd166}
 .song-right{font-size:12px;color:#ffffff80}
+.favorite-btn{width:40px;height:40px;display:grid;place-items:center;flex-shrink:0;border:1px solid transparent;border-radius:50%;background:transparent;color:#ffffff85;cursor:pointer;transition:background .18s,color .18s,border-color .18s}
+.favorite-btn:hover{background:#ffffff12;border-color:#ffffff25}
+.favorite-btn.active{color:#ff5c83;background:#ff5c8315;border-color:#ff5c8338}
 @media(max-width:640px){
 body{padding:12px}
 header{padding:0 3px}
@@ -150,6 +160,11 @@ main{transform:translateY(5px)}
 <span class="category-copy"><strong>All Songs</strong><small>Complete music library</small></span>
 <i class="fa-solid fa-chevron-right category-arrow"></i>
 </button>
+<button class="category-card" data-category="favorites">
+<span class="category-icon"><i class="fa-solid fa-heart"></i></span>
+<span class="category-copy"><strong>Favorites</strong><small>Your saved songs</small></span>
+<i class="fa-solid fa-chevron-right category-arrow"></i>
+</button>
 <button class="category-card" data-category="oneside">
 <span class="category-icon"><i class="fa-solid fa-heart-crack"></i></span>
 <span class="category-copy"><strong>One Side</strong><small>Unspoken feelings and memories</small></span>
@@ -160,9 +175,9 @@ main{transform:translateY(5px)}
 <span class="category-copy"><strong>Bad mood</strong><small>Emotional and heartbreak songs</small></span>
 <i class="fa-solid fa-chevron-right category-arrow"></i>
 </button>
-<button class="category-card" data-category="driving">
-<span class="category-icon"><i class="fa-solid fa-car-side"></i></span>
-<span class="category-copy"><strong>Driving</strong><small>Songs for the road</small></span>
+<button class="category-card" data-category="riding">
+<span class="category-icon"><i class="fa-solid fa-motorcycle"></i></span>
+<span class="category-copy"><strong>Riding</strong><small>Songs for the ride</small></span>
 <i class="fa-solid fa-chevron-right category-arrow"></i>
 </button>
 <button class="category-card" data-category="talwiinder">
@@ -182,6 +197,10 @@ main{transform:translateY(5px)}
 <p id="playlist-count">0 songs</p>
 </div>
 </div>
+<label id="playlist-search-wrap">
+<i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
+<input id="playlist-search" type="search" placeholder="Search songs or artists..." autocomplete="off" aria-label="Search songs or artists">
+</label>
 <div id="playlist-items" class="custom-scrollbar"></div>
 </div>
 </aside>
@@ -292,7 +311,7 @@ const onesideTitles=[
 "Aaya Na Tu","She Don't Give A","Pyaar Tune Kya","Maand",
 ].map(normalize);
 
-const drivingTitles=[
+const ridingTitles=[
 "Dil Sambhal Ja Zara","Teri Khair Mangdi","O Re Bewafa","Dil Sambhal Ja Zara","Meri Aashiqui","Chal Wahan Jaate Hain",
 "Labon Ko","Tune Jo Na Kaha","Faasle","O Re Bewafa","Afsos","Mann Mera","Amplifier","Haareya","Tera Ban Jaunga",
 ].map(normalize);
@@ -304,11 +323,23 @@ const talwiinderTitles=[
 
 const categoryNames={
 all:"All Songs",
+favorites:"Favorites",
 oneside:"One Side Love",
 sad:"Sad Songs",
-driving:"Driving Songs",
+riding:"Riding Songs",
 talwiinder:"Talwiinder Songs"
 };
+
+const favoritesStorageKey="n0tsuryansh-favorites-v1";
+function readFavoriteSongs(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(favoritesStorageKey)||"[]");
+    return new Set(Array.isArray(saved)?saved.filter(value=>typeof value==="string"):[]);
+  }catch(error){
+    return new Set();
+  }
+}
+let favoriteSongSources=readFavoriteSongs();
 
 let currentCategory="all";
 let currentSongIndex=0;
@@ -330,6 +361,7 @@ const backdrop=document.getElementById("drawer-backdrop");
 const categoryScreen=document.getElementById("category-screen");
 const songsScreen=document.getElementById("songs-screen");
 const playlistItems=document.getElementById("playlist-items");
+const playlistSearch=document.getElementById("playlist-search");
 
 function formatTime(value){
   if(!Number.isFinite(value)||value<0)return "0:00";
@@ -337,14 +369,18 @@ function formatTime(value){
 }
 
 function getFilteredSongs(category=currentCategory){
+  const query=normalize(playlistSearch.value);
   return playlist.map((song,index)=>({song,index})).filter(({song})=>{
     const title=normalize(song.title);
-    if(category==="all")return true;
-    if(category==="sad")return sadTitles.includes(title);
-    if(category==="oneside")return onesideTitles.includes(title);
-    if(category==="driving")return drivingTitles.includes(title);
-    if(category==="talwiinder")return talwiinderTitles.includes(title);
-    return false;
+    const artist=normalize(song.artist);
+    let matchesCategory=false;
+    if(category==="all")matchesCategory=true;
+    else if(category==="favorites")matchesCategory=favoriteSongSources.has(song.src);
+    else if(category==="sad")matchesCategory=sadTitles.includes(title);
+    else if(category==="oneside")matchesCategory=onesideTitles.includes(title);
+    else if(category==="riding")matchesCategory=ridingTitles.includes(title);
+    else if(category==="talwiinder")matchesCategory=talwiinderTitles.includes(title);
+    return matchesCategory&&(!query||title.includes(query)||artist.includes(query));
   });
 }
 
@@ -363,6 +399,7 @@ function showCategories(){
 }
 function showSongs(category){
   currentCategory=category;
+  playlistSearch.value="";
   categoryScreen.hidden=true;
   songsScreen.hidden=false;
   document.getElementById("category-heading").textContent=categoryNames[category];
@@ -387,7 +424,9 @@ function renderPlaylist(){
 
   if(!filtered.length){
     const empty=document.createElement("p");
-    empty.textContent="No songs found.";
+    empty.textContent=currentCategory==="favorites"&&favoriteSongSources.size===0
+      ?"No favorites yet. Tap a heart next to a song to save it."
+      :playlistSearch.value.trim()?"No songs match your search.":"No songs found.";
     empty.style.cssText="text-align:center;color:#ffffff80;padding:25px 0";
     playlistItems.appendChild(empty);
     return;
@@ -396,9 +435,13 @@ function renderPlaylist(){
   const fragment=document.createDocumentFragment();
 
   filtered.forEach(({song,index},position)=>{
-    const item=document.createElement("button");
-    item.type="button";
-    item.className="song-item"+(index===currentSongIndex?" current":"");
+    const item=document.createElement("div");
+    item.className="song-entry";
+
+    const playButton=document.createElement("button");
+    playButton.type="button";
+    playButton.className="song-item"+(index===currentSongIndex?" current":"");
+    playButton.setAttribute("aria-label","Play "+song.title+" by "+(song.artist||"Unknown Artist"));
 
     const number=document.createElement("span");
     number.className="song-number";
@@ -422,12 +465,29 @@ function renderPlaylist(){
       ?'<i class="fa-solid fa-volume-high"></i>'
       :'<i class="fa-solid fa-play"></i>';
 
-    item.append(number,meta,right);
-    item.addEventListener("click",()=>{
+    playButton.append(number,meta,right);
+    playButton.addEventListener("click",()=>{
       currentSongIndex=index;
       closeDrawer();
       loadSong(true);
     });
+
+    const favoriteButton=document.createElement("button");
+    const isFavorite=favoriteSongSources.has(song.src);
+    favoriteButton.type="button";
+    favoriteButton.className="favorite-btn"+(isFavorite?" active":"");
+    favoriteButton.setAttribute("aria-pressed",String(isFavorite));
+    favoriteButton.setAttribute("aria-label",(isFavorite?"Remove ":"Add ")+song.title+(isFavorite?" from":" to")+" favorites");
+    favoriteButton.title=isFavorite?"Remove from favorites":"Add to favorites";
+    favoriteButton.innerHTML='<i class="fa-solid fa-heart" aria-hidden="true"></i>';
+    favoriteButton.addEventListener("click",()=>{
+      if(favoriteSongSources.has(song.src))favoriteSongSources.delete(song.src);
+      else favoriteSongSources.add(song.src);
+      try{localStorage.setItem(favoritesStorageKey,JSON.stringify([...favoriteSongSources]))}catch(error){}
+      renderPlaylist();
+    });
+
+    item.append(playButton,favoriteButton);
     fragment.appendChild(item);
   });
 
@@ -553,6 +613,7 @@ function prevSong(){
 
 document.getElementById("next-btn").addEventListener("click",nextSong);
 document.getElementById("prev-btn").addEventListener("click",prevSong);
+playlistSearch.addEventListener("input",renderPlaylist);
 
 audio.addEventListener("loadedmetadata",()=>{
   totalDurationEl.textContent=formatTime(audio.duration);
