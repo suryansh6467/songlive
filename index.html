@@ -73,6 +73,7 @@ main{width:100%;max-width:900px;margin:auto;z-index:10;transform:translateY(15px
 #playlist-search:focus{border-color:#ffffff70;background:#ffffff12}
 #playlist-items{flex:1;min-height:0;overflow-y:auto;margin-top:8px;padding-right:3px}
 .song-entry{display:flex;align-items:center;gap:4px;margin-bottom:5px;border-radius:13px}
+.language-group-title{padding:12px 4px 6px;color:#ffffff9c;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
 .song-item{flex:1;min-width:0;width:auto;display:flex;align-items:center;gap:12px;padding:11px;border-radius:13px;border:1px solid transparent;background:transparent;text-align:left;color:inherit;font:inherit}
 .song-item:hover{background:#ffffff0d}
 .song-item.current{background:#ffffff1c;border-color:#ffffff35}
@@ -158,6 +159,9 @@ body{padding:8px}
 <p class="drawer-subtitle">CHOOSE YOUR MUSIC</p>
 <div class="category-list">
 <button class="category-card" data-category="all"><span class="category-icon"><i class="fa-solid fa-music"></i></span><span class="category-copy"><strong>All Songs</strong><small>Complete music library</small></span><i class="fa-solid fa-chevron-right category-arrow"></i></button>
+<button class="category-card" data-category="hindi"><span class="category-icon"><i class="fa-solid fa-music"></i></span><span class="category-copy"><strong>Hindi</strong><small>Hindi songs</small></span><i class="fa-solid fa-chevron-right category-arrow"></i></button>
+<button class="category-card" data-category="punjabi"><span class="category-icon"><i class="fa-solid fa-music"></i></span><span class="category-copy"><strong>Punjabi</strong><small>Punjabi songs</small></span><i class="fa-solid fa-chevron-right category-arrow"></i></button>
+<button class="category-card" data-category="haryanvi"><span class="category-icon"><i class="fa-solid fa-music"></i></span><span class="category-copy"><strong>Haryanvi</strong><small>Haryanvi songs</small></span><i class="fa-solid fa-chevron-right category-arrow"></i></button>
 <button class="category-card" data-category="crushFav"><span class="category-icon"><i class="fa-solid fa-heart"></i></span><span class="category-copy"><strong>Crush's Favorites ❤️</strong><small>Special songs playlist</small></span><i class="fa-solid fa-chevron-right category-arrow"></i></button>
 <button class="category-card" data-category="favorites"><span class="category-icon"><i class="fa-solid fa-heart"></i></span><span class="category-copy"><strong>Favorites</strong><small>Your saved songs</small></span><i class="fa-solid fa-chevron-right category-arrow"></i></button>
 <button class="category-card" data-category="oneside"><span class="category-icon"><i class="fa-solid fa-heart-crack"></i></span><span class="category-copy"><strong>One Side</strong><small>Unspoken feelings and memories</small></span><i class="fa-solid fa-chevron-right category-arrow"></i></button>
@@ -205,7 +209,7 @@ const playlist = [
 {title:"Tu Hai Kahan",artist:"AUR",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_AX6OrbgS8lI_Tu-Hai-Kahan-by-AUR-%D8%AA%D9%88-%DB%81%DB%92-%DA%A9%DB%81%D8%A7%DA%BA-Official-Music-Video_008_128k.mp3"},
 {title:"Sanam Re",artist:"Arijit Singh",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_liSbkrbNj6Y_Sanam-Re-Arijit-Singh-Lyrics-Lyrical-Bam-Hindi_009_128k.mp3"},
 {title:"Tere Bin",artist:"Ranveer Singh & Sara Ali Khan",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/videoplayback.m4a"},
-{title:"Tere Bin",artist:"Aviverse",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Tere-Bin-SnapYT.App.mp3"},
+{title:"Tere Bin Aviverse",artist:"Aviverse",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Tere-Bin-SnapYT.App.mp3"},
 {title:"Meri Aashiqui",artist:"Arijit Singh, Palak Muchhal",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_jfh7ZKHxNTI_Meri-Aashiqui-Lyrical-Arijit-Singh-Palak-Muchhal-Ashiqui-2-Bollywood-Songs_009_128k.mp3"},
 {title:"Roke Na Ruke Naina",artist:"Arijit Singh",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_10cOJl1v4J8_Arijit-Singh-Roke-Na-Ruke-Naina-Lyrics-Video-Badrinath-Ki-Dulhania-Varun-Dhawan_009_128k.mp3"},
 {title:"Ae Dil Hai Mushkil",artist:"Arijit Singh",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/vidssave.com%20Ae%20Dil%20Hai%20Mushkil%20Title%20Track%20Full%20Video%20-%20Ranbir%2C%20Anushka%2C%20Aishwarya%20_%20Arijit%20Singh_%20Pritam%2048KBPS.mp4"},
@@ -245,6 +249,7 @@ const playlist = [
 {title:"Haareya",artist:"Arijit Singh",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Haareya-Lyrics-SnapYT.App.mp3"},
 {title:"Zaroori Tha",artist:"Rahat Fateh Ali Khan & Jeet Gannguli",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Jeet-Gannguli-Rahat-SnapYT.App.mp3"},
 {title:"Kaise Hua",artist:"Vishal Mishra",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/KAISE-HUA-LYRICS-SnapYT.App.mp3"},
+{title:"Jee Nhi Lagda", artist:"Artist", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_3Tg-t3l8K4g_Jee-Nhi-Lagda_009_128k.mp3"},
 {title:"Dil Sambhal Ja Zara",artist:"Arijit Singh, Mohammad Irfan & Saim Bhat",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Dil-Sambhal-Ja-SnapYT.App.mp3"},
 {title:"Tu Hi Meri Shab Hai",artist:"KK",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_4vI3mOS9gIo_Tu-Hi-Meri-Shab-Hai-Lyrics-K-K-Pritam-Emraan-Hashmi-Kangna-Ranaut-Gangster-Jack_008_128k.mp3"},
 {title:"Aadat",artist:"Atif Aslam",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_AKUk1v3rBvc_Aadat-Atif-Aslam-Lyrics-Kalyug_009_128k.mp3"},
@@ -281,7 +286,23 @@ const playlist = [
 {title:"Titli",artist:"Chinmayi Sripaada & Gopi Sundar",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_d9WOgugZQm4_Titli-Chinmayi-Sripaada-Gopi-Sunde-Lyrics-Lyrical-Bam-Hindi_009_128k.mp3"},
 {title:"Udaarian",artist:"Satinder Sartaaj",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_B_wn4l_pjOk_Udaarian-lyrics-Badi-lambi-hai-kahani-mere-pyaar-ki-Satinder-Sartaaj-punjabi-son_009_128k.mp3"},
 {title:"Haaye Re",artist:"Swati Shukla",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_i5JaOaRJ40g_Haaye-Re-Lyrical-Video-2K-HD-Banjaare-Swati-Shukla-New-Romantic-Haryanvi-Song-Hu_010_128k.mp3"},
-{title:"Sheesha",artist:"Mitta Ror & Swara Verma",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_toUMJ0fdTDc_Sheesha-Mitta-Ror-Swara-Verma-Lyrics_009_128k.mp3"}
+{title:"Sheesha",artist:"Mitta Ror & Swara Verma",src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_toUMJ0fdTDc_Sheesha-Mitta-Ror-Swara-Verma-Lyrics_009_128k.mp3"},
+{title:"Dil Ibaadat", artist:"KK", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_eKu1YjaEoV0_Dil-Ibaadat-Lyrics-Krishnakumar-Kunnath_009_128k.mp3"},
+{title:"Mohini", artist:"Hindi Track", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_YA3sUVOVIdk_Mohini-Hindi_009_128k.mp3"},
+{title:"Jaan Jo Ye", artist:"Maahir", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_8F49RWNIV8Q_Jaan-Jo-Ye-Maahir-New-Haryanvi-Song-2026_009_128k.mp3"},
+{title:"Aankhon Se Batana", artist:"Dikshant", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_2vKMY75kvjI_Aankhon-Se-Batana-Dikshant-Viral-Song-Official-Video_009_128k.mp3"},
+{title:"Raja Tu Na Samjhe", artist:"Maxx Turnn", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_LmBsyzzX5aA_Raja-Tu-Na-Samjhe-Prod-by-Maxx-Turnn_009_128k.mp3"},
+{title:"Na Jaiyo", artist:"Preet Sirohi", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_yxOrU80I4hk_Na-Jaiyo-Preet-Sirohi-New-Haryanvi-Romantic-Song-Official-Animated-Video_009_128k.mp3"},
+{title:"Kitab", artist:"Mr. Dutt ft. Vipin Foji & Tanu Rawat", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_1uypbHj8-Mk_KITAB-Official-Music-video-Mr-Dutt-ft-Vipin-Foji-Tanu-Rawat-New-Haryanvi-Song_011_128k.mp3"},
+{title:"Ijazat", artist:"Harsh Nussi, Deep Klair & Hiten", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_i9YAAitbBTs_IJAZAT-Official-Song-Harsh-Nussi-Deep-Klair-Hiten-New-Romantic-Song-2026_010_128k.mp3"},
+{title:"Takkne", artist:"SARRB, Starboy X & Agaazz", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_YsluzwCD9CQ_Takkne-SARRB-Starboy-X-Agaazz-Official-Audio_010_128k.mp3"},
+{title:"Barqat", artist:"Artist", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_cMCVr1lFbYI_Barqat_008_128k.m4a"},
+{title:"Payal", artist:"Faizal Bhaijaan & Gravero", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_Qu4RQOQaImk_Payal-faizalbhaijaaan-Gravero-Lyric-Visualiser_010_128k.mp3"},
+{title:"Qaatil", artist:"Hasan S. Iqbal", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_lacBG5tgCqU_Qaatil-Hasan-S-Iqbal-lyrical-video_011_128k.mp3"},
+{title:"Ek Pari", artist:"Artist", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_-0h_SlM8NOE_Ek-Pari_009_128k.mp3"},
+{title:"Tu Aaja Ne", artist:"Raaji & Rahul Saini", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_FPc5xplrtFU_Tu-Aaja-Ne-Official-Music-Video-Raaji-Rahul-Saini-New-Haryanvi-Song-2026-Sonotek_010_128k.mp3"},
+{title:"Kesariya", artist:"Arijit Singh", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_W1S9AbHpWFY_Kesariya-Lyrics-Full-Song-Brahmastra-Arijit-Singh-Kesariya-Tera-Ishq-Hai-Piya_009_128k.mp3"},
+{title:"One Love", artist:"Shubh", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_0pWsCiBvLOk_Shubh-One-Love-Official-Audio_011_128k.mp3"},
 ];
 
 const normalize = v => String(v || "").trim().toLowerCase();
@@ -301,7 +322,7 @@ const sadTitles=[
 "Bekhudi","Faasle","Khat","Virhaa","O Re Bewafa","Afsos","Roi Na","Kina Chir",
 "Aarzu","Ruposh","Bol Kaffara Kya Hoga","Teri Khair Mangdi","Inaam","Baaki","Ki Samjhaiye",
 "Zaroori Tha","Dil Sambhal Ja Zara","Aadat","Tera Mera Rishta","Chal Wahan Jaate Hain",
-"Woh Lamhe Woh Baatein","Mann Mera","O Saathi","Ya Ali","Maand","Chupke Se"
+"Woh Lamhe Woh Baatein","Mann Mera","O Saathi","Ya Ali","Maand","Chupke Se","Jee Nhi Lagda","Aankhon Se Batana",
 ].map(normalize);
 
 const onesideTitles=[
@@ -314,38 +335,48 @@ const onesideTitles=[
 const ridingTitles=[
 "Dil Sambhal Ja Zara","Teri Khair Mangdi","O Re Bewafa","Meri Aashiqui","Chal Wahan Jaate Hain","Moonlight","Distance Love",
 "Labon Ko","Tune Jo Na Kaha","Faasle","Afsos","Mann Mera","Amplifier","Haareya","Tera Ban Jaunga","Girl I Need You","Kina Chir",
-"Nit Khair Manga","Inaam","Jhol","Kamlee"
+"Nit Khair Manga","Inaam","Raja Tu Na Samjhe","Jhol","Kamlee","Mohini","Tere Bin Aviverse","Jee Nhi Lagda","Jaan Jo Ye",
 ].map(normalize);
 
 const crushFavTitles = [
-  "Deewana Mujhe Banao Na x Tu Tu Hai Wahi",
-  "Tera Mera Hai Pyar Amar",
-  "Piya O Re Piya",
-  "Laal Ishq",
-  "Chudi",
-  "Morni",
-  "Sanu Ek Pal Chain",
-  "Tera Chehra",
-  "Jogi",
-  "Rishte Naate",
-  "Titli",
-  "Udaarian",
-  "Haaye Re",
-  "Sheesha"
+  "Deewana Mujhe Banao Na x Tu Tu Hai Wahi","Tera Mera Hai Pyar Amar","Piya O Re Piya","Laal Ishq","Chudi","Morni","Sanu Ek Pal Chain","Tera Chehra","Jogi","Rishte Naate","Titli","Udaarian","Haaye Re","Sheesha","Tere Bin",
 ].map(normalize);
 
 const talwiinderTitles=[
 "Roi Na","Je Mile Oh Kudi (Cover)","Tareyaan De Des (Cover)","Phir Bhi (Cover)"
 ].map(normalize);
 
+const haryanviTitles=[
+"Haaye Re","Jaan Jo Ye","Na Jaiyo","Kitab","Tu Aaja Ne","Sheesha","Raja Tu Na Samjhe"
+].map(normalize);
+
+const punjabiTitles=[
+"Roi Na","Je Mile Oh Kudi (Cover)","Tareyaan De Des (Cover)","Main Tan Vi Pyar Kardan","Ishqa Ve","Alfaaz",
+"Bol Kaffara Kya Hoga","Teri Khair Mangdi","Amplifier","Mi Amor","Jee Nhi Lagda","Oh Sahib","Nit Khair Manga",
+"Moonlight","Jhol","Baaki","Kina Chir","Distance Love","Ki Samjhaiye","Kamlee","Sanu Ek Pal Chain",
+"Udaarian","Takkne","One Love"
+].map(normalize);
+
+const languageForSong=song=>{
+  const title=normalize(song.title);
+  if(haryanviTitles.includes(title))return "haryanvi";
+  if(punjabiTitles.includes(title))return "punjabi";
+  return "hindi";
+};
+const languageOrder={hindi:0,punjabi:1,haryanvi:2};
+playlist.sort((a,b)=>languageOrder[languageForSong(a)]-languageOrder[languageForSong(b)]);
+
 const categoryNames={
 all:"All Songs",
+hindi:"Hindi",
+punjabi:"Punjabi",
 crushFav: "Crush's Favorites ❤️",
 favorites:"Favorites",
 oneside:"One Side",
 sad:"Bad Mood",
 riding:"Riding",
-talwiinder:"Talwiinder"
+talwiinder:"Talwiinder",
+haryanvi:"Haryanvi"
 
 };
 
@@ -386,11 +417,14 @@ function formatTime(value){
 function matchesCategory(song,category){
   const title=normalize(song.title);
   if(category==="all")return true;
+  if(category==="hindi")return languageForSong(song)==="hindi";
+  if(category==="punjabi")return languageForSong(song)==="punjabi";
   if(category==="favorites")return favoriteSongSources.has(song.src);
   if(category==="sad")return sadTitles.includes(title);
   if(category==="oneside")return onesideTitles.includes(title);
   if(category==="riding")return ridingTitles.includes(title);
   if(category==="talwiinder")return talwiinderTitles.includes(title);
+  if(category==="haryanvi")return haryanviTitles.includes(title);
   if (category === "crushFav") {return crushFavTitles.includes(title);}
   return false;
 }
@@ -456,7 +490,16 @@ function renderPlaylist(){
   }
 
   const fragment=document.createDocumentFragment();
+  let previousLanguage="";
   filtered.forEach(({song,index},position)=>{
+    const language=languageForSong(song);
+    if(currentCategory==="all"&&language!==previousLanguage){
+      const heading=document.createElement("div");
+      heading.className="language-group-title";
+      heading.textContent=language.charAt(0).toUpperCase()+language.slice(1);
+      fragment.appendChild(heading);
+      previousLanguage=language;
+    }
     const item=document.createElement("div");
     item.className="song-entry";
 
