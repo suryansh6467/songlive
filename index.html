@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#090909">
-<title>N0tSuryansh Music Player</title>
+<title>Music Player — All Songs & Playlists</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -49,6 +49,8 @@ main{width:100%;max-width:900px;margin:auto;z-index:10;transform:translateY(15px
 #playlist-drawer.open{transform:translateX(0)}
 .drawer-header{display:flex;justify-content:space-between;align-items:center;padding-bottom:15px;border-bottom:1px solid #ffffff25}
 .drawer-header h3{font-size:18px;margin:0}
+.drawer-header-actions{display:flex;align-items:center;gap:8px}
+.new-playlist-btn{height:38px;padding:0 12px;border-radius:22px;display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;white-space:nowrap}
 .close-btn{width:38px;height:38px;border-radius:50%}
 #category-screen,#songs-screen{display:flex;flex-direction:column;flex:1;min-height:0}
 #songs-screen[hidden],#category-screen[hidden]{display:none}
@@ -56,6 +58,22 @@ main{width:100%;max-width:900px;margin:auto;z-index:10;transform:translateY(15px
 .category-list{display:flex;flex-direction:column;gap:10px;overflow-y:auto;padding:2px 3px 10px}
 .category-card{display:flex;align-items:center;gap:13px;padding:15px;border-radius:16px;text-align:left;width:100%;background:#ffffff0d;border:1px solid #ffffff18;transition:background .2s,border-color .2s}
 .category-card:hover{background:#ffffff1b;border-color:#ffffff55}
+.library-section-title{padding:15px 3px 3px;color:#ffffff9c;font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase}
+.custom-playlist-row{display:flex;align-items:center;gap:6px}
+.custom-playlist-row .category-card{flex:1;min-width:0}
+.playlist-delete-btn{width:42px;height:42px;flex-shrink:0;border-radius:13px;color:#ffffff85}
+.create-playlist-form{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:7px;padding:3px 0 5px}
+.create-playlist-form input{min-width:0;padding:11px 12px;border-radius:12px;border:1px solid #ffffff25;background:#ffffff0d;color:white;font:inherit;font-size:13px;outline:none}
+.create-playlist-form input:focus{border-color:#ffffff70}
+.create-playlist-form button,.playlist-tools button{padding:10px 13px;border-radius:12px;font-size:12px;font-weight:600;white-space:nowrap}
+.create-playlist-form [type=submit]{background:#ffffffea;color:#111;border:0}
+.playlist-tools{display:flex;gap:8px;margin:10px 0 3px;flex-shrink:0}
+.playlist-tools button{flex:1}
+.playlist-tools .delete-playlist{color:#ff8a8a}
+.song-action-btn{width:38px;height:38px;display:grid;place-items:center;flex-shrink:0;border:1px solid transparent;border-radius:50%;background:transparent;color:#ffffff85;cursor:pointer}
+.song-action-btn:hover{background:#ffffff12;border-color:#ffffff25}
+.song-action-btn.added{color:#80e0a7;cursor:default}
+#create-playlist-form[hidden],#playlist-actions[hidden]{display:none}
 .category-icon{width:44px;height:44px;display:grid;place-items:center;border-radius:13px;background:#ffffff16;font-size:17px;flex-shrink:0}
 .category-copy{flex:1;min-width:0}
 .category-copy strong{display:block;font-size:14px}
@@ -152,21 +170,25 @@ body{padding:8px}
 <aside id="playlist-drawer">
 <div class="drawer-header">
 <h3><i class="fa-solid fa-headphones"></i> Music Library</h3>
+<div class="drawer-header-actions">
+<button id="create-playlist-btn" class="btn-glass new-playlist-btn" type="button" aria-label="Create playlist"><i class="fa-solid fa-plus"></i> New playlist</button>
 <button id="close-drawer-btn" class="btn-glass close-btn" aria-label="Close menu"><i class="fa-solid fa-xmark"></i></button>
+</div>
 </div>
 
 <div id="category-screen">
 <p class="drawer-subtitle">CHOOSE YOUR MUSIC</p>
 <div class="category-list">
+<form id="create-playlist-form" class="create-playlist-form" hidden>
+<input id="new-playlist-name" type="text" maxlength="40" placeholder="Playlist name" aria-label="Playlist name" autocomplete="off">
+<button type="submit">Create</button><button id="cancel-create-playlist" type="button" class="btn-glass">Cancel</button>
+</form>
+<div class="library-section-title">Your playlists</div>
+<div id="custom-playlist-list" aria-label="Your playlists"></div>
+<div class="library-section-title">Music library</div>
 <button class="category-card" data-category="all"><span class="category-icon"><i class="fa-solid fa-music"></i></span><span class="category-copy"><strong>All Songs</strong><small>Complete music library</small></span><i class="fa-solid fa-chevron-right category-arrow"></i></button>
 <button class="category-card" data-category="crushFav"><span class="category-icon"><i class="fa-solid fa-heart"></i></span><span class="category-copy"><strong>Crush's Favorites ❤️</strong><small>Special songs playlist</small></span><i class="fa-solid fa-chevron-right category-arrow"></i></button>
-<button class="category-card" data-category="haryanvi"><span class="category-icon"><i class="fa-solid fa-music"></i></span><span class="category-copy"><strong>Haryanvi</strong><small>Haryanvi songs</small></span><i class="fa-solid fa-chevron-right category-arrow"></i></button>
 <button class="category-card" data-category="favorites"><span class="category-icon"><i class="fa-solid fa-heart"></i></span><span class="category-copy"><strong>Favorites</strong><small>Your saved songs</small></span><i class="fa-solid fa-chevron-right category-arrow"></i></button>
-<button class="category-card" data-category="oneside"><span class="category-icon"><i class="fa-solid fa-heart-crack"></i></span><span class="category-copy"><strong>One Side</strong><small>Unspoken feelings and memories</small></span><i class="fa-solid fa-chevron-right category-arrow"></i></button>
-<button class="category-card" data-category="sad"><span class="category-icon"><i class="fa-solid fa-cloud-rain"></i></span><span class="category-copy"><strong>Bad Mood</strong><small>Emotional and heartbreak songs</small></span><i class="fa-solid fa-chevron-right category-arrow"></i></button>
-<button class="category-card" data-category="riding"><span class="category-icon"><i class="fa-solid fa-motorcycle"></i></span><span class="category-copy"><strong>Riding</strong><small>Songs for the ride</small></span><i class="fa-solid fa-chevron-right category-arrow"></i></button>
-<button class="category-card" data-category="talwiinder"><span class="category-icon"><i class="fa-solid fa-headphones"></i></span><span class="category-copy"><strong>Talwiinder</strong><small>Talwiinder and cover tracks</small></span><i class="fa-solid fa-chevron-right category-arrow"></i></button>
-
 </div>
 </div>
 
@@ -174,6 +196,10 @@ body{padding:8px}
 <div class="songs-header">
 <button id="back-categories-btn" class="btn-glass back-btn" aria-label="Back to categories"><i class="fa-solid fa-arrow-left"></i></button>
 <div class="songs-heading"><h4 id="category-heading">All Songs</h4><p id="playlist-count">0 songs</p></div>
+</div>
+<div id="playlist-actions" class="playlist-tools" hidden>
+<button id="add-songs-toggle" class="btn-glass" type="button"><i class="fa-solid fa-plus"></i> Add songs</button>
+<button id="delete-current-playlist-btn" class="btn-glass delete-playlist" type="button"><i class="fa-solid fa-trash"></i> Delete playlist</button>
 </div>
 <label id="playlist-search-wrap">
 <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
@@ -291,6 +317,7 @@ const playlist = [
 {title:"Aankhon Se Batana", artist:"Dikshant", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_2vKMY75kvjI_Aankhon-Se-Batana-Dikshant-Viral-Song-Official-Video_009_128k.mp3"},
 {title:"Raja Tu Na Samjhe", artist:"Maxx Turnn", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_LmBsyzzX5aA_Raja-Tu-Na-Samjhe-Prod-by-Maxx-Turnn_009_128k.mp3"},
 {title:"Na Jaiyo", artist:"Preet Sirohi", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_yxOrU80I4hk_Na-Jaiyo-Preet-Sirohi-New-Haryanvi-Romantic-Song-Official-Animated-Video_009_128k.mp3"},
+{title:"Dekho Na", artist:"Sonu Nigam & Sunidhi Chauhan", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/Dekho-Na-SnapYT.App.mp3"},
 {title:"Kitab", artist:"Mr. Dutt ft. Vipin Foji & Tanu Rawat", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_1uypbHj8-Mk_KITAB-Official-Music-video-Mr-Dutt-ft-Vipin-Foji-Tanu-Rawat-New-Haryanvi-Song_011_128k.mp3"},
 {title:"Ijazat", artist:"Harsh Nussi, Deep Klair & Hiten", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_i9YAAitbBTs_IJAZAT-Official-Song-Harsh-Nussi-Deep-Klair-Hiten-New-Romantic-Song-2026_010_128k.mp3"},
 {title:"Takkne", artist:"SARRB, Starboy X & Agaazz", src:"https://raw.githubusercontent.com/suryansh6467/songs/main/YTDown.com_YouTube_Media_YsluzwCD9CQ_Takkne-SARRB-Starboy-X-Agaazz-Official-Audio_010_128k.mp3"},
@@ -327,7 +354,7 @@ const onesideTitles=[
 "Oh Sahib","Paniyon Sa","Mi Amor","Tu Aake Dekh","Khat","Bekhudi","Ae Dil Hai Mushkil","Maula Mere Maula",
 "Kaun Tujhe","Tu Chahiye","Samjhawan","Humsafar","Ik Mulaqaat","Tum Mile (Love Reprise)","Chal Wahan Jaate Hain","Tere Bin",
 "Thodi Jagah","Tune Jo Na Kaha","Faasle","Main Tan Vi Pyar Kardan","Haareya","O Saathi","Tera Ban Jaunga","Woh Lamhe Woh Baatein",
-"Aaya Na Tu","She Don't Give A","Pyaar Tune Kya","Maand","Girl I Need You","Nit Khair Manga","Baaki","Moonlight"
+"Aaya Na Tu","She Don't Give A","Pyaar Tune Kya","Maand","Girl I Need You","Nit Khair Manga","Baaki","Moonlight","Dekho Na",
 ].map(normalize);
 
 const ridingTitles=[
@@ -379,6 +406,18 @@ haryanvi:"Haryanvi"
 };
 
 const favoritesStorageKey="n0tsuryansh-favorites-v1";
+const customPlaylistsStorageKey="n0tsuryansh-custom-playlists-v1";
+function readCustomPlaylists(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(customPlaylistsStorageKey)||"[]");
+    return Array.isArray(saved)?saved.filter(item=>item&&typeof item.id==="string"&&typeof item.name==="string")
+      .map(item=>({id:item.id,name:item.name.slice(0,40),songs:Array.isArray(item.songs)?[...new Set(item.songs.filter(src=>typeof src==="string"))]:[]})):[];
+  }catch(e){return []}
+}
+function saveCustomPlaylists(){
+  try{localStorage.setItem(customPlaylistsStorageKey,JSON.stringify(customPlaylists))}catch(e){}
+}
+let customPlaylists=readCustomPlaylists();
 function readFavoriteSongs(){
   try{
     const saved=JSON.parse(localStorage.getItem(favoritesStorageKey)||"[]");
@@ -387,6 +426,7 @@ function readFavoriteSongs(){
 }
 let favoriteSongSources=readFavoriteSongs();
 let currentCategory="all";
+let isAddingSongs=false;
 let currentSongIndex=0;
 let isSeeking=false;
 let playRequestId=0;
@@ -412,8 +452,19 @@ function formatTime(value){
   return Math.floor(value/60)+":"+String(Math.floor(value%60)).padStart(2,"0");
 }
 
-function matchesCategory(song,category){
+function getCurrentCustomPlaylist(){
+  if(!currentCategory.startsWith("custom:"))return null;
+  const id=currentCategory.slice(7);
+  return customPlaylists.find(item=>item.id===id)||null;
+}
+
+function matchesCategory(song,category,ignoreAddMode=false){
   const title=normalize(song.title);
+  if(category.startsWith("custom:")){
+    const custom=customPlaylists.find(item=>item.id===category.slice(7));
+    if(!custom)return false;
+    return isAddingSongs&&!ignoreAddMode?true:custom.songs.includes(song.src);
+  }
   if(category==="all")return true;
   if(category==="hindi")return languageForSong(song)==="hindi";
   if(category==="punjabi")return languageForSong(song)==="punjabi";
@@ -427,18 +478,18 @@ function matchesCategory(song,category){
   return false;
 }
 
-function getFilteredSongs(category=currentCategory,includeSearch=true){
+function getFilteredSongs(category=currentCategory,includeSearch=true,ignoreAddMode=false){
   const query=includeSearch?normalize(playlistSearch.value):"";
   return playlist.map((song,index)=>({song,index})).filter(({song})=>{
     const title=normalize(song.title);
     const artist=normalize(song.artist);
-    return matchesCategory(song,category)&&
+    return matchesCategory(song,category,ignoreAddMode)&&
       (!query||title.includes(query)||artist.includes(query));
   });
 }
 
 function getCategoryIndices(){
-  return getFilteredSongs(currentCategory,false).map(item=>item.index);
+  return getFilteredSongs(currentCategory,false,true).map(item=>item.index);
 }
 
 function openDrawer(){
@@ -450,17 +501,90 @@ function closeDrawer(){
   backdrop.classList.remove("show");
 }
 function showCategories(){
+  isAddingSongs=false;
   categoryScreen.hidden=false;
   songsScreen.hidden=true;
 }
 function showSongs(category){
   currentCategory=category;
+  isAddingSongs=false;
   playlistSearch.value="";
   categoryScreen.hidden=true;
   songsScreen.hidden=false;
-  document.getElementById("category-heading").textContent=categoryNames[category]||"Music";
+  const custom=getCurrentCustomPlaylist();
+  document.getElementById("category-heading").textContent=custom?custom.name:(categoryNames[category]||"Music");
   renderPlaylist();
 }
+
+function renderCustomPlaylists(){
+  const list=document.getElementById("custom-playlist-list");
+  list.innerHTML="";
+  if(!customPlaylists.length){
+    const empty=document.createElement("p");
+    empty.textContent="Your playlists will appear here.";
+    empty.style.cssText="color:#ffffff70;font-size:11px;padding:0 4px;margin:3px 0 8px";
+    list.appendChild(empty);
+    return;
+  }
+  customPlaylists.forEach(custom=>{
+    const row=document.createElement("div");
+    row.className="custom-playlist-row";
+    const open=document.createElement("button");
+    open.type="button";open.className="category-card";open.dataset.customPlaylistId=custom.id;
+    const icon=document.createElement("span");icon.className="category-icon";icon.innerHTML='<i class="fa-solid fa-list-ul"></i>';
+    const copy=document.createElement("span");copy.className="category-copy";
+    const name=document.createElement("strong");name.textContent=custom.name;
+    const count=document.createElement("small");count.textContent=custom.songs.length+" songs";
+    copy.append(name,count);open.append(icon,copy);
+    const arrow=document.createElement("i");arrow.className="fa-solid fa-chevron-right category-arrow";open.appendChild(arrow);
+    const remove=document.createElement("button");remove.type="button";remove.className="btn-glass playlist-delete-btn";
+    remove.dataset.deletePlaylistId=custom.id;remove.setAttribute("aria-label","Delete "+custom.name);
+    remove.innerHTML='<i class="fa-solid fa-trash" aria-hidden="true"></i>';
+    row.append(open,remove);list.appendChild(row);
+  });
+}
+
+document.getElementById("create-playlist-btn").addEventListener("click",()=>{
+  showCategories();
+  const form=document.getElementById("create-playlist-form");
+  form.hidden=false;
+  document.getElementById("new-playlist-name").focus();
+});
+document.getElementById("cancel-create-playlist").addEventListener("click",()=>{
+  document.getElementById("create-playlist-form").hidden=true;
+  document.getElementById("new-playlist-name").value="";
+});
+document.getElementById("create-playlist-form").addEventListener("submit",event=>{
+  event.preventDefault();
+  const input=document.getElementById("new-playlist-name");
+  const name=input.value.trim();
+  if(!name){input.focus();return}
+  const id="pl-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,7);
+  customPlaylists.push({id,name,songs:[]});
+  saveCustomPlaylists();renderCustomPlaylists();
+  input.value="";document.getElementById("create-playlist-form").hidden=true;
+  showSongs("custom:"+id);
+});
+document.getElementById("custom-playlist-list").addEventListener("click",event=>{
+  const open=event.target.closest("[data-custom-playlist-id]");
+  const remove=event.target.closest("[data-delete-playlist-id]");
+  if(open){showSongs("custom:"+open.dataset.customPlaylistId);return}
+  if(remove){
+    const target=customPlaylists.find(item=>item.id===remove.dataset.deletePlaylistId);
+    if(!target||!confirm('Delete playlist "'+target.name+'"?'))return;
+    customPlaylists=customPlaylists.filter(item=>item.id!==target.id);
+    saveCustomPlaylists();renderCustomPlaylists();
+  }
+});
+document.getElementById("add-songs-toggle").addEventListener("click",()=>{
+  isAddingSongs=!isAddingSongs;playlistSearch.value="";renderPlaylist();
+});
+document.getElementById("delete-current-playlist-btn").addEventListener("click",()=>{
+  const target=getCurrentCustomPlaylist();
+  if(!target||!confirm('Delete playlist "'+target.name+'"?'))return;
+  customPlaylists=customPlaylists.filter(item=>item.id!==target.id);
+  saveCustomPlaylists();renderCustomPlaylists();showCategories();
+});
 
 document.getElementById("menu-toggle-btn").addEventListener("click",openDrawer);
 document.getElementById("close-drawer-btn").addEventListener("click",closeDrawer);
@@ -468,18 +592,27 @@ document.getElementById("back-categories-btn").addEventListener("click",showCate
 backdrop.addEventListener("click",closeDrawer);
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDrawer()});
 
-document.querySelectorAll(".category-card").forEach(button=>{
+document.querySelectorAll(".category-card[data-category]").forEach(button=>{
   button.addEventListener("click",()=>showSongs(button.dataset.category));
 });
 
 function renderPlaylist(){
   const filtered=getFilteredSongs();
+  const custom=getCurrentCustomPlaylist();
+  const actions=document.getElementById("playlist-actions");
+  actions.hidden=!custom;
+  if(custom){
+    document.getElementById("add-songs-toggle").innerHTML=isAddingSongs
+      ?'<i class="fa-solid fa-check"></i> Done':'<i class="fa-solid fa-plus"></i> Add songs';
+  }
   document.getElementById("playlist-count").textContent=filtered.length+" songs";
   playlistItems.innerHTML="";
 
   if(!filtered.length){
     const empty=document.createElement("p");
-    empty.textContent=currentCategory==="favorites"&&favoriteSongSources.size===0
+    empty.textContent=custom&&!isAddingSongs&&custom.songs.length===0
+      ?"This playlist is empty. Tap Add songs to choose tracks."
+      :currentCategory==="favorites"&&favoriteSongSources.size===0
       ?"No favorites yet. Tap a heart next to a song to save it."
       :playlistSearch.value.trim()?"No songs match your search.":"No songs found.";
     empty.style.cssText="text-align:center;color:#ffffff80;padding:25px 0";
@@ -488,16 +621,7 @@ function renderPlaylist(){
   }
 
   const fragment=document.createDocumentFragment();
-  let previousLanguage="";
   filtered.forEach(({song,index},position)=>{
-    const language=languageForSong(song);
-    if(currentCategory==="all"&&language!==previousLanguage){
-      const heading=document.createElement("div");
-      heading.className="language-group-title";
-      heading.textContent=language.charAt(0).toUpperCase()+language.slice(1);
-      fragment.appendChild(heading);
-      previousLanguage=language;
-    }
     const item=document.createElement("div");
     item.className="song-entry";
 
@@ -550,7 +674,28 @@ function renderPlaylist(){
       renderPlaylist();
     });
 
-    item.append(playButton,favoriteButton);
+    if(custom){
+      const action=document.createElement("button");
+      action.type="button";action.className="song-action-btn";
+      if(isAddingSongs){
+        const alreadyAdded=custom.songs.includes(song.src);
+        action.classList.toggle("added",alreadyAdded);action.disabled=alreadyAdded;
+        action.setAttribute("aria-label",alreadyAdded?"Already in playlist":"Add "+song.title+" to "+custom.name);
+        action.innerHTML='<i class="fa-solid fa-'+(alreadyAdded?"check":"plus")+'" aria-hidden="true"></i>';
+        action.addEventListener("click",()=>{
+          if(custom.songs.includes(song.src))return;
+          custom.songs.push(song.src);saveCustomPlaylists();renderCustomPlaylists();renderPlaylist();
+        });
+      }else{
+        action.setAttribute("aria-label","Remove "+song.title+" from "+custom.name);
+        action.innerHTML='<i class="fa-solid fa-minus" aria-hidden="true"></i>';
+        action.addEventListener("click",()=>{
+          custom.songs=custom.songs.filter(src=>src!==song.src);
+          saveCustomPlaylists();renderCustomPlaylists();renderPlaylist();
+        });
+      }
+      item.append(playButton,favoriteButton,action);
+    }else item.append(playButton,favoriteButton);
     fragment.appendChild(item);
   });
   playlistItems.appendChild(fragment);
@@ -743,6 +888,7 @@ function chooseStartupSong(){
 }
 
 currentSongIndex=chooseStartupSong();
+renderCustomPlaylists();
 loadSong(false);
 showCategories();
 </script>
